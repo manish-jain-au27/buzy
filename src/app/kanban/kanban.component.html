@@ -1,0 +1,143 @@
+<!-- kanban.component.html -->
+<!--<div class="kanban-board" cdkDragRootElement=".kanban-board">
+  <div class="column" *ngFor="let status of ['overdue', 'current', 'upcoming', 'completed']" cdkDropList [cdkDropListData]="getTaskList(status)" (cdkDropListDropped)="dropNew($event)" id="{{ status }}">
+    <h2>{{ status | titlecase }}</h2>
+    <div class="task" *ngFor="let task of getTaskList(status); trackBy: trackByTask" cdkDrag>
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description }}</p>
+    </div>
+  </div>
+</div>-->
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <div class="kanban-view">
+        <ion-card-header class="overdue-title"> Overdue</ion-card-header>
+        <div class="kanban-box" 
+            cdkDropList
+            #ovList="cdkDropList"
+            id="overdue"
+            [cdkDropListData]="getTaskList('overdue')"
+            [cdkDropListConnectedTo]="[cuList,copList,upList]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <ion-card *ngFor="let task of getTaskList('overdue');" cdkDrag [cdkDragData]="task"
+    (cdkDragDropped)="onTaskDropped($event)">
+              <ion-card-content>
+                <div class="d-flex justify-content-between">
+                  <span class="task-title text-truncate">{{ task.title }}</span>
+                  <ion-icon name="create-outline"></ion-icon>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="task-tags">{{ task.description }}</span>
+                  <ion-icon name="play"></ion-icon>
+                  <!--<ion-icon name="pause"></ion-icon>-->
+              </div>
+              </ion-card-content>
+            </ion-card>
+
+            
+        </div>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="kanban-view">
+        <ion-card-header class="current-title"> Current</ion-card-header>
+          <div class="kanban-box" 
+            cdkDropList
+            #cuList="cdkDropList"
+            id="current"
+            [cdkDropListData]="getTaskList('current')"
+            class="example-list"
+            [cdkDropListConnectedTo]="[ovList,upList,copList]"
+            (cdkDropListDropped)="drop($event)">
+            <ion-card *ngFor="let task of getTaskList('current');" cdkDrag [cdkDragData]="task"
+    (cdkDragDropped)="onTaskDropped($event)">
+              <ion-card-content>
+                <div class="d-flex justify-content-between">
+                  <span class="task-title text-truncate">{{ task.title }}</span>
+                  <ion-icon name="create-outline"></ion-icon>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="task-tags">{{ task.description }}</span>
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId">
+                    <path
+                      d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                  </svg>
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId">
+                    <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                  </svg>
+
+                  <!--<ion-icon name="play"></ion-icon>-->
+              </div>
+              </ion-card-content>
+            </ion-card>
+
+            
+          </div>
+      </div>
+
+    </ion-col>
+    <ion-col>
+      <div class="kanban-view">
+        <ion-card-header class="upcoming-title">Upcoming</ion-card-header>
+        <div class="kanban-box"
+            cdkDropList
+            #upList="cdkDropList"
+            [cdkDropListData]="getTaskList('upcoming')"
+            id="upcoming"
+            class="example-list"
+            [cdkDropListConnectedTo]="[copList,cuList,ovList]"
+            (cdkDropListDropped)="drop($event)">
+          <ion-card *ngFor="let task of getTaskList('upcoming');" cdkDrag [cdkDragData]="task"
+    (cdkDragDropped)="onTaskDropped($event)">
+            <ion-card-content>
+              <div class="d-flex justify-content-between">
+                <span class="task-title text-truncate">{{ task.title }}</span>
+                <ion-icon name="create-outline"></ion-icon>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="task-tags">{{ task.description }}</span>
+                <ion-icon name="play"></ion-icon>
+            </div>
+            </ion-card-content>
+          </ion-card>
+
+          
+        </div>
+      </div>
+    </ion-col>
+
+    <ion-col>
+      <div class="kanban-view">
+        <ion-card-header class="completed-title"> Completed</ion-card-header>
+        <div class="kanban-box"
+            cdkDropList
+            #copList="cdkDropList"
+            [cdkDropListData]="getTaskList('completed')"
+            id="completed"
+            class="example-list"
+            [cdkDropListConnectedTo]="[upList,cuList,ovList]"
+            (cdkDropListDropped)="drop($event)">
+        <ion-card *ngFor="let task of getTaskList('completed');" cdkDrag [cdkDragData]="task"
+    (cdkDragDropped)="onTaskDropped($event)">
+          <ion-card-content>
+            <div class="d-flex justify-content-between">
+               <span class="task-title text-truncate">{{ task.title }}</span>
+               <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="task-tags">{{ task.description }}</span>
+              <ion-icon name="play"></ion-icon>
+           </div>
+          </ion-card-content>
+        </ion-card>
+        
+        </div>
+
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>

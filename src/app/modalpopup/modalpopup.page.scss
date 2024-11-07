@@ -1,0 +1,450 @@
+@import "/src/mixsin.scss";
+ ion-header {
+     margin-bottom: 20px;
+
+     ion-row {
+         ion-col {
+             ion-title {
+                 font-size: 20px;
+                 padding: 10px;
+                 font-weight: 600;
+                 font-family: $fontFamily;
+             }
+
+             ion-button {
+                 text-align: right;
+                 --background: transparent;
+                 --box-shadow: none;
+                 color: #000;
+                 position: absolute;
+                 right: 0px;
+                 top: 6px;
+                 font-size: 20px;
+
+                 .button-native {
+                     .button-inner {
+                         justify-content: end !important;
+                         display: flex;
+                     }
+                 }
+
+             }
+         }
+     }
+
+ }
+
+ ion-content {
+     ion-row {
+         margin: 2px 10px;
+
+         ion-col {
+             label {
+                 padding-left: 0px;
+                 padding-bottom:0px;
+                 color: #555;
+                 font-family: $fontFamily;
+                 font-weight: 400;
+             }
+
+             ion-item {
+                 --border-style: 0px;
+                 padding-left: 0px;
+                 padding-right: 0px;
+                 border: solid 1px #ccc;
+                 --padding-start: 10px;
+                 border-radius: 4px;
+                 --min-height: 32px;
+                 margin: 2px 0px;
+                 font-size: 14px;
+
+                 label {
+                     padding-left: 0px;
+                     color: #555;
+                 }
+
+                 ion-select {
+                     --min-height: 32px;
+                     font-family: $fontFamily;
+                     .select-icon {
+                         position: absolute !important;
+                         right: 10px;
+
+                     }
+                 }
+
+                 ion-input {
+                     --min-height: 32px;
+                     --padding-top: 0px;
+                     --padding-bottom: 0px;
+                     font-family: $fontFamily;
+                 }
+
+                 input {
+                     width: 100%;
+                     height: 42px;
+                     border: none;
+                     font-family: $fontFamily;
+
+                     &:focus {
+                         outline: inherit;
+                     }
+                 }
+
+
+
+             }
+         }
+     }
+
+ }
+
+ .custom-modal-class {
+    --width: 750px;
+}
+
+
+ .addtask_user {
+     padding: 10px 0px;
+
+     svg {
+         width: 24px;
+         height: 24px;
+         margin-left: 15px;
+         position: relative;
+         top: -3px;
+
+     }
+ }
+
+ .bz_user_dropdown {
+     --width: 300px;
+     --box-shadow: 0 -1px 3px -3px rgba(0, 0, 0, 0.2), 0 -3px 5px 1px rgba(0, 0, 0, 0.15), 0 3px 8px 2px rgba(0, 0, 0, 0.15);
+     --backdrop-opacity: 0;
+     top:0px;
+
+     .project_search {
+         background-color: #fff;
+         position: relative;
+
+         ion-searchbar {
+             position: fixed !important;
+             top: 0;
+             -webkit-padding-start: 0px;
+             padding-inline-start: 0px;
+             -webkit-padding-end: 0px;
+             padding-inline-end: 0px;
+             padding-top: 0px;
+             padding-bottom: 0px;
+             background: inherit;
+             z-index: 2;
+             font-family: $fontFamily;
+         }
+     }
+
+     .ion-padding {
+         --padding-start: none;
+         --padding-end: none;
+
+         .list {
+             margin-top: 40px;
+             height: 400px;
+             overflow-y: scroll;
+
+             a {
+                 display: block;
+                 width: 100%;
+                 padding: 0.55rem 1rem;
+                 clear: both;
+                 font-size: 0.8rem;
+                 text-decoration: none;
+                 font-weight: 400;
+                 color: #181C32;
+                 text-align: inherit;
+                 white-space: nowrap;
+                 background-color: transparent;
+                 border: 0;
+
+                 &:hover {
+                     color: #101221;
+                     text-decoration: none;
+                     background-color: #EBEDF3;
+                 }
+             }
+         }
+
+         ion-item {
+             border-width: none;
+             border-style: none;
+             border-color: none;
+
+             .symbol-label {
+                 width: 40px;
+                 height: 40px;
+                 background-color: #e1f0ff;
+                 text-align: center;
+                 line-height: 40px;
+                 border-radius: 80px;
+                 margin-right: 14px;
+                 font-family: $fontFamily;
+                 font-weight: 600;
+             }
+
+
+
+             ion-label {
+                 h3 {
+                     font-weight: 400;
+                     font-size: 14px;
+                     margin: 0px;
+                     line-height: 24px;
+                     font-family: $fontFamily;
+                 }
+
+                 p {
+                     color: #B5B5C3;
+                     font-size: 13px;
+                     margin: 0px;
+                     line-height: 16px;
+                     width: 180px;
+                     white-space: nowrap;
+                     overflow: hidden !important;
+                     text-overflow: ellipsis;
+                     font-family: $fontFamily;
+                 }
+             }
+         }
+     }
+ }
+
+
+ .ng-autocomplete {
+     width: 100%;
+     max-width: 99%;
+     display: table;
+     margin: 0px 4px;
+     padding: 3px;
+     border-radius: 4px;
+     --box-shadow: none;
+ }
+
+ .autocomplete-container .input-container input {
+     padding: 0 15px;
+     line-height: 46px !important;
+     height: 46px !important;
+     border: solid 1px #ccc !important;
+     border-radius: 4px;
+ }
+
+ .adduser_list {
+    color: #2556AC;
+    position: relative;
+    background-color: rgba(48, 126, 243, 0.1);
+    display: inline-block;
+    padding: 0.5em 0.5em;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10rem;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+ }
+
+ .pr {
+     position: absolute;
+     top: 2px;
+     right: -10px;
+     background-color: rgba(0, 0, 0, 0.6588235294);
+     width: 15px;
+     height: 15px;
+     color: #fff;
+     border-radius: 4px;
+     line-height: 13px;
+     text-decoration: none;
+     font-size: 0.6rem;
+     cursor: pointer;
+ }
+
+ .timehour-popup {
+     --width: 190px;
+     margin: auto;
+     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4) !important;
+     --backdrop-opacity: 0.2 !important;
+     padding: 2px;
+     --height: 640px;
+
+     .bz-time-popover {
+         .bz-times-list {
+             padding: 15px 10px 0px 10px;
+
+             ul {
+                 list-style: none;
+                 padding: 0px;
+                 margin: 0px;
+                 display: flex;
+                 justify-content: space-between;
+
+                 li {
+                     padding: 0px 5px;
+                     line-height: 36px;
+                     font-size: 12px;
+
+                     ion-item {
+                         --border-style: 0px;
+                         padding-left: 0px;
+                         padding-right: 0px;
+                         border: solid 1px #ccc;
+                         --padding-start: 0px;
+                         border-radius: 0px;
+                         --min-height: 32px;
+                         margin: 2px 0px;
+                         font-size: 14px;
+                         font-weight: 500;
+                         width: 46px;
+
+                         label {
+                             padding-left: 0px;
+                             color: #555;
+                         }
+
+                         ion-input {
+                             min-height: 36px;
+                             --padding-top: 0px;
+                             --padding-bottom: 0px;
+                             --padding-start: 10px;
+                         }
+
+                         input {
+                             width: 100%;
+                             height: 32px;
+                             border: none;
+
+                             &:focus {
+                                 outline: inherit;
+                             }
+                         }
+                     }
+
+                 }
+             }
+         }
+
+
+
+         .bz-time-list-main {
+             display: flex;
+             justify-content:  flex-start;
+
+             .bz-hour-list {
+                 width: 60px;
+                 margin-right: 20px;
+                 padding: 5px;
+
+                 ion-item {
+                     --border-style: 0px;
+                     padding-left: 0px;
+                     padding-right: 0px;
+                     border: none;
+                     --padding-start: 0px;
+                     border-radius: 0px;
+                     --min-height: 32px;
+                     margin: 0px 0px 0px 5px;
+                     font-size: 14px;
+                     font-weight: 500;
+                     width: 46px;
+                     --background: #767476;
+                     position: relative;
+                     --inner-padding-end: 0px;
+
+                     &:hover {
+                         --background: #1c5fa7;
+                     }
+
+                     .form-check-input {
+                         width: 100%;
+                         height: 32px;
+                         border: none;
+                         position: absolute;
+                         opacity: 0;
+                         left: 98%;
+                         top: 40%;
+                         transform: translate(-50%, -50%);
+
+                         &:focus {
+                             outline: inherit;
+                         }
+                     }
+
+                     .form-check-label {
+                         color: #fff;
+                         text-align: center;
+                         width: 70%;
+                         line-height: 28px;
+                     }
+                 }
+
+
+
+
+
+
+                 .t_active {
+                     --background: #1c5fa7 !important;
+                 }
+             }
+
+             .bz-mins-list {
+                 ion-item {
+                     position: relative;
+                 }
+             }
+
+         }
+
+         .alloted-btn-group {
+             padding: 12px;
+             width: 100%;
+
+             ion-button {
+                 width: 97%;
+                 --background: #a4a2a4;
+             }
+         }
+
+     }
+ }
+
+::ng-deep ion-modal { 
+    --width: 800px; 
+}
+
+::ng-deep .autocomplete-container {
+    box-shadow: inherit !important;
+    margin-bottom: 5px;
+  }
+::ng-deep .autocomplete-container .input-container input {
+    padding: 0 15px;
+    line-height: 46px !important;
+    height: 46px !important;
+    border: solid 1px #ccc !important;
+    border-radius: 4px;
+    --box-shadow: none;
+    font-family: $fontFamily;
+  }
+  ::ng-deep .autocomplete-container .suggestions-container ul li a {
+    font-family: $fontFamily;
+    font-size: 13px;
+    padding: 9px 15px !important;
+    border-bottom: solid 1px #eee;
+    font-weight: 400;
+  }
+
+  .addtask_user_error {
+     margin-left: 15px;
+     position: relative;
+     color: #eb2828;
+ }

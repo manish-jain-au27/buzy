@@ -1,0 +1,48 @@
+const {app, BrowserWindow} = require('electron')
+    const url = require("url");
+    const path = require("path");
+
+    let mainWindow, serve;
+	const args = process.argv.slice(1);
+	serve = args.some(val => val === '--serve');
+
+    function createWindow () {
+      mainWindow = new BrowserWindow({
+        width: 800,
+        height: 700,
+		icon: path.join(__dirname, 'dist/angular-electron/assets/icons/png/512x512.png'),
+        webPreferences: {
+          nodeIntegration: true
+        }
+      })
+
+	if (serve) {
+		require('electron-reload')(__dirname, {
+		  electron: require(`${__dirname}/node_modules/electron`)
+		});
+		mainWindow.loadURL('http://localhost:4200');
+	}
+	else
+	{
+	  mainWindow.loadURL(url.format({
+	  pathname: path.join(__dirname, 'dist/angular-electron/index.html')
+	  }));
+	}
+      
+      // Open the DevTools.
+      mainWindow.webContents.openDevTools()
+
+      mainWindow.on('closed', function () {
+        mainWindow = null
+      })
+    }
+
+    app.on('ready', createWindow)
+
+    app.on('window-all-closed', function () {
+      if (process.platform !== 'darwin') app.quit()
+    })
+
+    app.on('activate', function () {
+      if (mainWindow === null) createWindow()
+    })

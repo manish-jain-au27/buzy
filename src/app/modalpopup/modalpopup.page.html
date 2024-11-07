@@ -1,0 +1,334 @@
+<ion-header>
+  <ion-row>
+    <ion-col><ion-title class="bz_pop_tittle">Create Task </ion-title></ion-col>
+    <ion-col><ion-button (click)="CloseModal()" class="bz_pop_close"><ion-icon name="close-outline"></ion-icon></ion-button></ion-col>
+  </ion-row> 
+</ion-header>
+<ion-content padding>
+
+  <!--<div *ngIf="loginrole == 1" class="addtask_user me-sm-2">-->
+  <div *ngIf="user_task_assign_permission == '2'" class="addtask_user me-sm-2">
+    <svg id="addassign-trigger" xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176"/></svg> Add Assignee
+    <span class="adduser_list" *ngFor="let assignedUser of userAssignArray" title="{{assignedUser.name}}">{{assignedUser.short_name}} <a href="javascript:void(0);" class="pr" (click)="removeAssignedUser(assignedUser)">x</a></span>
+  </div>
+  <div class="addtask_user_error" id="addtask_user_error" *ngIf="showError" #addtaskUserError>Please Select Assignee</div>
+
+  <ion-row>
+    <ion-col>
+      <ion-item  id="errtask">
+        
+        <ion-input placeholder="Task Name" name="taskname" [(ngModel)]="taskname"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Task Type</ion-label>
+        <ion-select [(ngModel)]="tasktype" (ionChange)="onTaskTypeChange()">
+          <ion-select-option value="1">Normal</ion-select-option>
+          <ion-select-option value="2">Permanent</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="tasktype == '1'">
+      <ion-col size="9">
+        <label>Start Date</label>
+        <ion-item>
+          <ion-input type="date" [(ngModel)]="dateN" name="dateN"></ion-input>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="3" class="bz-add-timeselect">
+        <label></label>
+        <ion-item>
+          <ion-input id="open-modal" expand="block"  placeholder="Start H" [(ngModel)]="finalStarttime" name="finalStarttime"></ion-input>
+        </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="tasktype == '1'">
+    <ion-col size="9">
+      <label>End Date</label>
+      <ion-item>
+        <ion-input type="date" [(ngModel)]="dateT" name="dateT"></ion-input>
+      </ion-item>
+    </ion-col>
+
+    <ion-col size="3" class="bz-add-timeselect">
+      <label></label>
+      <ion-item>
+        <ion-input id="open-modal-one" expand="block" placeholder="End H" [(ngModel)]="finalEndtime" name="finalEndtime"></ion-input>
+      </ion-item>
+      
+
+
+
+      <!--Recursive popup-->
+      <ion-content class="ion-padding">
+        <ion-modal [keepContentsMounted]="true" trigger="open-modal" #modal class="timehour-popup">
+          <ng-template>
+
+          <div class="bz-time-popover">
+            <div class="bz-start-timepop">
+                <div class="bz-times-list">
+                  <ul>
+                    <li>
+                      <ion-item>
+                        <ion-input placeholder="11" name="getendHrsF" [(ngModel)]="getendHrsF"></ion-input>
+                      </ion-item>
+                    </li>
+                    <li> : </li>
+                    <li>
+                      <ion-item>
+                        <ion-input placeholder="00" name="getMinF" [(ngModel)]="getMinF"></ion-input>
+                      </ion-item>
+                    </li>
+                    <li>AM</li>
+
+                  </ul>
+                </div>
+            </div>
+
+            
+            <ion-row>
+                  <ion-col class="bz-time-list-main">
+                    <ion-list class="bz-hour-list">
+
+                      <ion-item class="form-check form-check-inline" *ngFor="let number of ['7 a','8 a','9 a','10 a','11 a','12 p','1 p','2 p','3 p','4 p','5 p','6 p','7 p']; let index = index;" [class.t_active]="selectedTime === number">
+                      <input class="form-check-input" 
+                             (click)="saveTimeF(number, 1)" 
+                             type="radio" 
+                             [id]="'inlineRadioS' + index" 
+                             name="inlineRadioOptions" 
+                             [value]="number"
+                             >
+                      <label class="form-check-label" [for]="'inlineRadioS' + index">{{ number }}</label>
+                      </ion-item>
+
+                      
+                    </ion-list>
+
+                    <ion-list class="bz-hour-list bz-mins-list">
+                      <ion-item class="form-check form-check-inline" *ngFor="let mint of ['00','05','10','15','20','25','30','35','40','45','50','55']; let index = index;" [class.t_active]="selectedTimeM === mint">
+                        <input class="form-check-input"
+                          (click)="saveTimeF(mint, 2)"
+                          [id]="'inlineRadioSM' + index" 
+                          type="radio"
+                          name="inlineRadioOptionsM"
+                          [value]="mint">
+                        <label class="form-check-label" [for]="'inlineRadioSM' + index" >{{mint}}</label>
+                      </ion-item>
+                    </ion-list>
+                      
+
+                  </ion-col>
+            </ion-row>
+            <div class="alloted-btn-group">
+              <ion-button (click)="modal.dismiss(); pushstartHs();">Ok</ion-button> 
+            </div>
+          
+          </div>
+          
+            
+            
+          </ng-template>
+        </ion-modal>
+      </ion-content>
+
+      <!--Recursive popup-->
+      <ion-content class="ion-padding">
+        <ion-modal [keepContentsMounted]="true" trigger="open-modal-one" #modals class="timehour-popup">
+          <ng-template>
+
+          <div class="bz-time-popover">
+            <div class="bz-start-timepop">
+                <div class="bz-times-list">
+                  <ul>
+                    <li>
+                      <ion-item >
+                        <ion-input placeholder="11" name="getendHrs" [(ngModel)]="getendHrs"></ion-input>
+                      </ion-item>
+                    </li>
+                    <li> : </li>
+                    <li>
+                      <ion-item >
+                        <ion-input placeholder="00" name="getMin" [(ngModel)]="getMin"></ion-input>
+                      </ion-item>
+                    </li>
+                    <li>AM</li>
+
+                  </ul>
+                </div>
+            </div>
+
+            
+            <ion-row>
+                  <ion-col class="bz-time-list-main">
+                    <ion-list class="bz-hour-list ">
+                      <ion-item class="form-check form-check-inline" *ngFor="let number of ['7 a','8 a','9 a','10 a','11 a','12 p','1 p','2 p','3 p','4 p','5 p','6 p','7 p']; let index = index;" [class.t_active]="selectedTimeE === number">
+                        
+                        <input class="form-check-input" 
+                             (click)="saveTime(number, 1)" 
+                             type="radio" 
+                             [id]="'inlineRadioE' + index" 
+                             name="inlineRadioOptionsE" 
+                             [value]="number"
+                             >
+                      <label class="form-check-label" [for]="'inlineRadioE' + index">{{ number }}</label>
+                      </ion-item>
+
+                      
+                    </ion-list>
+
+                    <ion-list class="bz-hour-list bz-mins-list">
+
+                      <ion-list class="bz-hour-list bz-mins-list">
+                        <ion-item class="form-check form-check-inline" *ngFor="let mint of ['00','05','10','15','20','25','30','35','40','45','50','55']; let index = index;" [class.t_active]="selectedTimeEM === mint">
+                          <input class="form-check-input"
+                            (click)="saveTime(mint, 2)"
+                            [id]="'inlineRadioEM' + index" 
+                            type="radio"
+                            name="inlineRadioOptionsEM"
+                            [value]="mint">
+                          <label class="form-check-label" [for]="'inlineRadioEM' + index" >{{mint}}</label>
+                        </ion-item>
+                      </ion-list>
+
+                      
+                    </ion-list>
+
+                  </ion-col>
+            </ion-row>
+            <div class="alloted-btn-group">
+              <ion-button (click)="modals.dismiss(); pushendHs();">Ok</ion-button> 
+            </div>
+          
+          </div>
+          
+            
+            
+          </ng-template>
+        </ion-modal>
+      </ion-content>
+
+
+
+
+
+  </ion-col>
+  </ion-row>
+    <!--<div *ngIf="tasktype == '1'" class="ng-autocomplete" id="errpro">
+      <ng-autocomplete
+        [data]="data"
+        [(ngModel)]="selectedValue"
+        (ngModelChange)="onAutocompleteSelect($event)"
+        [searchKeyword]="keyword"
+        placeholder="Search Project"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate">
+      </ng-autocomplete>
+    
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+    
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>-->
+
+    <div *ngIf="tasktype == '1'" class="ng-autocomplete" id="errpro">
+      <ng-autocomplete
+        [data]="flatData"
+        [(ngModel)]="selectedValue"
+        (ngModelChange)="onAutocompleteSelect($event)"
+        [searchKeyword]="keyword"
+        placeholder="Search Project"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate">
+      </ng-autocomplete>
+
+      <ng-template #itemTemplate let-item>
+        <div [style.paddingLeft.px]="item.indentLevel * 20">
+          <a [innerHTML]="item.name"></a>
+        </div>
+      </ng-template>
+
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+
+    <div *ngIf="tasktype == '1'" class="ng-autocomplete">
+      <ng-autocomplete
+        [data]="departdata"
+        [(ngModel)]="selectedValueD"
+        (ngModelChange)="onAutocompleteDSelect($event)"
+        [searchKeyword]="keywordd"
+        placeholder="Search Department"
+        [itemTemplate]="itemTemplateD"
+        [notFoundTemplate]="notFoundTemplateD">
+      </ng-autocomplete>
+    
+      <ng-template #itemTemplateD let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+    
+      <ng-template #notFoundTemplateD let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+  
+       
+    
+
+    <ion-row>
+      <ion-col>
+        <ion-item  id="erralt">
+          
+          <ion-input type="text" placeholder="Time Allocated in Hours" name="time" [(ngModel)]="time"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="CloseModal()" color="danger">Close</ion-button>
+        <ion-button *ngIf="tasktype == '1'" color="primary" (click)="addtask()">Save</ion-button>
+        <ion-button *ngIf="tasktype == '2'" color="primary" (click)="addpermanenttask()">Save</ion-button>
+      </ion-col>
+    </ion-row>
+</ion-content>
+
+
+
+<ion-popover class="bz_user_dropdown" trigger="addassign-trigger" triggerAction="click">
+  <ng-template>
+    <div class="project_search">
+      <ion-searchbar (ionInput)="onSearchuser($event)"></ion-searchbar>
+    </div>
+    <ion-content class="ion-padding">
+
+      <div class="list">
+        <ion-item *ngFor="let usr of allUsers" (click)="assignUser(usr)">
+          <ion-avatar slot="start" *ngIf="usr.image; else noAvatar">
+            <img alt="Silhouette of a person's head" src="{{usr.image}}" />
+          </ion-avatar>
+          <ng-template #noAvatar>
+          <span class="symbol-label label-success d-inline"
+                data-toggle="tooltip" title="{{usr.name}}" data-original-title=""
+                aria-describedby="tooltip80837">{{usr.short_name}}</span>
+          </ng-template>
+          <ion-label>
+            <h3>{{usr.name}}</h3>
+            <p>{{usr.email}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+
+    </ion-content>
+  </ng-template>
+</ion-popover>

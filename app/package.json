@@ -1,0 +1,22 @@
+{
+  "name": "buzyteamplus",
+  "productName": "Buzy Team",
+  "version": "2.0.5",
+  "description": "Buzyteam project and time monitoring app.",
+  "homepage": "netvision.com.au",
+  "author": {
+    "name": "Netvision pty ltd",
+    "email": "aarif@business2sell.com.au"
+  },
+
+  "main": "main.js",
+  "private": true,
+  
+  "dependencies": {
+    "axios": "1.6.8",
+    "active-window": "0.1.0",
+    "electron-log": "4.4.8",
+    "electron-updater": "4.0.6"
+  }
+  
+}

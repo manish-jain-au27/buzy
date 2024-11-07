@@ -1,0 +1,2510 @@
+<app-header></app-header>
+<app-tasksider></app-tasksider>
+<ion-content class="ion-padding  tasklist-view">
+  <app-download-progress-popup *ngIf="downloadPopupVisible"></app-download-progress-popup>
+  <div class="d-flex justify-content-between">  
+  <div class="tasl">
+      <span class="task-title"> Tasks </span> 
+      <ion-button class="active-dropdown-btn" id="task-trigger"> 
+        <ion-icon name="ellipse" color="{{fillter_task_status_color}}"></ion-icon>{{fillter_task_status}}
+      </ion-button>
+      <ion-popover class="active-dropdown" trigger="task-trigger" size="auto">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-list>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('','status','All','secondary')"><ion-icon name="ellipse" color="secondary"></ion-icon>All </a>
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('1','status','Active','primary')"><ion-icon name="ellipse" color="primary"></ion-icon>Active </a> 
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('2','status','Completed','success')"><ion-icon name="ellipse" color="success"></ion-icon>Completed</a> 
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('3','status','Deferred','tertiary')"><ion-icon name="ellipse" color="tertiary"></ion-icon> Deferred</a>
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('4','status','Cancelled','danger')"><ion-icon name="ellipse" color="danger"></ion-icon> Cancelled</a> 
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+
+      <ion-button class="active-dropdown-btn" id="task-trigger2"> 
+        <ion-icon name="ellipse" color="{{fillter_task_type_color}}"></ion-icon>{{fillter_task_type}}
+      </ion-button>
+
+      <ion-popover class="active-dropdown" trigger="task-trigger2" size="auto">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-list>
+              <!--<ion-item>
+                <a href="#0"><ion-icon name="ellipse" color="secondary"></ion-icon>All </a>
+              </ion-item>-->
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('1','type','Normal','danger')"><ion-icon name="ellipse" color="danger"></ion-icon>Normal </a>
+              </ion-item>
+              <!--<ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('2','type','Permanent','success')"><ion-icon name="ellipse" color="success"></ion-icon>Permanent</a> 
+              </ion-item>-->
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('3','type','Recursive','warning')"><ion-icon name="ellipse" color="warning"></ion-icon>Recursive</a>
+              </ion-item>
+            
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+
+
+      <ion-button class="active-dropdown-btn" id="task-trigger3"> 
+        {{fillter_task_bydatename}}
+      </ion-button>
+      <ion-popover class="active-dropdown" trigger="task-trigger3" size="auto">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-list>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('date','date','By Date','warning')">By Date </a>
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('importance','date','Importance','warning')">Importance</a> 
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="getfiltertask('title','date','Tittle','warning')">Tittle</a> 
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+
+      <ion-button *ngIf="userrole == 1" class="active-dropdown-btn" id="addassignf-trigger"> 
+        <ng-container *ngIf="userAssignFilterArray.length === 0">
+          All Team Member
+        </ng-container>
+        <ng-container *ngIf="userAssignFilterArray.length === 1">
+          {{ userAssignFilterArray[0].name }}
+        </ng-container>
+        <ng-container *ngIf="userAssignFilterArray.length > 1">
+          {{ userAssignFilterArray.length }} members selected
+        </ng-container>
+      </ion-button>
+
+      <span *ngIf="userrole == 1" class="adduser_list d-flex">
+        <ng-container *ngFor="let assignedUserf of userAssignFilterArray">
+
+          <div class="symbol symbol-35 symbol-light-primary"><span data-toggle="tooltip" data-original-title="" class="symbol-label label-info" title="{{assignedUserf.name}}">{{getShortName(assignedUserf.name)}}<a class="pr" (click)="removeAssignedFilterUser(assignedUserf)">x</a></span></div>
+
+        </ng-container>
+      </span>
+      <ion-popover *ngIf="userrole == 1" class="bz_user_dropdown" trigger="addassignf-trigger" triggerAction="click">
+        <ng-template>
+          <div class="project_search">
+            <ion-searchbar (ionInput)="onSearchuser($event)"></ion-searchbar>
+          </div>
+          <ion-content class="ion-padding">
+
+            <div class="list">
+              <ion-item *ngFor="let usrf of allUsersFilter" (click)="assignFilterUser(usrf)">
+                <ion-avatar slot="start" *ngIf="usrf.image; else noAvatar">
+                  <img alt="Silhouette of a person's head" src="{{usrf.image}}" />
+                </ion-avatar>
+                <ng-template #noAvatar>
+                <span class="symbol-label label-success d-inline"
+                      data-toggle="tooltip" title="{{usrf.name}}" data-original-title=""
+                      aria-describedby="tooltip80837">{{usrf.short_name}}</span>
+                </ng-template>
+                <ion-label>
+                  <h3>{{usrf.name}}</h3>
+                  <p>{{usrf.email}}</p>
+                </ion-label>
+              </ion-item>
+            </div>
+
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+
+    
+
+    <select *ngIf="userrole == 1" class="active-dropdown-btn sd " id="dropdown111" (change)="onDepartmentFilter($event)">
+      <option value="">ALL DEPARTMENT</option>
+      <ng-container *ngFor="let department of allcatStructure">
+        <option [value]="department.id">
+          {{ department.category_name }}
+        </option>
+        <ng-container *ngFor="let child of department.children">
+          <option [value]="child.id" [style.paddingLeft.px]="20">
+            &nbsp;&nbsp; {{ child.category_name }}
+          </option>
+        </ng-container>
+      </ng-container>
+    </select>
+
+  </div>
+
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <!--<li class="nav-item" title="{{runnig_task}}"><span class="outputtimer">{{ outputTimer }}</span></li>-->
+    <!--<li>
+      <ion-button class="active-dropdown-btn" id="task-trigger-working-status"> 
+        {{working_status}}
+      </ion-button>
+      <ion-popover class="active-dropdown" trigger="task-trigger-working-status" size="auto">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-list>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="settimeaction('Working')">Working </a>
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="settimeaction('Break')">Break</a> 
+              </ion-item>
+              <ion-item>
+                <a href="javascript:void(0);" (click)="settimeaction('Meeting')">Meeting</a> 
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+    </li>-->
+    <li class="nav-item" >
+      <div class="task-play-top ">
+        <!--<span class="icon-play">
+        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon s-ion-icon" viewBox="0 0 512 512"><path d="M133 440a35.37 35.37 0 01-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37 7.46-27.53 19.46-34.33a35.13 35.13 0 0135.77.45l247.85 148.36a36 36 0 010 61l-247.89 148.4A35.5 35.5 0 01133 440z" fill="#3699FF"></path></svg>
+        </span>-->
+        <span *ngIf="runnig_task" class="icon-play" (click)="delAllTimer(runnig_task_id, '')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="ionicon s-ion-icon">
+            <rect x="106" y="106" width="300" height="300" rx="64" ry="64" fill="#3699FF"></rect>
+         </svg>
+        </span>
+        <span class="outputtimer">{{ outputTimer }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <rect x="0" y="0" width="24" height="24"/>
+          <path d="M12,21 C7.581722,21 4,17.418278 4,13 C4,8.581722 7.581722,5 12,5 C16.418278,5 20,8.581722 20,13 C20,17.418278 16.418278,21 12,21 Z" fill="#ffffff" opacity="1"/>
+          <path d="M13,5.06189375 C12.6724058,5.02104333 12.3386603,5 12,5 C11.6613397,5 11.3275942,5.02104333 11,5.06189375 L11,4 L10,4 C9.44771525,4 9,3.55228475 9,3 C9,2.44771525 9.44771525,2 10,2 L14,2 C14.5522847,2 15,2.44771525 15,3 C15,3.55228475 14.5522847,4 14,4 L13,4 L13,5.06189375 Z" fill="#ffffff"/>
+          <path d="M16.7099142,6.53272645 L17.5355339,5.70710678 C17.9260582,5.31658249 18.5592232,5.31658249 18.9497475,5.70710678 C19.3402718,6.09763107 19.3402718,6.73079605 18.9497475,7.12132034 L18.1671361,7.90393167 C17.7407802,7.38854954 17.251061,6.92750259 16.7099142,6.53272645 Z" fill="#ffffff"/>
+          <path d="M11.9630156,7.5 L12.0369844,7.5 C12.2982526,7.5 12.5154733,7.70115317 12.5355117,7.96165175 L12.9585886,13.4616518 C12.9797677,13.7369807 12.7737386,13.9773481 12.4984096,13.9985272 C12.4856504,13.9995087 12.4728582,14 12.4600614,14 L11.5399386,14 C11.2637963,14 11.0399386,13.7761424 11.0399386,13.5 C11.0399386,13.4872031 11.0404299,13.4744109 11.0414114,13.4616518 L11.4644883,7.96165175 C11.4845267,7.70115317 11.7017474,7.5 11.9630156,7.5 Z" fill="#6699f5"/>
+        </g>
+       </svg>
+
+      </div>
+
+      <div class="task-play-hover" *ngIf="runnig_task">
+        {{runnig_task}}
+      </div>
+
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="false"><div class="icon-list_icons"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+ stroke="none">
+<path d="M539 4027 c-24 -13 -57 -43 -74 -66 l-30 -43 -3 -481 c-2 -325 0
+-494 8 -519 14 -49 53 -94 104 -121 40 -22 49 -22 500 -25 532 -3 537 -3 605
+74 61 70 63 87 59 599 -3 438 -4 451 -25 490 -27 50 -58 80 -105 100 -32 13
+-107 15 -516 15 l-479 0 -44 -23z m741 -612 l0 -215 -215 0 -215 0 0 208 c0
+115 3 212 7 215 3 4 100 7 215 7 l208 0 0 -215z"/>
+<path d="M2288 3618 c-21 -5 -58 -28 -82 -50 -113 -98 -89 -275 45 -342 l53
+-26 1110 0 c1060 0 1113 1 1151 19 77 36 125 111 125 196 0 83 -39 148 -115
+188 l-40 22 -1105 2 c-707 1 -1118 -2 -1142 -9z"/>
+<path d="M590 2341 c-76 -24 -131 -74 -150 -139 -8 -25 -10 -194 -8 -518 l3
+-481 27 -39 c15 -21 44 -50 65 -64 l37 -25 502 0 502 0 44 30 c23 17 54 51 68
+75 l25 45 3 450 c4 512 2 529 -59 599 -67 75 -72 76 -588 75 -245 0 -457 -4
+-471 -8z m690 -636 l0 -215 -212 2 -213 3 -3 213 -2 212 215 0 215 0 0 -215z"/>
+<path d="M2251 1894 c-90 -45 -134 -140 -110 -238 17 -73 86 -140 160 -156 40
+-8 341 -10 1144 -8 l1090 3 45 25 c119 67 147 225 57 327 -18 20 -50 44 -72
+54 -38 18 -98 19 -1151 19 l-1110 0 -53 -26z"/>
+</g>
+</svg></div></button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="true"><div class="icon-kanban_icons"><svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+ stroke="none">
+<path d="M78 5100 c-43 -23 -78 -82 -78 -130 0 -50 35 -107 80 -130 39 -20 54
+-20 584 -18 532 3 545 3 572 24 50 37 68 70 68 124 0 54 -18 87 -68 124 -27
+21 -39 21 -574 23 -529 2 -548 2 -584 -17z"/>
+<path d="M1990 5102 c-107 -53 -107 -211 0 -264 32 -16 81 -18 570 -18 596 0
+580 -2 627 69 48 71 20 175 -57 213 -32 16 -81 18 -570 18 -489 0 -538 -2
+-570 -18z"/>
+<path d="M3910 5109 c-127 -51 -125 -230 3 -278 19 -7 208 -11 558 -11 511 0
+531 1 569 20 45 23 80 80 80 130 0 50 -35 107 -80 130 -38 19 -57 20 -572 19
+-328 0 -543 -4 -558 -10z"/>
+<path d="M78 4500 c-23 -13 -46 -36 -58 -60 -20 -39 -20 -54 -18 -584 3 -532
+3 -545 24 -572 11 -15 33 -37 48 -48 26 -20 42 -21 376 -24 236 -2 363 1 392
+8 37 10 72 41 245 213 172 173 203 208 213 245 7 29 10 156 8 392 -3 334 -4
+350 -24 376 -11 15 -33 37 -48 48 -27 21 -39 21 -574 23 -529 2 -548 2 -584
+-17z m932 -502 l0 -223 -132 -132 -133 -133 -222 0 -223 0 0 355 0 355 355 0
+355 0 0 -222z"/>
+<path d="M1990 4502 c-19 -9 -45 -32 -57 -51 l-23 -34 0 -544 c0 -608 -2 -592
+69 -635 35 -23 42 -23 383 -26 240 -2 361 1 390 9 36 9 73 41 235 202 106 104
+199 205 208 223 13 27 15 89 15 402 0 367 0 369 -23 403 -47 71 -31 69 -627
+69 -489 0 -538 -2 -570 -18z m920 -504 l0 -223 -132 -132 -133 -133 -217 0
+-218 0 0 355 0 355 350 0 350 0 0 -222z"/>
+<path d="M3905 4506 c-40 -18 -73 -56 -85 -97 -6 -20 -10 -244 -10 -549 0
+-515 0 -516 23 -560 16 -33 34 -51 67 -67 43 -23 51 -23 385 -23 190 0 355 4
+375 10 26 7 86 61 237 212 111 112 207 216 213 231 6 18 10 160 10 383 0 336
+-1 357 -20 394 -13 26 -34 47 -60 60 -38 19 -57 20 -572 20 -422 -1 -539 -4
+-563 -14z m915 -509 l0 -222 -133 -133 -133 -132 -219 2 -220 3 -3 353 -2 352
+355 0 355 0 0 -223z"/>
+<path d="M69 2887 c-71 -47 -69 -31 -69 -627 0 -596 -2 -580 69 -627 34 -23
+36 -23 403 -23 313 0 375 2 402 15 18 9 119 102 223 208 161 162 193 199 202
+235 8 29 11 150 9 390 -3 341 -3 348 -26 383 -43 71 -27 69 -635 69 l-544 0
+-34 -23z m941 -494 l0 -218 -132 -132 -133 -133 -222 0 -223 0 0 350 0 350
+355 0 355 0 0 -217z"/>
+<path d="M3890 2891 c-20 -10 -44 -36 -57 -61 l-23 -43 0 -527 0 -527 23 -43
+c42 -80 41 -80 460 -80 300 0 373 3 395 14 41 22 410 397 422 429 6 18 10 161
+10 385 0 398 -1 404 -69 449 l-34 23 -546 0 c-513 0 -548 -1 -581 -19z m930
+-503 l0 -223 -127 -127 -128 -128 -227 0 -228 0 0 350 0 350 355 0 355 0 0
+-222z"/>
+<path d="M106 1300 c-16 -5 -40 -19 -54 -32 -52 -48 -52 -47 -52 -618 0 -512
+1 -532 20 -570 13 -26 34 -47 60 -60 37 -19 58 -20 394 -20 223 0 365 4 383
+10 15 6 119 102 231 213 151 151 205 211 212 237 6 20 10 185 10 375 0 334 0
+342 -23 385 -16 33 -34 51 -67 68 l-44 22 -521 -1 c-286 0 -533 -5 -549 -9z
+m902 -515 l2 -219 -132 -133 -133 -133 -222 0 -223 0 0 355 0 355 353 -2 352
+-3 3 -220z"/>
+</g>
+</svg></div></button>
+    </li>
+  </ul>
+
+</div>
+
+
+<!--<ion-item class="add-task-btn">
+  <ion-label>
+    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176"/></svg>
+    Add New Task 
+  </ion-label>
+</ion-item>-->
+
+<div class="bz-content-body" id="main-content">
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0"> 
+      <ion-accordion-group [multiple]="true" [value]="['first', 'second', 'third', 'fourth', 'fifth']">
+
+        <ion-accordion value="first">
+          <ion-item slot="header" color="light" class="ion_current">
+            <ion-label> Permanent <span> {{ tasksPerma.length }} </span> </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+
+            <div class="load_show" *ngIf="loadingImgResult">
+                <ion-spinner name="dots"></ion-spinner>
+
+            </div>
+          <div>
+          <table class="table table-striped table-hover" *ngIf="!loadingImgResult">
+              <thead>
+                <tr>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-target-arrow"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 7a5 5 0 1 0 5 5" /><path d="M13 3.055a9 9 0 1 0 7.941 7.945" /><path d="M15 6v3h3l3 -3h-3v-3z" /><path d="M15 9l-3 3" /></svg> Task Name</th>
+                  <!--<th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> Start Date</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> End Date</th>-->
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-devices"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" /><path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" /><path d="M16 9h2" /></svg> Type</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-select"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M9 11l3 3l3 -3" /></svg> Priority</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z" /><path d="M12 7v5l3 3" /><path d="M4 12h1" /><path d="M19 12h1" /><path d="M12 19v1" /></svg> Alloted</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-percentage-10"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c1.92 0 3.7 .601 5.16 1.626l-5.16 7.374z" fill="currentColor" stroke="none" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /></svg> Spent </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg> Assignee </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-hour-4"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l3 2" /><path d="M12 7v5" /></svg> Time </th>
+                  <!--<th>Actions</th>-->
+                </tr>
+              </thead>
+            <tbody class="bz-list-content">
+              <!-- *ngFor="let taskDetail of tasksPerma" -->
+              <ng-container *ngFor="let taskDetail of tasksPerma">
+                <!--<tr [ngClass]="{'running-task': stop && taskDetail.task_id_uid === taskId}" *ngIf="(fillter_task_status_id === '3' || fillter_task_status_id === '4') || (taskDetail.status !== '2' && taskDetail.status !== '3' && taskDetail.status !== '4')">-->
+                  <tr [ngClass]="{'running-task': stop && taskDetail.task_id_uid === taskId}" *ngIf="shouldDisplayTask(taskDetail.task_id_uid) && ((fillter_task_status_id === '3' || fillter_task_status_id === '4') || (taskDetail.status !== '2' && taskDetail.status !== '3' && taskDetail.status !== '4'))">
+                  <td><ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                                      {{taskDetail?.task_name | titlecase}}
+                    </ion-menu-toggle>
+                  </td>
+                  <!--<td>{{taskDetail.start_date}}</td>
+                  <td>{{taskDetail.end_date}}</td>-->
+                  <td *ngIf="taskDetail.type_name === 'Normal_danger'"><ion-icon name="ellipse" color="danger"></ion-icon> Normal</td>
+                  <td *ngIf="taskDetail.type_name === 'Permanent_success'"><ion-icon name="ellipse" color="success"></ion-icon> Permanent</td>
+                  <td *ngIf="taskDetail.type_name === 'Recursive_warning'"><ion-icon name="ellipse" color="warning"></ion-icon> Recursive</td>
+
+                  <td *ngIf="taskDetail.priority_name === 'High_danger'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#FFA800" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b47705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> High</td>
+                  <td *ngIf="taskDetail.priority_name === 'Low_success'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Low</td>
+                  <td *ngIf="taskDetail.priority_name === 'Medium_tertiary'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#ffeb3b" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#d7d705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Medium</td>
+                  <td *ngIf="taskDetail.priority_name === 'Normal_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Normal</td>
+                  <td *ngIf="taskDetail.priority_name === 'Priority_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#F64E60" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#ca1f32" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> ASAP</td>
+
+
+                  <td>{{taskDetail.time}} H </td>
+                  <td>{{taskDetail.spent}}</td>
+                  <td>
+                    <!-- Avatar Group -->
+                    <div class="avatar-group avatar-group-sm">
+                      <span *ngFor="let user of taskDetail.assign_user.slice(0, 2); let i = index;">
+                        <span class="avatar" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                          <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                        </span>
+
+                        <span *ngIf="!user.image?.length" class="avatar avatar-soft-dark" placement="top" ngbTooltip="{{user.name}}">
+                          <span class="avatar-initials" >{{user.short_name}}</span>
+                        </span>
+                      </span>
+
+
+                       <!-- Apps -->
+                      <div class="dropdown" *ngIf="taskDetail.assign_user.length>2">
+                        <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                          + 2
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                          <div class="card">
+                            <!-- Header -->
+                            <div class="card-header">
+                              <h4 class="card-title">Assign User {{taskDetail.assign_user.length}}</h4>
+                            </div>
+                            <!-- End Header -->
+
+                            <!-- Body -->
+                            <div class="card-body card-body-height">
+                              <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of taskDetail.assign_user">
+                                <div class="d-flex align-items-center">
+
+                                  <div class="flex-shrink-0" *ngIf="userr.image?.length">
+                                    <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                  </div>
+
+                                  <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                    <span class="avatar-initials">{{userr.short_name}}</span>
+                                  </div>
+
+                                  <div class="flex-grow-1 text-truncate ms-2">
+                                    <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                            <!-- End Body -->
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End Apps -->
+
+                    </div>
+                    <!-- End Avatar Group -->
+                  </td>
+                  <td>
+                    <div class="bz-topplay-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16" (click)="startTaskPermanent(taskDetail.task_id_uid, '', taskDetail.task_name, taskDetail,'start')" *ngIf="taskDetail.task_id_uid != taskId">
+                        <path
+                          d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                      </svg>
+
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop && taskDetail.task_id_uid === taskId">
+                        <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                      </svg>
+
+                      <span *ngIf="taskDetail.task_id_uid != taskId">00:00:00</span>
+                      <span *ngIf="taskDetail.task_id_uid == taskId">{{ outputTimer }}</span>
+
+                    </div>
+                  </td>
+
+                </tr>
+                </ng-container>
+
+            </tbody>
+
+          </table>
+        </div>
+          </div>
+        </ion-accordion>
+
+        <ion-accordion value="second">
+          <ion-item slot="header" color="light" class="ion_current ion_current_first">
+            <ion-label>Overdue <span> {{tasks.length}} </span></ion-label>
+          </ion-item>
+        <div class="ion-padding" slot="content">
+
+          <div class="load_show" *ngIf="loadingImgResult">
+            <!--<ion-spinner name="dots"></ion-spinner>-->
+          </div>
+            <div >
+            <table class="table table-striped table-hover" *ngIf="!loadingImgResult">
+              <thead>
+                <tr>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-target-arrow"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 7a5 5 0 1 0 5 5" /><path d="M13 3.055a9 9 0 1 0 7.941 7.945" /><path d="M15 6v3h3l3 -3h-3v-3z" /><path d="M15 9l-3 3" /></svg> Task Name</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> Start Date</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> End Date</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-devices"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" /><path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" /><path d="M16 9h2" /></svg> Type</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-select"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M9 11l3 3l3 -3" /></svg> Priority</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z" /><path d="M12 7v5l3 3" /><path d="M4 12h1" /><path d="M19 12h1" /><path d="M12 19v1" /></svg> Alloted</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-percentage-10"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c1.92 0 3.7 .601 5.16 1.626l-5.16 7.374z" fill="currentColor" stroke="none" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /></svg> Spent </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg> Assignee </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-hour-4"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l3 2" /><path d="M12 7v5" /></svg> Time </th>
+                  <!--<th>Actions</th>-->
+                </tr>
+              </thead>
+          <tbody class="bz-list-content">
+            <ng-container *ngFor="let taskDetail of tasks">
+              <tr [ngClass]="{'running-task': stop && taskDetail.task_id_uid === taskId}" *ngIf="shouldDisplayTask(taskDetail.task_id_uid) && ((fillter_task_status_id === '3' || fillter_task_status_id === '4') || (taskDetail.status !== '2' && taskDetail.status !== '3' && taskDetail.status !== '4'))">
+                <td><ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                                    {{taskDetail?.task_name | titlecase}}
+                  </ion-menu-toggle></td>
+                <td>{{taskDetail.start_date}}</td>
+                <td>{{taskDetail.end_date}}</td>
+                <td *ngIf="taskDetail.type_name === 'Normal_danger'"><ion-icon name="ellipse" color="danger"></ion-icon> Normal</td>
+                <td *ngIf="taskDetail.type_name === 'Permanent_success'"><ion-icon name="ellipse" color="success"></ion-icon> Permanent</td>
+                <td *ngIf="taskDetail.type_name === 'Recursive_warning'"><ion-icon name="ellipse" color="warning"></ion-icon> Recursive</td>
+
+                <td *ngIf="taskDetail.priority_name === 'High_danger'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#FFA800" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b47705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> High</td>
+                <td *ngIf="taskDetail.priority_name === 'Low_success'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Low</td>
+                <td *ngIf="taskDetail.priority_name === 'Medium_tertiary'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#ffeb3b" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#d7d705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Medium</td>
+                <td *ngIf="taskDetail.priority_name === 'Normal_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Normal</td>
+                <td *ngIf="taskDetail.priority_name === 'Priority_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#F64E60" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#ca1f32" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> ASAP</td>
+                <td>{{taskDetail.time}} H </td>
+                <td>{{taskDetail.spent}}</td>
+                <td>
+                  <!-- Avatar Group -->
+                  <div class="avatar-group avatar-group-sm">
+                    <span *ngFor="let user of taskDetail.assign_user.slice(0, 2); let i = index;">
+                      <span class="avatar" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                        <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                      </span>
+                      
+                      <span *ngIf="!user.image?.length" class="avatar avatar-soft-dark" ngbTooltip="{{user.name}}">
+                        <span class="avatar-initials">{{user.short_name}}</span>
+                      </span>
+                    </span>
+                    
+
+                     <!-- Apps -->
+                    <div class="dropdown" *ngIf="taskDetail.assign_user.length>2">
+                      <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                        + 2
+                      </button>
+
+                      <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                        <div class="card">
+                          <!-- Header -->
+                          <div class="card-header">
+                            <h4 class="card-title">Assign User {{taskDetail.assign_user.length}}</h4>
+                          </div>
+                          <!-- End Header -->
+
+                          <!-- Body -->
+                          <div class="card-body card-body-height">
+                            <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of taskDetail.assign_user">
+                              <div class="d-flex align-items-center">
+
+                                <div class="flex-shrink-0" *ngIf="userr.image?.length">
+                                  <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                </div>
+
+                                <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                  <span class="avatar-initials">{{userr.short_name}}</span>
+                                </div>
+
+                                <div class="flex-grow-1 text-truncate ms-2">
+                                  <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5> 
+                                </div>
+                              </div>
+                            </a>
+                          </div>
+                          <!-- End Body -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Apps -->
+
+                  </div>
+                  <!-- End Avatar Group -->
+                </td>
+                <td>
+                  <div class="bz-topplay-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16" (click)="startTask(taskDetail.task_id_uid, '', taskDetail.task_name, taskDetail,'start')" *ngIf="taskDetail.task_id_uid != taskId">
+                      <path
+                        d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                    </svg>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop && taskDetail.task_id_uid === taskId">
+                      <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    
+                    <!--<span *ngIf="taskDetail.task_id_uid != taskId">{{taskDetail.spent}}</span>-->
+                    <span *ngIf="taskDetail.task_id_uid != taskId">00:00:00</span>
+                    <span *ngIf="taskDetail.task_id_uid == taskId">{{ outputTimer }}</span>
+                    
+                  </div>
+                </td>
+                <!--<td>
+                    <div class="dropdown">
+                      <ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                        <ion-icon name="eye" size="large" color="primary"></ion-icon>
+                      </ion-menu-toggle>
+                      
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
+                            <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                          </svg> Add Notes
+                        </a>                      
+                      </div>
+                    </div>
+                </td>-->
+
+              </tr>
+            </ng-container>
+          </tbody>
+        
+          </table>
+        </div>
+        </div>
+      </ion-accordion>
+
+        <ion-accordion value="third">
+          <ion-item slot="header" color="light" class="ion_current ion_current_second">
+            <ion-label>Current <span> {{tasksToday.length}} </span></ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+
+            <div class="load_show" *ngIf="loadingImgResult">
+                <!--<ion-spinner name="dots"></ion-spinner>-->
+                
+            </div>
+          <div class="bz-list-content">
+          <table class="table table-striped table-hover" *ngIf="!loadingImgResult">
+              <thead>
+                <tr>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-target-arrow"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 7a5 5 0 1 0 5 5" /><path d="M13 3.055a9 9 0 1 0 7.941 7.945" /><path d="M15 6v3h3l3 -3h-3v-3z" /><path d="M15 9l-3 3" /></svg> Task Name</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> Start Date</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> End Date</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-devices"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" /><path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" /><path d="M16 9h2" /></svg> Type</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-select"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M9 11l3 3l3 -3" /></svg> Priority</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z" /><path d="M12 7v5l3 3" /><path d="M4 12h1" /><path d="M19 12h1" /><path d="M12 19v1" /></svg> Alloted</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-percentage-10"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c1.92 0 3.7 .601 5.16 1.626l-5.16 7.374z" fill="currentColor" stroke="none" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /></svg> Spent </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg> Assignee </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-hour-4"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l3 2" /><path d="M12 7v5" /></svg> Time </th>
+                  <!--<th>Actions</th>-->
+                </tr>
+              </thead>
+            <tbody>
+              <ng-container *ngFor="let taskDetail of tasksToday">
+                <tr [ngClass]="{'running-task': stop && taskDetail.task_id_uid === taskId}" *ngIf="shouldDisplayTask(taskDetail.task_id_uid) && ((fillter_task_status_id === '3' || fillter_task_status_id === '4') || (taskDetail.status !== '2' && taskDetail.status !== '3' && taskDetail.status !== '4'))">
+                  <td><ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                                      {{taskDetail?.task_name | titlecase}}
+                    </ion-menu-toggle>
+                  </td>
+                  <td>{{taskDetail.start_date}}</td>
+                  <td>{{taskDetail.end_date}}</td>
+                  <td *ngIf="taskDetail.type_name === 'Normal_danger'"><ion-icon name="ellipse" color="danger"></ion-icon> Normal</td>
+                  <td *ngIf="taskDetail.type_name === 'Permanent_success'"><ion-icon name="ellipse" color="success"></ion-icon> Permanent</td>
+                  <td *ngIf="taskDetail.type_name === 'Recursive_warning'"><ion-icon name="ellipse" color="warning"></ion-icon> Recursive</td>
+
+                  <td *ngIf="taskDetail.priority_name === 'High_danger'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#FFA800" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b47705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> High</td>
+                  <td *ngIf="taskDetail.priority_name === 'Low_success'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Low</td>
+                  <td *ngIf="taskDetail.priority_name === 'Medium_tertiary'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#ffeb3b" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#d7d705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Medium</td>
+                  <td *ngIf="taskDetail.priority_name === 'Normal_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Normal</td>
+                  <td *ngIf="taskDetail.priority_name === 'Priority_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#F64E60" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#ca1f32" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> ASAP</td>
+
+
+                  <td>{{taskDetail.time}} H </td>
+                  <td>{{taskDetail.spent}}</td>
+                  <td>
+                    <!-- Avatar Group -->
+                    <div class="avatar-group avatar-group-sm">
+                      <span *ngFor="let user of taskDetail.assign_user.slice(0, 2); let i = index;">
+                        <span class="avatar" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                          <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                        </span>
+                        
+                        <span *ngIf="!user.image?.length" class="avatar avatar-soft-dark" ngbTooltip="{{user.name}}">
+                          <span class="avatar-initials">{{user.short_name}}</span>
+                        </span>
+                      </span>
+                      
+
+                       <!-- Apps -->
+                      <div class="dropdown" *ngIf="taskDetail.assign_user.length>2">
+                        <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                          + 2
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                          <div class="card">
+                            <!-- Header -->
+                            <div class="card-header">
+                              <h4 class="card-title">Assign User {{taskDetail.assign_user.length}}</h4>
+                            </div>
+                            <!-- End Header -->
+
+                            <!-- Body -->
+                            <div class="card-body card-body-height">
+                              <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of taskDetail.assign_user">
+                                <div class="d-flex align-items-center">
+
+                                  <div class="flex-shrink-0" *ngIf="userr.image?.length">
+                                    <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                  </div>
+
+                                  <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                    <span class="avatar-initials">{{userr.short_name}}</span>
+                                  </div>
+
+                                  <div class="flex-grow-1 text-truncate ms-2">
+                                    <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5> 
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                            <!-- End Body -->
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End Apps -->
+
+                    </div>
+                    <!-- End Avatar Group -->
+                  </td>
+                  <td>
+                    <div class="bz-topplay-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16" (click)="startTask(taskDetail.task_id_uid, '', taskDetail.task_name, taskDetail,'start')" *ngIf="taskDetail.task_id_uid != taskId">
+                        <path
+                          d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                      </svg>
+
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop && taskDetail.task_id_uid === taskId">
+                        <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                      </svg>
+                      
+                      <!--<span *ngIf="taskDetail.task_id_uid != taskId">{{taskDetail.spent}}</span>-->
+                      <span *ngIf="taskDetail.task_id_uid != taskId">00:00:00</span>
+                      <span *ngIf="taskDetail.task_id_uid == taskId">{{ outputTimer }}</span>
+                      
+                    </div>
+                  </td>
+                  <!--<td>
+                      <div class="dropdown">
+                        <ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                          <ion-icon name="eye" size="large" color="primary"></ion-icon>
+                        </ion-menu-toggle>
+
+                        <div class="dropdown-menu dropdown-menu-end">
+                          <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
+                              <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+                              <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                            </svg> Add Notes
+                          </a>                      
+                        </div>
+                      </div>
+                  </td>-->
+
+                </tr>
+              </ng-container>
+            </tbody>
+        
+          </table>
+        </div>
+          </div>
+        </ion-accordion>
+
+        
+      
+      <ion-accordion value="fourth">
+        <ion-item slot="header" color="light" class="ion_current ion_current_third">
+          <ion-label>Later <span> {{tasksLater.length}} </span></ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <div class="load_show" *ngIf="loadingImgResult">
+            <!--<ion-spinner name="dots"></ion-spinner>-->
+          </div>
+          <div class="bz-list-content">
+          <table class="table table-striped table-hover" *ngIf="!loadingImgResult">
+              <thead>
+                <tr>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-target-arrow"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 7a5 5 0 1 0 5 5" /><path d="M13 3.055a9 9 0 1 0 7.941 7.945" /><path d="M15 6v3h3l3 -3h-3v-3z" /><path d="M15 9l-3 3" /></svg> Task Name</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> Start Date</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg> End Date</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-devices"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" /><path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" /><path d="M16 9h2" /></svg> Type</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-select"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M9 11l3 3l3 -3" /></svg> Priority</th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z" /><path d="M12 7v5l3 3" /><path d="M4 12h1" /><path d="M19 12h1" /><path d="M12 19v1" /></svg> Alloted</th>
+                  <th> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-percentage-10"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c1.92 0 3.7 .601 5.16 1.626l-5.16 7.374z" fill="currentColor" stroke="none" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /></svg> Spent </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg> Assignee </th>
+                  <th><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clock-hour-4"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l3 2" /><path d="M12 7v5" /></svg> Time </th>
+                  <!--<th>Actions</th>-->
+                </tr>
+              </thead>
+          <tbody>
+            <ng-container *ngFor="let taskDetail of tasksLater">
+              <tr [ngClass]="{'running-task': stop && taskDetail.task_id_uid === taskId}" *ngIf="shouldDisplayTask(taskDetail.task_id_uid) && ((fillter_task_status_id === '3' || fillter_task_status_id === '4') || (taskDetail.status !== '2' && taskDetail.status !== '3' && taskDetail.status !== '4'))">
+                <td>
+                  <ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                                    {{taskDetail?.task_name | titlecase}}
+                  </ion-menu-toggle>
+                </td>
+                <td>{{taskDetail.start_date}}</td>
+                <td>{{taskDetail.end_date}}</td>
+                <td *ngIf="taskDetail.type_name === 'Normal_danger'"><ion-icon name="ellipse" color="danger"></ion-icon> Normal</td>
+                <td *ngIf="taskDetail.type_name === 'Permanent_success'"><ion-icon name="ellipse" color="success"></ion-icon> Permanent</td>
+                <td *ngIf="taskDetail.type_name === 'Recursive_warning'"><ion-icon name="ellipse" color="warning"></ion-icon> Recursive</td>
+
+                <td *ngIf="taskDetail.priority_name === 'High_danger'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#FFA800" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b47705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> High</td>
+                <td *ngIf="taskDetail.priority_name === 'Low_success'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Low</td>
+                <td *ngIf="taskDetail.priority_name === 'Medium_tertiary'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#ffeb3b" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#d7d705" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Medium</td>
+                <td *ngIf="taskDetail.priority_name === 'Normal_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#dde0e2" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#b7b9ba" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> Normal</td>
+                <td *ngIf="taskDetail.priority_name === 'Priority_'"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="18" height="18">
+                <!-- Flag -->
+                <path fill="#F64E60" d="M116.9,8.6v58.3c-8.8,3.5-18.3,5.2-27.7,5.2c-7.6,0-15.2-1.1-22.5-3.4C54.6,65.1,39,58.4,27.2,65V6.7 
+                    C39,0.1,54.6,6.8,66.7,10.5C83.1,15.5,101,14.9,116.9,8.6z" />
+                <!-- Flag Pole -->
+                <path fill="#ca1f32" d="M15.5,125.1c-2.4,0-4.4-2-4.4-4.4V7.3c0-2.4,2-4.4,4.4-4.4s4.4,2,4.4,4.4v113.5 
+                    C19.9,123.2,17.9,125.1,15.5,125.1z" />
+              </svg> ASAP</td>
+                <td>{{taskDetail.time}} H </td>
+                <td>{{taskDetail.spent}}</td>
+                <td>
+                  <!-- Avatar Group -->
+                  <div class="avatar-group avatar-group-sm">
+                    <span *ngFor="let user of taskDetail.assign_user.slice(0, 2); let i = index;">
+                      <span class="avatar" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                        <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                      </span>
+                      
+                      <span *ngIf="!user.image?.length" class="avatar avatar-soft-dark" ngbTooltip="{{user.name}}">
+                        <span class="avatar-initials">{{user.short_name}}</span>
+                      </span>
+                    </span>
+                    
+
+                     <!-- Apps -->
+                    <div class="dropdown" *ngIf="taskDetail.assign_user.length>2">
+                      <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                        + 2
+                      </button>
+
+                      <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                        <div class="card">
+                          <!-- Header -->
+                          <div class="card-header">
+                            <h4 class="card-title">Assign User {{taskDetail.assign_user.length}}</h4>
+                          </div>
+                          <!-- End Header -->
+
+                          <!-- Body -->
+                          <div class="card-body card-body-height">
+                            <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of taskDetail.assign_user">
+                              <div class="d-flex align-items-center">
+
+                                <div class="flex-shrink-0" *ngIf="userr.image?.length">
+                                  <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                </div>
+
+                                <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                  <span class="avatar-initials">{{userr.short_name}}</span>
+                                </div>
+
+                                <div class="flex-grow-1 text-truncate ms-2">
+                                  <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5> 
+                                </div>
+                              </div>
+                            </a>
+                          </div>
+                          <!-- End Body -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Apps -->
+
+                  </div>
+                  <!-- End Avatar Group -->
+                </td>
+                <td>
+                  <div class="bz-topplay-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16" (click)="startTask(taskDetail.task_id_uid, '', taskDetail.task_name, taskDetail,'start')" *ngIf="taskDetail.task_id_uid != taskId">
+                      <path
+                        d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                    </svg>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop && taskDetail.task_id_uid === taskId">
+                      <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    
+                    <!--<span *ngIf="taskDetail.task_id_uid != taskId">{{taskDetail.spent}}</span>-->
+                    <span *ngIf="taskDetail.task_id_uid != taskId">00:00:00</span>
+                    <span *ngIf="taskDetail.task_id_uid == taskId">{{ outputTimer }}</span>
+                    
+                  </div>
+                </td>
+                <!--<td>
+                    <div class="dropdown">
+                      <ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                        <ion-icon name="eye" size="large" color="primary"></ion-icon>
+                      </ion-menu-toggle>
+
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
+                            <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                          </svg> Add Notes
+                        </a>                      
+                      </div>
+                    </div>
+                </td>-->
+
+              </tr>
+            </ng-container>
+          </tbody>
+        
+          </table>
+        </div>
+        </div>
+      </ion-accordion>
+
+      <!--<ion-accordion value="fifth">
+        <ion-item slot="header" color="light">
+          <ion-label>Completed</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <div class="bz-list-content">
+          <table class="table table-striped table-hover" *ngIf="!loadingImgResult">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Type</th>
+                  <th>Priority</th>
+                  <th>Alloted</th>
+                  <th>Spent </th>
+                  <th>Assignee </th>
+                  <th>Time </th>
+                </tr>
+              </thead>
+          <tbody>
+              <tr *ngFor="let taskDetail of tasksComp" [ngClass]="{'running-task': stop && taskDetail.task_id_uid === taskId}">
+                <td>
+                    <ion-menu-toggle (click)="getTaskDetails(taskDetail.task_id_uid, taskDetail.task_name)">
+                                    {{taskDetail?.task_name | titlecase}}
+                    </ion-menu-toggle>
+                </td>
+                <td>{{taskDetail.start_date}}</td>
+                <td>{{taskDetail.end_date}}</td>
+                <td *ngIf="taskDetail.type_name === 'Normal_danger'"><ion-icon name="ellipse" color="danger"></ion-icon> Normal</td>
+                <td *ngIf="taskDetail.type_name === 'Permanent_success'"><ion-icon name="ellipse" color="success"></ion-icon> Permanent</td>
+                <td *ngIf="taskDetail.type_name === 'Recursive_warning'"><ion-icon name="ellipse" color="warning"></ion-icon> Recursive</td>
+
+                <td *ngIf="taskDetail.priority_name === 'High_danger'"><span class="icon-high_icon"></span> High</td>
+                <td *ngIf="taskDetail.priority_name === 'Low_success'"><span class="icon-low_icon"></span> Low</td>
+                <td *ngIf="taskDetail.priority_name === 'Medium_tertiary'"><span class="icon-medium_icon"></span> Medium</td>
+                <td *ngIf="taskDetail.priority_name === 'Normal_'"><span class="icon-low_icon"></span> Normal</td>
+                <td *ngIf="taskDetail.priority_name === 'Priority_'"><span class="icon-warning_icon"></span> ASAP</td>
+                <td>{{taskDetail.time}} H </td>
+                <td>{{taskDetail.spent}}</td>
+                <td>
+                  <div class="avatar-group avatar-group-sm">
+                    <span *ngFor="let user of taskDetail.assign_user.slice(0, 2); let i = index;">
+                      <span class="avatar" *ngIf="user.image?.length">
+                        <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                      </span>
+                      
+                      <span *ngIf="!user.image?.length" class="avatar avatar-soft-dark">
+                        <span class="avatar-initials">{{user.short_name}}</span>
+                      </span>
+                    </span>
+                    
+
+                    <div class="dropdown" *ngIf="taskDetail.assign_user.length>2">
+                      <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                        + 2
+                      </button>
+
+                      <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                        <div class="card">
+                          <div class="card-header">
+                            <h4 class="card-title">Assign User {{taskDetail.assign_user.length}}</h4>
+                          </div>
+                         
+
+                          
+                          <div class="card-body card-body-height">
+                            <a class="dropdown-item" href="javacript:void(0);" *ngFor="let userr of taskDetail.assign_user">
+                              <div class="d-flex align-items-center">
+
+                                <div class="flex-shrink-0" *ngIf="userr.image?.length">
+                                  <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                </div>
+
+                                <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                  <span class="avatar-initials">{{userr.short_name}}</span>
+                                </div>
+
+                                <div class="flex-grow-1 text-truncate ms-2">
+                                  <h5 class="mb-0">{{userr.name}} </h5> 
+                                </div>
+                              </div>
+                            </a>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    
+
+                  </div>
+                  
+                </td>
+                <td>
+                  <div class="bz-topplay-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16" (click)="startTask(taskDetail.task_id_uid, '', taskDetail.task_name, taskDetail,'start')" *ngIf="taskDetail.task_id_uid != taskId">
+                      <path
+                        d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                    </svg>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop && taskDetail.task_id_uid === taskId">
+                      <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    
+                    
+                    <span *ngIf="taskDetail.task_id_uid != taskId">00:00:00</span>
+                    <span *ngIf="taskDetail.task_id_uid == taskId">{{ outputTimer }}</span>
+                    
+                  </div>
+                </td>
+                
+
+              </tr>
+            
+          </tbody>
+        
+          </table>
+        </div>
+        </div>
+      </ion-accordion>-->
+    </ion-accordion-group>
+  </div>
+
+  
+  <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+      <div class="load_show" *ngIf="loadingImgResult">
+        <ion-spinner name="dots"></ion-spinner>
+      </div>
+            <!--<app-kanban></app-kanban>-->
+            <!-- kanban view code -->
+            <ion-grid *ngIf="!loadingImgResult">
+                <ion-row>
+                  <!-- for permanent task -->
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="permanent-title"> <div class="kpt"> Permanent<span class="badge">{{getTaskList('permanent').length}}</span></div> </ion-card-header>
+                      <div class="kanban-box" 
+                          cdkDropList
+                          #permList="cdkDropList"
+                          id="permanent"
+                          [cdkDropListData]="getTaskList('permanent')"
+                          [cdkDropListConnectedTo]="[cuList,copList,upList,ovList]"
+                          class="example-list"
+                          (cdkDropListDropped)="drop($event)">
+                          <ng-container *ngFor="let task of getTaskList('permanent')">
+                          <ion-card cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)" [ngClass]="{'running-task': stop && task.uid === taskId}" *ngIf="shouldDisplayTask(task.uid) && ((fillter_task_status_id === '3' || fillter_task_status_id === '4') || (task.task_status !== '2' && task.task_status !== '3' && task.task_status !== '4'))">
+                            <ion-card-content>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-title text-truncate" title="{{ task.title }}">{{ task.title }}</span>
+                                
+                                <!--<ion-icon name="create-outline"></ion-icon>-->
+                                
+                                  <!--<ion-icon name="create-outline" (click)="toggleMenu()"></ion-icon>-->
+                                  <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                  </ion-menu-toggle>
+                                
+
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-tags">{{ task.taksdepartment }}</span>
+                                <div class="avatar-group avatar-group-sm d-flex">
+                                  <span *ngFor="let user of task.assign_user.slice(0, 2); let i = index;">
+                                    <span class="avatr2" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                                    <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                                    </span>
+
+                                    <span *ngIf="!user.image?.length" class="avatr2 avatar-soft-dark" placement="top" ngbTooltip="{{user.name}}">
+                                    <span class="avtartext" >{{user.short_name}}</span>
+                                    </span>
+                                  </span>
+
+
+                                   <!-- Apps -->
+                                  <div class="dropdown" *ngIf="task.assign_user.length>2">
+                                    <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                                    + 2
+                                    </button>
+
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                                    <div class="card">
+                                      <!-- Header -->
+                                      <div class="card-header">
+                                      <h4 class="card-title">Assign User {{task.assign_user.length}}</h4>
+                                      </div>
+                                      <!-- End Header -->
+
+                                      <!-- Body -->
+                                      <div class="card-body card-body-height">
+                                      <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of task.assign_user">
+                                        <div class="d-flex align-items-center">
+
+                                        <div class="flex-shrink-0 avatr2" *ngIf="userr.image?.length">
+                                          <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                        </div>
+
+                                        <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                          <span class="avatar-initials avtartext">{{userr.short_name}}</span>
+                                        </div>
+
+                                        <div class="flex-grow-1 text-truncate ms-2">
+                                          <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5>
+                                        </div>
+                                        </div>
+                                      </a>
+                                      </div>
+                                      <!-- End Body -->
+                                    </div>
+                                    </div>
+                                  </div>
+                                  <!-- End Apps -->
+                                </div>
+                                
+                                <!--<ion-icon name="play"></ion-icon>
+                                <ion-icon name="pause"></ion-icon>-->
+
+                                <!--<ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>-->
+                                <ion-icon name="play" (click)="startTaskPermanent(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                                <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+
+                            </div>
+                            </ion-card-content>
+                          </ion-card>
+                          </ng-container>
+                          
+                      </div>
+                    </div>
+                  </ion-col>
+                  <!-- end -->
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="overdue-title"> <div class="kot"> Overdue<span class="badge">{{getTaskList('overdue').length}}</span></div></ion-card-header>
+                      <div class="kanban-box" 
+                          cdkDropList
+                          #ovList="cdkDropList"
+                          id="overdue"
+                          [cdkDropListData]="getTaskList('overdue')"
+                          [cdkDropListConnectedTo]="[cuList,copList,upList,permList]"
+                          class="example-list"
+                          (cdkDropListDropped)="drop($event)">
+                          <ng-container *ngFor="let task of getTaskList('overdue');">
+                          <ion-card cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)" [ngClass]="{'running-task': stop && task.uid === taskId}" *ngIf="shouldDisplayTask(task.uid) && ((fillter_task_status_id === '3' || fillter_task_status_id === '4') || (task.task_status !== '2' && task.task_status !== '3' && task.task_status !== '4'))">
+                            <ion-card-content>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-title text-truncate" title="{{ task.title }}">{{ task.title }}</span>
+                                
+                                <!--<ion-icon name="create-outline"></ion-icon>-->
+                                
+                                  <!--<ion-icon name="create-outline" (click)="toggleMenu()"></ion-icon>-->
+                                  <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                  </ion-menu-toggle>
+                                
+
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-tags">{{ task.description }}</span>
+
+                                <div class="avatar-group avatar-group-sm d-flex">
+                                  <span *ngFor="let user of task.assign_user.slice(0, 2); let i = index;">
+                                    <span class="avatr2" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                                    <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                                    </span>
+
+                                    <span *ngIf="!user.image?.length" class="avatr2 avatar-soft-dark" placement="top" ngbTooltip="{{user.name}}">
+                                    <span class="avtartext" >{{user.short_name}}</span>
+                                    </span>
+                                  </span>
+
+
+                                   <!-- Apps -->
+                                  <div class="dropdown" *ngIf="task.assign_user.length>2">
+                                    <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                                    + 2
+                                    </button>
+
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                                    <div class="card">
+                                      <!-- Header -->
+                                      <div class="card-header">
+                                      <h4 class="card-title">Assign User {{task.assign_user.length}}</h4>
+                                      </div>
+                                      <!-- End Header -->
+
+                                      <!-- Body -->
+                                      <div class="card-body card-body-height">
+                                      <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of task.assign_user">
+                                        <div class="d-flex align-items-center">
+
+                                        <div class="flex-shrink-0 avatr2" *ngIf="userr.image?.length">
+                                          <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                        </div>
+
+                                        <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                          <span class="avatar-initials avtartext">{{userr.short_name}}</span>
+                                        </div>
+
+                                        <div class="flex-grow-1 text-truncate ms-2">
+                                          <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5>
+                                        </div>
+                                        </div>
+                                      </a>
+                                      </div>
+                                      <!-- End Body -->
+                                    </div>
+                                    </div>
+                                  </div>
+                                  <!-- End Apps -->
+                                </div>
+                                <!--<ion-icon name="play"></ion-icon>
+                                <ion-icon name="pause"></ion-icon>-->
+
+                                <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                                <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+
+                            </div>
+                            </ion-card-content>
+                          </ion-card>
+                          </ng-container>
+                          
+                      </div>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="current-title"><div class="kct"> Current<span class="badge">{{getTaskList('current').length}}</span></div> </ion-card-header>
+                        <div class="kanban-box" 
+                          cdkDropList
+                          #cuList="cdkDropList"
+                          id="current"
+                          [cdkDropListData]="getTaskList('current')"
+                          class="example-list"
+                          [cdkDropListConnectedTo]="[ovList,upList,copList,permList]"
+                          (cdkDropListDropped)="drop($event)">
+                          <ng-container *ngFor="let task of getTaskList('current');">
+                          <ion-card cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)" [ngClass]="{'running-task': stop && task.uid === taskId}" *ngIf="shouldDisplayTask(task.uid) && ((fillter_task_status_id === '3' || fillter_task_status_id === '4') || (task.task_status !== '2' && task.task_status !== '3' && task.task_status !== '4'))">
+                            <ion-card-content>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-title text-truncate" title="{{ task.title }}">{{ task.title }}</span>
+                                <!--<ion-icon name="create-outline"></ion-icon>-->
+                                <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                </ion-menu-toggle>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-tags">{{ task.description }}</span>
+                                <div class="avatar-group avatar-group-sm d-flex">
+                                  <span *ngFor="let user of task.assign_user.slice(0, 2); let i = index;">
+                                    <span class="avatr2" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                                    <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                                    </span>
+
+                                    <span *ngIf="!user.image?.length" class="avatr2 avatar-soft-dark" placement="top" ngbTooltip="{{user.name}}">
+                                    <span class="avtartext" >{{user.short_name}}</span>
+                                    </span>
+                                  </span>
+
+
+                                   <!-- Apps -->
+                                  <div class="dropdown" *ngIf="task.assign_user.length>2">
+                                    <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                                    + 2
+                                    </button>
+
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                                    <div class="card">
+                                      <!-- Header -->
+                                      <div class="card-header">
+                                      <h4 class="card-title">Assign User {{task.assign_user.length}}</h4>
+                                      </div>
+                                      <!-- End Header -->
+
+                                      <!-- Body -->
+                                      <div class="card-body card-body-height">
+                                      <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of task.assign_user">
+                                        <div class="d-flex align-items-center">
+
+                                        <div class="flex-shrink-0 avatr2" *ngIf="userr.image?.length">
+                                          <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                        </div>
+
+                                        <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                          <span class="avtartext">{{userr.short_name}}</span>
+                                        </div>
+
+                                        <div class="flex-grow-1 text-truncate ms-2">
+                                          <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5>
+                                        </div>
+                                        </div>
+                                      </a>
+                                      </div>
+                                      <!-- End Body -->
+                                    </div>
+                                    </div>
+                                  </div>
+                                  <!-- End Apps -->
+                                </div>
+                                
+
+                                <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                                <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+
+                            </div>
+                            </ion-card-content>
+                          </ion-card>
+                          </ng-container>
+                          
+                        </div>
+                    </div>
+
+                  </ion-col>
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="upcoming-title"><div class="kut"> Upcoming<span class="badge">{{getTaskList('upcoming').length}}</span></div>  </ion-card-header>
+                      <div class="kanban-box"
+                          cdkDropList
+                          #upList="cdkDropList"
+                          [cdkDropListData]="getTaskList('upcoming')"
+                          id="upcoming"
+                          class="example-list"
+                          [cdkDropListConnectedTo]="[copList,cuList,ovList,permList]"
+                          (cdkDropListDropped)="drop($event)">
+                        <ng-container *ngFor="let task of getTaskList('upcoming');">
+                        <ion-card cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)" [ngClass]="{'running-task': stop && task.uid === taskId}" *ngIf="shouldDisplayTask(task.uid) && (task.task_status !== '2' && task.task_status !== '3' && task.task_status !== '4')">
+                          <ion-card-content>
+                            <div class="d-flex justify-content-between">
+                              <span class="task-title text-truncate" title="{{ task.title }}">{{ task.title }}</span>
+                              <!--<ion-icon name="create-outline"></ion-icon>-->
+                              <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                  <ion-icon name="create-outline"></ion-icon>
+                              </ion-menu-toggle>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                              <span class="task-tags">{{ task.description }}</span>
+                              <!--<ion-icon name="play"></ion-icon>-->
+                              <div class="avatar-group avatar-group-sm d-flex">
+                                  <span *ngFor="let user of task.assign_user.slice(0, 2); let i = index;">
+                                    <span class="avatr2" *ngIf="user.image?.length" ngbTooltip="{{user.name}}">
+                                    <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                                    </span>
+
+                                    <span *ngIf="!user.image?.length" class="avatr2 avatar-soft-dark" placement="top" ngbTooltip="{{user.name}}">
+                                    <span class="avtartext" >{{user.short_name}}</span>
+                                    </span>
+                                  </span>
+
+
+                                   <!-- Apps -->
+                                  <div class="dropdown" *ngIf="task.assign_user.length>2">
+                                    <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                                    + 2
+                                    </button>
+
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                                    <div class="card">
+                                      <!-- Header -->
+                                      <div class="card-header">
+                                      <h4 class="card-title">Assign User {{task.assign_user.length}}</h4>
+                                      </div>
+                                      <!-- End Header -->
+
+                                      <!-- Body -->
+                                      <div class="card-body card-body-height">
+                                      <a class="dropdown-item" href="javascript:void(0);" *ngFor="let userr of task.assign_user">
+                                        <div class="d-flex align-items-center">
+
+                                        <div class="flex-shrink-0 avatr2" *ngIf="userr.image?.length">
+                                          <img class="avatar avatar-xs avatar-4x3" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}">
+                                        </div>
+
+                                        <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                          <span class="avatar-initials avtartext">{{userr.short_name}}</span>
+                                        </div>
+
+                                        <div class="flex-grow-1 text-truncate ms-2">
+                                          <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5>
+                                        </div>
+                                        </div>
+                                      </a>
+                                      </div>
+                                      <!-- End Body -->
+                                    </div>
+                                    </div>
+                                  </div>
+                                  <!-- End Apps -->
+                                </div>
+
+                              <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                              <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+                          </div>
+                          </ion-card-content>
+                        </ion-card>
+                        </ng-container>
+                        
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col class="ctw" [class.ctw-exp]="displaycompt">
+                    <div class="kanban-view">
+                      <ion-card-header class="completed-title" (click)="toggleDisplayCompt()"> <div class="ct"> Completed<span class="badge">{{totalTasksComp}}</span></div>  <span class="svg-icon svg-icon-primary svg-icon-2x"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon points="0 0 24 0 24 24 0 24"/>
+        <rect fill="#ffffff" opacity="1" transform="translate(14.000000, 12.000000) rotate(-90.000000) translate(-14.000000, -12.000000) " x="13" y="5" width="2" height="14" rx="1"/>
+        <rect fill="#ffffff" opacity="1" x="3" y="3" width="2" height="18" rx="1"/>
+        <path d="M11.7071032,15.7071045 C11.3165789,16.0976288 10.6834139,16.0976288 10.2928896,15.7071045 C9.90236532,15.3165802 9.90236532,14.6834152 10.2928896,14.2928909 L16.2928896,8.29289093 C16.6714686,7.914312 17.281055,7.90106637 17.675721,8.26284357 L23.675721,13.7628436 C24.08284,14.136036 24.1103429,14.7686034 23.7371505,15.1757223 C23.3639581,15.5828413 22.7313908,15.6103443 22.3242718,15.2371519 L17.0300721,10.3841355 L11.7071032,15.7071045 Z" fill="#ffffff" fill-rule="nonzero" transform="translate(16.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-16.999999, -11.999997) "/>
+    </g>
+</svg></span></ion-card-header>
+                      <div class="kanban-box"
+                          cdkDropList
+                          #copList="cdkDropList"
+                          [cdkDropListData]="getTaskList('completed')"
+                          id="completed"
+                          class="example-list"
+                          [cdkDropListConnectedTo]="[upList,cuList,ovList,permList]"
+                          (cdkDropListDropped)="drop($event)"
+                          (scroll)="onDivScroll($event)"
+                          >
+                      <ng-container *ngFor="let task of getTaskList('completed');">
+                      <ion-card cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)" [ngClass]="{'running-task': stop && task.uid === taskId}" *ngIf="task.task_status !== '3' && task.task_status !== '4'">
+                        <ion-card-content>
+                          <div class="d-flex justify-content-between">
+                             <span class="task-title text-truncate" title="{{ task.title }}">{{ task.title }}</span>
+                             <!--<ion-icon name="create-outline"></ion-icon>-->
+                              <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                <ion-icon name="create-outline"></ion-icon>
+                              </ion-menu-toggle>
+                          </div>
+                          <div class="d-flex justify-content-between">
+                            <span class="task-tags">{{ task.description }}</span>
+                            <!--<ion-icon name="play"></ion-icon>-->
+                            <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                            <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+                         </div>
+                        </ion-card-content>
+                      </ion-card>
+                      </ng-container>
+
+                      </div>
+
+                    </div>
+                  </ion-col>
+                </ion-row>
+            </ion-grid>
+            <!-- kanban view code -->
+          </div>
+
+
+  </div>
+</div>  
+</ion-content>
+
+<!--popup alloted-->
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isModalOpen" class="allotedpopup">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Task Estimated Time</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="setOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding alloted-popup">
+        <form>
+          <ion-label>Estimated Time in Hour</ion-label>
+          <ion-input placeholder="Custom input" class="custom" [(ngModel)]="taskTimealloted" [ngModelOptions]="{ standalone: true }" type="number"></ion-input>
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="setOpen(false)">Cancel</ion-button>
+            <ion-button color="primary" (click)="saveTimealloted(detailtaskId)">Save</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isProjectModalOpen" class="remind-popup" (ionModalDidDismiss)="modalDismissed()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title style="margin-left: 15px;">Project Selection</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="setProjectOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding alloted-popup">
+        <form>
+          <ion-label>Select Project for Permanent Task</ion-label>
+          <!--<select class="form-select me-2" (change)="onProjectPlayChange($event)">
+            <option value="">Select Project</option>
+            <option *ngFor="let pro of flatselprojectData" [value]="pro.uid">
+              <span [innerHTML]="getIndentation(pro.level)"></span> {{ pro.name }}
+            </option>
+          </select>-->
+          
+          <div class="sb-dropdown-container">
+            <button class="sb-dropdown-btn" (click)="toggleDropdown()" id="dropdownBtn">
+              <span id="buttonText">{{ selectedProjectPer || 'Select Project' }}</span>
+              <span class="dropdown-arrow" *ngIf="!selectedProjectPer">▼</span>
+              <span class="clear-selection" *ngIf="selectedProjectPer" (click)="clearSelection($event)" id="clearSelection">×</span>
+            </button>
+
+            <div class="sb-dropdown-content" *ngIf="dropdownVisible" id="dropdown">
+              <input type="text" placeholder="Search..." [(ngModel)]="searchTextPer" name="searchTextPer" (input)="filterProjects()" id="searchBox">
+              
+              <ul id="projectList">
+                <li *ngFor="let project of filteredProjects">
+                  <span (click)="selectProject(project.name, project.uid)">{{ project.name }}</span>
+                  
+                  <!-- Check if there are sub-projects -->
+                  <ng-container *ngIf="project.subProjects.length > 0">
+                    <ul>
+                      <li *ngFor="let subProject of project.subProjects">
+                        <span (click)="selectProject(subProject.name, subProject.uid)">{{ subProject.name }}</span>
+                        
+                        <!-- Recursive rendering of nested sub-projects -->
+                        <ng-container *ngIf="subProject.subProjects.length > 0">
+                          <ul>
+                            <li *ngFor="let nestedSubProject of subProject.subProjects">
+                              <span (click)="selectProject(nestedSubProject.name, nestedSubProject.uid)">
+                                {{ nestedSubProject.name }}
+                              </span>
+                              <!-- Continue recursion for deeper levels if needed -->
+                            </li>
+                          </ul>
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </ng-container>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p></p>
+          <p></p>
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="setProjectOpen(false)">Cancel</ion-button>
+            <ion-button color="primary" (click)="setProjectPlay()">Play</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<!-- for task time rminder -->
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isTaskTimeModalOpen" class="remind-popup" (ionModalDidDismiss)="modalTaskTimeDismissed()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title style="margin-left: 15px;">Are you Still Working On Project</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="setTaskTimeOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding remind-pop">
+        <form>
+          <p>When do you wish us to notify to again check if you have change the project ?</p>
+
+          <ion-label>Enter Time for Reminder in Min</ion-label>
+          <ion-input placeholder="Custom input" class="custom" [(ngModel)]="taskTimeReminder" [ngModelOptions]="{ standalone: true }" type="number"></ion-input>
+          
+          <p>Or if you change the project for the current task please select project.</p>
+
+          <ion-label>Select Project</ion-label>
+          <select class="form-select me-2" (change)="onProjectPlayChange($event)">
+            <option value="">Projects</option>
+            <option *ngFor="let pro of flatselprojectData" [value]="pro.uid">
+              <span [innerHTML]="getIndentation(pro.level)"></span> {{ pro.name }}
+            </option>
+          </select>
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="setTaskTimeOpen(false)">Cancel</ion-button>
+            <ion-button color="primary" (click)="setTimeProjectPlay()">Save</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>
+<!-- end -->
+
+<!-- for side bar -->
+<ion-menu  class="rightsidebar" side="end" contentId="main-content" [swipeGesture]="false">
+  <div class="load_show" *ngIf="loadingImgResultdetail">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-title>Task Detail View</ion-title>
+        </ion-col>
+        <ion-col class="text-end">
+          <ion-menu-toggle>
+            <ion-button class="calendar-close"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-menu-toggle>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+  </ion-header>
+  <ion-content *ngIf="!loadingImgResultdetail">
+    <ion-row>
+      <ion-col>
+        <div id="edit-task"></div>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="9">
+                  <ion-item lines="full">
+                    <ion-label>
+                      <span *ngIf="showSpan" (click)="toggleDisplay()">{{detailtasktitle}}</span>
+                      <ion-input *ngIf="!showSpan" placeholder="Task Name" class="custom" [(ngModel)]="detailtasktitle" name="detailtasktitle" (keyup)="updatetaskname($event)"></ion-input>
+                    </ion-label>
+                  </ion-item>
+  
+                </ion-col>
+                <ion-col size="3">
+                  
+                  <div class="addproject_namelist">
+                    <div id="adduser-trigger" class="addtask_user me-sm-2" *ngIf="user_task_assign_permission == '2'">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                    </div>
+                    <div id="taskuser" class="symbol-group symbol-hover">
+                      <div class="symbol symbol-35 symbol-light-success">
+    
+                        <span class="symbol-label label-success d-inline"
+                          data-toggle="tooltip" title="{{detailtask.by_user_name}}" data-original-title=""
+                          aria-describedby="tooltip80837">{{detailtask.short_by_name}}</span>
+                        <span class="d-inline me-sm-3"> - </span>
+    
+                      </div>
+    
+                      <div class="symbol symbol-35 symbol-light-primary" *ngFor="let auser of detailtask?.user_assign_name_array?.slice(0, 2); let i = index;">
+                        <span class="symbol-label label-info" data-toggle="tooltip" title="{{auser.name}}"
+                          data-original-title="" *ngIf="user_task_assign_permission == '2'">{{auser.short_name}}<a class="pr" (click)="removeUser(auser.crid, auser.userid, auser.name)">x</a></span>
+                      </div>
+    
+    
+                       <!-- Apps -->
+                     <div class="dropdown" *ngIf="detailtask?.user_assign_name_array?.length>2">
+                      <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                        +2
+                      </button>
+    
+                      <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless bz_team_member_list" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                        <div class="card">
+                          <!-- Header -->
+                          <div class="card-header">
+                            <h4 class="card-title">Task Team Member</h4>
+                          </div>
+                          <!-- End Header -->
+    
+                          <!-- Body -->
+                          <div class="card-body-height">
+                            <div class="dropdown-item" href="javascript:void(0);">
+
+                              <div class="d-flex align-items-center justify-content-between bz_team_mem_list " *ngFor="let userr of detailtask.user_assign_name_array">
+                                <div class="bz_users__list">
+
+                                  <div class="d-inline flex-shrink-0" *ngIf="userr.image?.length">
+                                    <img class="symbol symbol-35 symbol-light-success" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}" title="{{userr.name}}">
+                                  </div>
+
+                                  <div class="d-inline flex-shrink-0" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                    <span class="avatar-initials_name">{{userr.short_name}}</span>
+                                  </div>
+      
+                                  <div class=" d-inline avatar avatar-soft-dark" style="margin-left:0px;">
+                                    <span class="avatar-initials">{{userr.name}}</span>
+                                  </div>
+                                </div>
+
+                                <div class="btn btn-light-danger bz_task_users_b" (click)="removeUser(userr.crid, userr.userid, userr.name)" *ngIf="user_task_assign_permission == '2'">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                  </svg>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+                          <!-- End Body -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Apps -->
+                    </div>
+    
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <div class="d-flex justify-content-between">
+              <ion-item lines="full" class="addproject_pr">
+
+                  <div class="d-flex justify-content-start mt-2">
+                    <!--<select class="form-select me-2" (change)="onProjectChange($event)">
+                      <option value="">Projects</option>
+                      <option *ngFor="let pro of allProjects" [value]="pro.uid" [selected]="isProjectSelected(pro.uid)">
+                        {{ pro.name }}
+                      </option>
+                    </select>-->
+
+                    <!--<input type="text" class="form-control" [(ngModel)]="filterTerm" placeholder="Filter Projects">-->
+
+                    <!--<select class="form-select me-2" (change)="onProjectChange($event)">
+                      <option value="">Projects</option>
+                      <option *ngFor="let pro of flatData" [value]="pro.uid" [selected]="isProjectSelected(pro.uid)" [hidden]="!matchesFilter(pro.name)">
+                        {{ getIndentation(pro.level) }} {{ pro.name }}
+                      </option>
+                    </select>-->
+
+                    <select class="form-select me-2" (change)="onProjectChange($event)" *ngIf="type_name != 'Permanent'">
+                      <option value="">Projects</option>
+                      <option *ngFor="let pro of flatData" [value]="pro.uid" [selected]="isProjectSelected(pro.uid)" [hidden]="!matchesFilter(pro.name)">
+                        <span [innerHTML]="getIndentation(pro.level)"></span>{{ pro.name }}
+                      </option>
+                    </select>
+                    
+
+                    <!--<select class="form-select" (change)="onDepartmentChange($event)">
+                      <option value="">Department</option>
+                      <option *ngFor="let dpt of allDepartments" [value]="dpt.uid" [selected]="isDepartmentSelected(dpt.uid)">
+                        {{ dpt.name }}
+                      </option>
+                    </select>-->
+
+                    
+
+                    <select class="form-select" (change)="onDepartmentChange($event)">
+                      <option value="">Department</option>
+                      <ng-container *ngFor="let department of hierarchicalDepartments">
+                        <option [value]="department.id" [selected]="isDepartmentSelected(department.id)">
+                          {{ department.category_name }}
+                        </option>
+                        <ng-container *ngFor="let child of department.children">
+                          <option [value]="child.id" [style.paddingLeft.px]="20" [selected]="isDepartmentSelected(child.id)">
+                            &nbsp;&nbsp; {{ child.category_name }}
+                          </option>
+                        </ng-container>
+                      </ng-container>
+                    </select>
+
+                  </div>
+                  
+              </ion-item>
+      
+              <ion-item lines="full" class="bz-addteam">
+                <ion-label>
+                  <div class="d-flex justify-content-between">
+                    <div class="bz-right-btns">
+                      <div class="cc-rockmenu">
+        
+                              <!--<div class="rolling rolling_play" (click)="startTask(detailtaskId, '', detailtasktitle, detailtask,'start')" *ngIf="detailtaskId != taskId">-->
+                              <div class="rolling rolling_play" (click)="handleTaskClick(detailtaskId, detailtasktitle, detailtask)" *ngIf="detailtaskId != taskId">  
+                                <figure class="rolling_icon rolling_iconplay">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <rect x="0" y="0" width="24" height="24"></rect>
+                                      <path d="M9.82866499,18.2771971 L16.5693679,12.3976203 C16.7774696,12.2161036 16.7990211,11.9002555 16.6175044,11.6921539 C16.6029128,11.6754252 16.5872233,11.6596867 16.5705402,11.6450431 L9.82983723,5.72838979 C9.62230202,5.54622572 9.30638833,5.56679309 9.12422426,5.7743283 C9.04415337,5.86555116 9,5.98278612 9,6.10416552 L9,17.9003957 C9,18.1765381 9.22385763,18.4003957 9.5,18.4003957 C9.62084305,18.4003957 9.73759731,18.3566309 9.82866499,18.2771971 Z" fill="#0093dd"></path>
+                                    </g>
+                                  </svg>
+                                </figure>
+                                <span>Play</span>
+                              </div>
+
+                              <div class="rolling rolling_play" (click)="delAllTimer(detailtaskId, '')" *ngIf="stop && detailtaskId === taskId">
+                                <figure class="rolling_icon rolling_iconplay">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16">
+                                    <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"></path>
+                                  </svg>
+                                </figure>
+                                <span>Pause</span>
+                              </div>
+        
+        
+                        <div class="rolling rolling_one" (click)="setOpen(true)">
+                          <figure class="rolling_icon rolling_iconone"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                          </svg></figure>
+                          <span id="talote">Alloted: {{detailtask.time}} h </span>
+                        </div>
+                        
+                        <div class="rolling">
+                          <figure class="rolling_icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                          </svg></figure>
+                          <span id="tspd">{{detailtask.spent}}</span>
+                        </div>
+                      
+                            </div>
+                        </div>
+                  </div>
+
+                </ion-label>
+              </ion-item>
+            </div>
+        <!--<ion-item lines="full">
+          <ion-label>
+            <span *ngIf="showSpan" (click)="toggleDisplay()">{{detailtasktitle}}</span>
+            <ion-input *ngIf="!showSpan" placeholder="Task Name" class="custom" [(ngModel)]="detailtasktitle" name="detailtasktitle" (keyup)="updatetaskname($event)"></ion-input>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="full" class="addproject_pr">
+          <ion-label>
+            <div class="add_project  me-sm-2" id="addproject-trigger">
+              <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+            </div>
+
+            <span class="addproject_list" *ngFor="let apro of detailtask.project_assign_array">
+              {{apro.name}} - Project
+              <a class="pr" (click)="removeProject(apro.crid, apro.project_id, apro.name, 'project')">x</a>
+            </span>
+
+            <span class="addproject_list" *ngFor="let acat of detailtask.category_assign_array">
+              {{acat.name}} - Department
+              <a class="pr" (click)="removeProject(acat.crid, acat.category_id, acat.name, 'category')">x</a>
+            </span>
+
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="full" class="bz-addteam">
+          <ion-label>
+            <div class="d-flex justify-content-between">
+              <div class="addproject_namelist">
+                  <div id="adduser-trigger" class="addtask_user me-sm-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                  </div>
+                  <div id="taskuser" class="symbol-group symbol-hover">
+                    <div class="symbol symbol-25 symbol-light-success">
+
+                      <span class="symbol-label label-success d-inline"
+                        data-toggle="tooltip" title="{{detailtask.by_user_name}}" data-original-title=""
+                        aria-describedby="tooltip80837">{{detailtask.short_by_name}}</span>
+                      <span class="d-inline me-sm-3"> - </span>
+
+                    </div>
+
+                    <div class="symbol symbol-25 symbol-light-primary" *ngFor="let auser of detailtask.user_assign_name_array">
+                      <span class="symbol-label label-info" data-toggle="tooltip" title="{{auser.name}}"
+                        data-original-title="">{{auser.short_name}}<a class="pr" (click)="removeUser(auser.crid, auser.userid, auser.name)">x</a></span>
+                    </div>
+                    
+                    
+                  </div>
+              </div>
+              <div class="bz-btns">
+                <button type="button" class="btn btn-primary me-sm-1">
+                  
+                  <ion-icon name="play" (click)="startTask(detailtaskId, '', detailtasktitle, detailtask,'start')" *ngIf="detailtaskId != taskId"></ion-icon>
+                  <ion-icon name="pause" (click)="delAllTimer(detailtaskId, '')" *ngIf="stop && detailtaskId === taskId"></ion-icon>
+                </button>
+
+                <button type="button" class="btn btn-danger me-sm-1" expand="block" (click)="setOpen(true)"> <ion-icon name="stopwatch-outline"></ion-icon>
+                  Alloted:{{detailtask.time}}h</button>
+                <button type="button" class="btn btn-info"> <ion-icon name="stopwatch-outline"></ion-icon> Spent :
+                  {{detailtask.spent}}</button>
+              </div>
+            </div>
+
+          </ion-label>
+        </ion-item>-->
+
+        <ion-item class="dropdown-background">
+        <ion-button class="active-dropdown-btn" id="auto-trigger"> 
+          <ion-icon name="ellipse" color="{{task_status_color}}"></ion-icon>{{task_status}}
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','status','Active')"><ion-icon name="ellipse" color="primary"></ion-icon>Active </a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('2','status','Completed')"><ion-icon name="ellipse" color="success"></ion-icon>Completed</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('3','status','Deferred')"><ion-icon name="ellipse" color="tertiary"></ion-icon> Deferred</a>
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('4','status','Cancelled')"><ion-icon name="ellipse" color="secondary"></ion-icon> Cancelled</a> 
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger2"> 
+          <ion-icon name="ellipse" color="{{type_name_class}}"></ion-icon>{{type_name}}
+        </ion-button>
+
+        <ion-popover class="active-dropdown" trigger="auto-trigger2" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','type','Normal')"><ion-icon name="ellipse" color="danger"></ion-icon>Normal </a>
+                </ion-item>
+                <ion-item *ngIf="user_create_permanent_task == '1'">
+                  <a href="javascript:void(0);" (click)="updateStatus('2','type','Permanent')"><ion-icon name="ellipse" color="success"></ion-icon>Permanent</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="recusiveOpen(true)"><ion-icon name="ellipse" color="warning"></ion-icon>Recursive</a>
+                </ion-item>
+               
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger3"> 
+          <ion-icon name="ellipse" color="{{priority_class}}"></ion-icon>{{priority}}
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger3" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','priority','High_danger')"><ion-icon name="ellipse" color="danger"></ion-icon>High </a>
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('3','priority','Medium_tertiary')"><ion-icon name="ellipse" color="tertiary"></ion-icon>Medium</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('2','priority','Low_success')"><ion-icon name="ellipse" color="success"></ion-icon>Low </a> 
+                </ion-item>
+                
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('4','priority','Normal_secondary')"><ion-icon name="ellipse" color="secondary"></ion-icon> Normal</a>
+                </ion-item>
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger4"> 
+         Notify Me
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger4" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                 <ion-checkbox [formControl]="startedControl" (ionChange)="notifyMestarted($event)"></ion-checkbox>Started
+                </ion-item>
+                <ion-item>
+                 <ion-checkbox [formControl]="completedControl" (ionChange)="notifyCompleted($event)"></ion-checkbox>Completed
+                </ion-item>
+                 
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+        
+        <div class="bz-range-calender" *ngIf="type_name != 'Permanent'">
+          <input type="text" class="active-calender-new" ngxDaterangepickerMd [(ngModel)]="selectedDateRange" startKey="start"
+    endKey="end" name="selectedDateRange" placeholder="Choose date" [showDropdowns]="true"
+       [timePicker]="true"
+       [timePickerIncrement]="15"
+       [timePicker24Hour]="false"
+       [locale]="{ format: 'MM/DD/YYYY hh:mm A' }" (ngModelChange)="dateRangeSelected($event)"/>   
+        </div>
+         
+         
+         <ion-button class="active-calender"> 
+          <div class="box">
+            <input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" (change)="handleFileInput($event)" multiple />
+            <label for="file-1"><ion-icon name="attach-outline"></ion-icon><span>Attach file&hellip;</span></label>
+          </div>
+         </ion-button>
+         </ion-item>
+        <!--<ion-item lines="full">
+          <ion-label>
+            <span><ion-icon name="add-circle-outline"></ion-icon> Add subtask</span>
+          </ion-label>
+        </ion-item>-->
+
+        <!--task docdrag drop area-->
+        <div class="editor-container" 
+             (dragenter)="onDragEnter($event)" 
+             (dragleave)="onDragLeave($event)" 
+             (dragover)="onDragOver($event)" 
+             (drop)="onDrop($event)">
+          <!-- CKEditor remains always visible -->
+          <ckeditor [editor]="customEditor" [data]="editorData" (keyup)="onKeyUp($event)"></ckeditor>
+          
+          <!-- Drop zone, visibility controlled by drag events -->
+          <div *ngIf="isDropZoneVisible" class="drop-zone">
+            Drag and drop a document here
+          </div>
+        </div>
+        <!--end -->
+
+        <!--<ckeditor [editor]="customEditor" [data]="editorData" (keyup)="onKeyUp($event)"></ckeditor>-->
+
+        <div class="sidebar-notes">
+        <!--<ion-item lines="full">
+          <ion-label>
+            <ion-textarea class="custom-textarea" placeholder="Type message..." [formControl]="descriptionControl" (keyup)="onKeyUp($event)"></ion-textarea>
+          </ion-label>
+        </ion-item>-->
+        
+        
+        
+        <div class="notes-sep"> 
+          <span>{{detailtask.tfiles}} Files</span> 
+        </div>
+        <ion-item *ngFor="let tfile of detailtask.attchment_Arr">
+          <ion-avatar (click)="downloadFile(tfile.downlodurl)">
+            <img alt="{{tfile.name}}" src="{{tfile.link}}" />
+          </ion-avatar>
+          <ion-label>
+            <h3>{{tfile.name}}</h3>
+          </ion-label>
+          <ion-label>
+            <h3>{{tfile.username}}</h3>
+          </ion-label>
+        </ion-item>
+
+        <div class="notes-sep"> 
+          <span>{{detailtask.tnotes}} Notes</span> 
+        </div>
+
+        <ion-item *ngFor="let note of detailtask.task_note_arr">
+          <ion-avatar *ngIf="note.image; else noAvatarNote">
+            <img alt="{{note.name}}" src="{{note.image}}" />
+          </ion-avatar>
+          <ng-template #noAvatarNote>
+            <span class="symbol-note d-inline"  data-toggle="tooltip" title="{{note.name}}" data-original-title="" aria-describedby="tooltip80837">{{note.short_name}}</span>
+          </ng-template>
+          <ion-label>
+            <h3>{{note.name}}</h3>
+            <p>{{note.notes}}</p>
+          </ion-label>
+        </ion-item>
+        
+        
+      </div>
+
+
+
+
+        <ion-popover class="bz_user_dropdown" trigger="addproject-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <div class="project_search">
+                <ion-searchbar (ionInput)="onSearch($event)"></ion-searchbar>
+              </div>
+              <div class="list">   
+                <a class="item" href="javascript:void(0);" *ngFor="let pro of allProjects" (click)="assignProject(pro.uid,pro.name,pro.type)">{{pro.name}} - {{pro.type}}</a>
+              </div>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-popover class="bz_user_dropdown" trigger="adduser-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <div class="project_search">
+                <ion-searchbar (ionInput)="onSearchDseluser($event)"></ion-searchbar>
+              </div>
+
+              <div class="list">
+                <ion-item *ngFor="let usr of allUsers" (click)="assignUser(usr.uid,usr.name)">
+
+                  <ion-avatar slot="start" *ngIf="usr.image; else noAvatar">
+                    <img alt="Silhouette of a person's head" src="{{usr.image}}" />
+                  </ion-avatar>
+                  <ng-template #noAvatar>
+                  <span class="symbol-label label-success d-inline"
+                        data-toggle="tooltip" title="{{usr.name}}" data-original-title=""
+                        aria-describedby="tooltip80837">{{usr.short_name}}</span>
+                  </ng-template>
+                  <ion-label>
+                    <h3>{{usr.name}}</h3>
+                    <p>{{usr.email}}</p>
+                  </ion-label>
+                </ion-item>
+
+                
+              </div>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-item lines="full">
+        <ion-label>
+          <ion-textarea class="custom-textarea" placeholder="Task Note..." [(ngModel)]="taskNote"></ion-textarea>
+          <ion-button (click)="savenotsValue()"><ion-icon name="paper-plane-outline"></ion-icon></ion-button>
+        </ion-label>
+      </ion-item>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
+<!-- end for sidebar -->
+
+<!--Recursive popup-->
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isRecursiveOpen" class="recursive-popup">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Recursive</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="recusiveOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding recursive-pop">
+        <h4>Welcome to Recurring Tasks!</h4>
+        <h3 class="error-val" *ngIf="errorvalidation != ''">{{ errorvalidation }}</h3>
+        <form>
+          <ion-row>
+            
+            <ion-col id="every_days" *ngIf="frequencyOption === 'day' || frequencyOption === 'weekly'">
+              <ion-list>
+                  <ion-label>Every</ion-label>
+                  <ion-input placeholder="Custom input" class="custom" [(ngModel)]="repeat" name="repeat"></ion-input>
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="recursive_month_div"  *ngIf="frequencyOption === 'monthly'">
+              <ion-list>
+                <ion-label>Every</ion-label>
+                <select class="form-select form-select-solid role" [(ngModel)]="recursive_days_number" name="recursive_days_number" id="recursive_days_number">
+                  <option *ngFor="let day of monthDays" [value]="day">{{ getOrdinal(day) }}</option>
+                </select>
+
+                
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="recursive_year_div" *ngIf="frequencyOption === 'year'">
+              <ion-list>
+                <ion-label>Every</ion-label>
+                <div class="date-picker-wrapper">
+                  <ion-input type="date" id="recursive_year_date" [(ngModel)]="recursive_year_date" name="recursive_year_date"></ion-input>
+                </div>
+              </ion-list>
+            </ion-col>
+
+            <ion-col>
+              <ion-list>
+                <ion-label>Frequency</ion-label>
+                <select class="form-select form-select-solid role" placeholder="Monthly" [(ngModel)]="frequencyOption" name="frequencyOption" id="frequancy" (change)="onChangeFrequencyOption()">
+                    <option value="day">Day</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="year">Year</option>
+                </select>
+              </ion-list>
+            </ion-col>
+
+          </ion-row>
+          <ion-row id="recursive_week_day" *ngIf="frequencyOption === 'weekly'">
+            <ion-col>
+              <ion-list>
+                <ion-label>On</ion-label>
+                <div class="checkbox-container">
+                <div *ngFor="let weekday of weekdays" class="checkbox-inline">
+                  
+                    <input type="checkbox" class="week-checkbox" name="recursive_week_name[]" id="recursive_week_name_{{ weekday }}" [value]="weekday" [checked]="avaibilitydata.includes(weekday)" (change)="toggleSelection($event, weekday)">
+                    <span></span>{{ weekday }}
+                  
+                </div>
+              </div>
+              </ion-list>
+            </ion-col>
+          </ion-row>   
+
+          <ion-row id="spday">
+            <ion-col>
+              <ion-list>
+                <ion-label>End</ion-label>
+                <select class="form-select form-control" [(ngModel)]="recursive_end_type" id="recursive_end_type" name="recursive_end_type" (change)="endrecursivedate();" [disabled]="isRecursiveEndTypeDisabled">
+                  <option value="">Select End</option>
+                  <option value="1">After</option>
+                  <option value="2">On Date</option>
+                </select>
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="end_after" *ngIf="recursive_end_type === '1' || frequencyOption === 'monthly'">
+              <ion-list>
+                <ion-label>After</ion-label>
+                <ion-input placeholder="After times" class="custom" [(ngModel)]="recursive_after" id="recursive_after" name="recursive_after"></ion-input>
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="end_on_date" *ngIf="recursive_end_type === '2'">
+              <ion-list>
+                <ion-label>On date</ion-label>
+                <div class="date-picker-wrapper">
+                <ion-input id="recursive_ondate" type="date" [(ngModel)]="recursive_ondate" name="recursive_ondate"></ion-input>
+                </div>
+              </ion-list>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row style="display: none;">
+            <ion-col>
+              <ion-list>
+                <ion-label>Satrt Date</ion-label>
+                <div class="date-picker-wrapper">
+                  <ion-input type="date" [(ngModel)]="dateN" name="dateN"></ion-input>
+                    
+                </div>
+              </ion-list>
+            </ion-col>
+
+            <ion-col>
+              <ion-list>
+                <ion-label>End Date</ion-label>
+                <div class="date-picker-wrapper">
+                  <ion-input type="date" [(ngModel)]="dateT" name="dateT"></ion-input>
+
+                </div>
+              </ion-list>
+             </ion-col>
+
+          </ion-row>
+          <ion-row>
+          </ion-row>
+          <ion-row>
+          </ion-row>
+          
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="recusiveOpen(false)">Cancel</ion-button>
+            <ion-button color="primary" (click)="saverecursivetask(detailtaskId)">Save</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>
+<a href="javascript:void(0)"  id="remind-modal" expand="block" style="display:none;">Remind Model</a>
+<ion-content class="ion-padding">
+  <ion-modal [keepContentsMounted]="true" trigger="remind-modal" #rmodal  class="remind-popup">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M365.2 313c-16.33-19.34-27.86-27.47-27.86-80.8 0-48.86-25.78-66.23-47-74.67a11.39 11.39 0 01-6.34-6.68C280.29 138.6 269.88 128 256 128s-24.31 10.6-28 22.86a11.35 11.35 0 01-6.33 6.68c-21.24 8.46-47 25.8-47 74.67 0 53.33-11.54 61.46-27.87 80.8-6.77 8-.65 23 11.19 23H354C365.77 336 371.94 321 365.2 313zM220.24 352a4 4 0 00-4 4.42C218.49 375.14 235.11 384 256 384c20.67 0 37.14-9.15 39.66-27.52a4 4 0 00-4-4.48z"/></svg> BuzyTeam Reminder</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="rmodal.dismiss(); closeReminderPopup()"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path flil="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding remind-pop">
+        <h4>BuzyTeam Asks</h4>
+        <p> When you want to reminders ?</p>
+        
+        <ion-item class="remind-check">
+          <ion-checkbox slot="start" (ionChange)="selectOption('DontAsk')" [checked]="selectedRemindOption === 'DontAsk'"></ion-checkbox>
+          <ion-label>Don't Ask me Again</ion-label>
+        </ion-item>
+
+        <ion-item class="remind-check">
+          <ion-checkbox slot="start" (ionChange)="selectOption('10')" [checked]="selectedRemindOption === '10'"></ion-checkbox>
+          <ion-label>Remind me in 10 Min</ion-label>
+        </ion-item>
+
+        <ion-item class="remind-check">
+          <ion-checkbox slot="start" (ionChange)="selectOption('30')" [checked]="selectedRemindOption === '30'"></ion-checkbox>
+          <ion-label>Remind me in 30 Min</ion-label>
+        </ion-item>
+
+        <ion-item class="remind-check">
+          <ion-checkbox slot="start" (ionChange)="selectOption('60')" [checked]="selectedRemindOption === '60'"></ion-checkbox>
+          <ion-label>Remind me in 1 Hour</ion-label>
+        </ion-item>
+
+        
+
+        <div class="alloted-btn-group">
+          <ion-button color="primary no_btn" (click)="rmodal.dismiss(); closeReminderPopup()">No</ion-button>
+          <ion-button color="primary" (click)="saveriminder();">Yes</ion-button>
+        </div>
+
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<!-- for idle reminder popup -->
+<a href="javascript:void(0)"  id="remind-modal-idle" expand="block" style="display:none;">Remind Model Idle</a>
+<ion-content class="ion-padding">
+  <ion-modal [keepContentsMounted]="true" trigger="remind-modal-idle" class="idle-popup" [backdropDismiss]="false">
+    <ng-template>
+      
+      <ion-content class="ion-padding idle-pop">
+        <div class="idle-content">
+          <div class="idle-text" style="width: 70%; float: left;">
+            <h4>Back to work or just taking a break?</h4>
+            <p>Idle time: {{idletimeconsume}}</p>
+
+            <!-- Task Dropdown -->
+            
+          </div>
+
+          <div class="idle-progress" style="width: 30%; float: right; text-align: center;">
+            <div class="circular-progress">
+              <svg class="progress-circle" width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="lightgray" stroke-width="5"/>
+                <circle class="progress-bar" cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="283" stroke-dashoffset="283"/>
+              </svg>
+              <div class="clock-icon">
+                <svg ngcontent-fda-c116="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 24 24" version="1.1"><g ngcontent-fda-c116="" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect ngcontent-fda-c116="" x="0" y="0" width="24" height="24"></rect><path ngcontent-fda-c116="" d="M12,21 C7.581722,21 4,17.418278 4,13 C4,8.581722 7.581722,5 12,5 C16.418278,5 20,8.581722 20,13 C20,17.418278 16.418278,21 12,21 Z" fill="#3699FF" opacity="1"></path><path ngcontent-fda-c116="" d="M13,5.06189375 C12.6724058,5.02104333 12.3386603,5 12,5 C11.6613397,5 11.3275942,5.02104333 11,5.06189375 L11,4 L10,4 C9.44771525,4 9,3.55228475 9,3 C9,2.44771525 9.44771525,2 10,2 L14,2 C14.5522847,2 15,2.44771525 15,3 C15,3.55228475 14.5522847,4 14,4 L13,4 L13,5.06189375 Z" fill="#3699FF"></path><path ngcontent-fda-c116="" d="M16.7099142,6.53272645 L17.5355339,5.70710678 C17.9260582,5.31658249 18.5592232,5.31658249 18.9497475,5.70710678 C19.3402718,6.09763107 19.3402718,6.73079605 18.9497475,7.12132034 L18.1671361,7.90393167 C17.7407802,7.38854954 17.251061,6.92750259 16.7099142,6.53272645 Z" fill="#3699FF"></path><path _ngcontent-fda-c116="" d="M11.9630156,7.5 L12.0369844,7.5 C12.2982526,7.5 12.5154733,7.70115317 12.5355117,7.96165175 L12.9585886,13.4616518 C12.9797677,13.7369807 12.7737386,13.9773481 12.4984096,13.9985272 C12.4856504,13.9995087 12.4728582,14 12.4600614,14 L11.5399386,14 C11.2637963,14 11.0399386,13.7761424 11.0399386,13.5 C11.0399386,13.4872031 11.0404299,13.4744109 11.0414114,13.4616518 L11.4644883,7.96165175 C11.4845267,7.70115317 11.7017474,7.5 11.9630156,7.5 Z" fill="#ffffff"></path></g></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ion-item class="task-select">
+              <ion-label>Select Task</ion-label>
+              <select class="form-select" id="task-dropdown" [(ngModel)]="runnig_task_id_idle_selected">
+                <option *ngFor="let task of finalTasks" [value]="task.task_id_uid">
+                  {{ task.task_name }}
+                </option>
+              </select>
+        </ion-item>
+        <ion-item class="task-select" *ngIf="showWorkingReason" id="errtask">
+          <input class="form-control" type="text" name="workingreasion" id="workingreasion" [(ngModel)]="workingreasion" placeholder="Working Reasion">
+        </ion-item>
+        <div class="idle-btn-group">
+          <ion-button class="no-break" color="primary" (click)="animateProgressBar('Break',idleTimeStart,idleTimeEnd,idleTimeFinal)">on break</ion-button>
+          <ion-button class="no-break" color="primary" (click)="animateProgressBar('Meeting',idleTimeStart,idleTimeEnd,idleTimeFinal)">in Meeting</ion-button>
+          <ion-button *ngIf="!showWorkingReason" class="yes-working" color="secondary" (click)="displayworkingreasion()">working</ion-button>
+          <ion-button *ngIf="showWorkingReason" class="yes-working" color="secondary" (click)="animateProgressBar('Manual',idleTimeStart,idleTimeEnd,idleTimeFinal)">Submit</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+<!-- end -->
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalCenterTitle">Working on Hrms Dashboard Page Design.</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card mb-3" >
+          <div class="row g-0">
+            <div class="col-md-12">
+              <div class="card-body">
+                <div class="bz-name-tag">AS</div>
+                <div class="bz-content-box">
+                  <h5 class="card-title">Ashutosh</h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural.</p>
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="mt-3">
+          <div class="mb-3">
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Task Note...">
+          </div>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

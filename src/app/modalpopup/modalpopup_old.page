@@ -1,0 +1,248 @@
+<ion-header>
+  <ion-row>
+    <ion-col><ion-title class="bz_pop_tittle">Create Task </ion-title></ion-col>
+    <ion-col><ion-button (click)="CloseModal()" class="bz_pop_close"><ion-icon name="close-outline"></ion-icon></ion-button></ion-col>
+  </ion-row> 
+</ion-header>
+
+<ion-content padding>
+  <div class="addtask_user me-sm-2">
+    <svg id="addassign-trigger" xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176"/></svg> Add Assignee
+    <span class="adduser_list" *ngFor="let assignedUser of userAssignArray" title="{{assignedUser.name}}">{{assignedUser.short_name}} <a href="javascript:void(0);" class="pr" (click)="removeAssignedUser(assignedUser)">x</a></span>
+  </div>
+
+  
+
+  <ion-row>
+      <ion-col>
+        <ion-item >
+          <label>Start Date</label>
+          <ion-input type="date" [(ngModel)]="dateN" name="dateN"></ion-input>
+        </ion-item>
+      </ion-col>
+
+      <ion-col>
+        <ion-item >
+          <label>End Date</label>
+          <ion-input type="date" [(ngModel)]="dateT" name="dateT"></ion-input>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item  id="errsh">
+          <label>Start H</label>
+          <ion-select name="sh" [(ngModel)]="sh" (ionChange)="sethourse($event)">
+            <ion-select-option value="01">01</ion-select-option>
+            <ion-select-option value="02">02</ion-select-option>
+            <ion-select-option value="03">03</ion-select-option>
+            <ion-select-option value="04">04</ion-select-option>
+            <ion-select-option value="05">05</ion-select-option>
+            <ion-select-option value="06">06</ion-select-option>
+            <ion-select-option value="07">07</ion-select-option>
+            <ion-select-option value="08">08</ion-select-option>
+            <ion-select-option value="09">09</ion-select-option>
+            <ion-select-option value="10">10</ion-select-option>
+            <ion-select-option value="11">11</ion-select-option>
+            <ion-select-option value="12">12</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item  id="errsm">
+          <label>Start M</label>
+          <ion-select name="sm" [(ngModel)]="sm" (ionChange)="setminute($event)">
+            <ion-select-option value="00">00</ion-select-option>
+            <ion-select-option value="15">15</ion-select-option>
+            <ion-select-option value="30">30</ion-select-option>
+            <ion-select-option value="45">45</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item  id="errsampm">
+          <label>Start AM/PM</label>
+          <ion-select name="sap" [(ngModel)]="sap" (ionChange)="setap($event)">
+            <ion-select-option value="am">AM</ion-select-option>
+            <ion-select-option value="pm">PM</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+
+      <ion-col>
+        <ion-item >
+          <label>End H</label>
+          <ion-select name="eth" [(ngModel)]="eth">
+            <ion-select-option value="01">01</ion-select-option>
+            <ion-select-option value="02">02</ion-select-option>
+            <ion-select-option value="03">03</ion-select-option>
+            <ion-select-option value="04">04</ion-select-option>
+            <ion-select-option value="05">05</ion-select-option>
+            <ion-select-option value="06">06</ion-select-option>
+            <ion-select-option value="07">07</ion-select-option>
+            <ion-select-option value="08">08</ion-select-option>
+            <ion-select-option value="09">09</ion-select-option>
+            <ion-select-option value="10">10</ion-select-option>
+            <ion-select-option value="11">11</ion-select-option>
+            <ion-select-option value="12">12</ion-select-option>
+          </ion-select> 
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item >
+          <label>End M</label>
+          <ion-select name="etm" [(ngModel)]="etm">
+            <ion-select-option value="00">00</ion-select-option>
+            <ion-select-option value="15">15</ion-select-option>
+            <ion-select-option value="30">30</ion-select-option>
+            <ion-select-option value="45">45</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item >
+          <label>End AM/PM</label>
+          <ion-select name="etap" [(ngModel)]="etap">
+            <ion-select-option value="am">AM</ion-select-option>
+            <ion-select-option value="pm">PM</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      
+    </ion-row>
+
+    <!--<ion-row>
+      <ion-col>
+        <ion-item fill="outline" id="erruser">
+          <ion-label position="floating">Assign Users</ion-label>
+          <ion-select multiple [(ngModel)]="selectedUsers" name="selectedUsers">
+            <ion-select-option *ngFor="let option of allUsers" [value]="option.uid">
+              {{ option.name }} ({{option.email}})
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>-->
+
+    <div class="ng-autocomplete" id="errpro">
+      <ng-autocomplete
+        [data]="data"
+        [(ngModel)]="selectedValue"
+        (ngModelChange)="onAutocompleteSelect($event)"
+        [searchKeyword]="keyword"
+        placeholder="Search Project"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate">
+      </ng-autocomplete>
+    
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+    
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+
+    <div class="ng-autocomplete">
+      <ng-autocomplete
+        [data]="departdata"
+        [(ngModel)]="selectedValueD"
+        (ngModelChange)="onAutocompleteDSelect($event)"
+        [searchKeyword]="keywordd"
+        placeholder="Search Department"
+        [itemTemplate]="itemTemplateD"
+        [notFoundTemplate]="notFoundTemplateD">
+      </ng-autocomplete>
+    
+      <ng-template #itemTemplateD let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+    
+      <ng-template #notFoundTemplateD let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+
+    <!--<ion-row>
+      <ion-col>
+        <ion-item fill="outline" id="errpro">
+          <ion-label position="floating">Search Project</ion-label>
+          <ion-select [(ngModel)]="project" name="project">
+            <ion-select-option *ngFor="let option of allProjects" [value]="option.uid">
+              {{ option.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>-->
+
+    <!--<ion-row>
+      <ion-col>
+        <ion-item fill="outline">
+          <ion-label position="floating">Search Department</ion-label>
+          <ion-select [(ngModel)]="department" name="department">
+            <ion-select-option *ngFor="let option of allDepartment" [value]="option.id">
+              {{ option.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>-->
+
+
+    <ion-row>
+      <ion-col>
+        <ion-item  id="errtask">
+          <ion-label position="floating">Task Name</ion-label>
+          <ion-input placeholder="Task Name" name="taskname" [(ngModel)]="taskname"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item  id="erralt">
+          <ion-label position="floating">Time Allocated in Hours</ion-label>
+          <ion-input type="number" placeholder="Time Allocated in Hours" name="time" [(ngModel)]="time"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger">Close</ion-button>
+        <ion-button color="primary" (click)="addtask()">Save</ion-button>
+      </ion-col>
+    </ion-row>
+</ion-content>
+
+<ion-popover class="bz_user_dropdown" trigger="addassign-trigger" triggerAction="click">
+  <ng-template>
+    <div class="project_search">
+      <ion-searchbar (ionInput)="onSearchuser($event)"></ion-searchbar>
+    </div>
+    <ion-content class="ion-padding">
+
+      <div class="list">
+        <ion-item *ngFor="let usr of allUsers" (click)="assignUser(usr)">
+          <ion-avatar slot="start" *ngIf="usr.image; else noAvatar">
+            <img alt="Silhouette of a person's head" src="{{usr.image}}" />
+          </ion-avatar>
+          <ng-template #noAvatar>
+          <span class="symbol-label label-success d-inline"
+                data-toggle="tooltip" title="{{usr.name}}" data-original-title=""
+                aria-describedby="tooltip80837">{{usr.short_name}}</span>
+          </ng-template>
+          <ion-label>
+            <h3>{{usr.name}}</h3>
+            <p>{{usr.email}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+
+    </ion-content>
+  </ng-template>
+</ion-popover>

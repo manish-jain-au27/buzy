@@ -1,0 +1,61 @@
+{
+  "appId": "com.netvision.apps.MyTeamPlus",
+  "productName": "Buzy Team",
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "b2s-dev2022",
+      "repo": "BuzyTeamDsk",
+      "private": true
+    }
+  ],
+  //"asar": true,
+  "directories": {
+    "output": "release/"
+  },
+  "files": [
+    "**/*",
+    "!**/*.ts",
+    "!*.map",
+    "!package.json",
+    "!package-lock.json",
+    "!**/node_modules/**/test/**",
+    "!**/node_modules/**/tests/**",
+    "!**/node_modules/**/example/**"
+  ],
+  "extraResources": [
+    {
+      "from": "dist",
+      "to": "app",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "get-active-window.ps1",
+      "to": "app/get-active-window.ps1"
+    }
+  ],
+  "win": {
+    "icon": "build/icon.ico",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64","ia32"
+        ]
+      }
+    ]
+  },
+  "mac": {
+    "icon": "dist/icons/png/512x512.png",
+    "target": [
+      "dmg"
+    ]
+  },
+  "linux": {
+    "icon": "dist/icons/png/512x512.png",
+    "target": [ "AppImage", "deb" ],
+    "category": "Utility"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "/firebase": {
+    "target": "https://firebasestorage.googleapis.com",
+    "secure": false,
+    "changeOrigin": true,
+    "headers": {
+      "Access-Control-Allow-Origin": "http://localhost:4200"
+    }
+  }
+}

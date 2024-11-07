@@ -1,0 +1,53 @@
+
+.remind-popup { 
+    --width:500px;
+    margin: auto;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4) !important;
+    --backdrop-opacity: 0.2 !important;
+    padding: 2px;
+    --height:420px;
+    .alloted-close {
+        svg {
+            width:30px;
+            height:30px;
+        }
+    }
+    .remind-pop {
+        ion-item {
+            --border-color:inherit;
+            --padding-start:0px;
+            ion-checkbox {
+                margin-inline-end:12px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+            ion-label {
+                margin-inline-end:12px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+        }
+        h4 {
+
+            font-size: 24px;
+            padding-bottom:0px;
+            margin: 0px;
+        }
+        p {
+            font-size: 18px;
+            text-align: left;
+            line-height: 30x;
+            padding-bottom: 15px;
+            margin: 0px;
+        }
+        .alloted-btn-group {
+            text-align: right;
+            margin: 10px 0px;
+            ion-button {
+                padding:10px 0px;
+                --padding-start: 2.1em;
+                --padding-end: 2.1em;
+            }
+        }
+    }
+}

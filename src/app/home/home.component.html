@@ -1,0 +1,12 @@
+<div class="container">
+  <h1 class="title">
+    {{ 'PAGES.HOME.TITLE' }}
+  </h1>
+
+  <a routerLink="#" (click)="logout()">Logout</a>
+  <br/>
+  <span class="icon-bz-play-button" (click)="startTaskTime()" *ngIf="start">Play</span>
+  <span class="icon-bz-pause"  (click)="delAllTimer(taskId, projectId)" *ngIf="stop">Stop</span>
+  <br>
+  <span class="time bz_time">{{ outputTimer }}</span>
+</div>

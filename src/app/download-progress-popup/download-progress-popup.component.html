@@ -1,0 +1,8 @@
+<div *ngIf="isVisible" class="popup">
+  <p class="w-text">Buzy Team download is in progress</p>
+  <div id="progress-container">
+    <div id="progress-bar" [ngStyle]="{ 'width': downloadProgressPercent + '%' }" style="height: 15px; background-color: green;"></div>
+  </div>
+  <p id="progress-text">Downloaded {{ downloadProgressPercent }}% ({{ downloadSpeed }} MB/s)</p>
+  <button class="btn  btn-danger" (click)="closePopup()">Close</button>
+</div>

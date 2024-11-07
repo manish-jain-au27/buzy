@@ -1,0 +1,45 @@
+<ion-content class="ion-padding">
+  <ion-modal [keepContentsMounted]="true" trigger="remind-modal" #rmodal  class="remind-popup">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Buzyteam Reminder</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="rmodal.dismiss()"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path flil="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding remind-pop">
+        <h4>Buzy.Team Asks</h4>
+        <p> Are you sure want to dismiss all these reminders ?</p>
+        
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Don't Ask me Again</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Remind me in 10 Min</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Remind me in 30 Min</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Remind me in 1Hours</ion-label>
+        </ion-item>
+
+        <div class="alloted-btn-group">
+          <ion-button color="primary no_btn" (click)="rmodal.dismiss()">No</ion-button>
+          <ion-button color="primary">Yes</ion-button>
+        </div>
+
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>

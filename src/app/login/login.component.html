@@ -1,0 +1,166 @@
+ <div class="bz-main-content" role="main">
+  <div class="bz-login-content">
+    <div class="container-fluid"> 
+        <div class="row row-height">
+          <div class="col-6 bz_content_left" style="background:url(assets/bz-left-img.jpg);">
+            <div class="bz_logo_wrapper">
+                <a href="#"><img src="assets/buzy-team-logo-1.png" alt=""></a>  
+            </div>
+          </div>
+          <div class="col-6 bz_content_right">
+
+            <div class="bz_login_main">
+              <form [formGroup]="form" autocomplete="off" (keydown.enter)="authCheck()">
+                <div class="text-center">
+                  <img src="assets/logo-icon.png" alt="img"/>
+                  <h2>Sign in to Buzyteam</h2>
+                  <p>Welcome back! Please enter your details.</p>
+
+                  <div class="load_show" *ngIf="loadingImg">
+                    <span class="load_show_text">
+                      <div class="spinner">Please wait...</div>
+                    </span>
+                  </div>
+
+                  
+                </div> 
+
+                <div class="alert alert-danger" *ngIf="errorProduce !== ''">
+                  {{errorProduce}}
+                </div>
+
+                <div class="bz-input-group">
+                    <span class="bz-gp-pp">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/> </svg>
+                    </span>
+                    <input type="email" class="form-control" id="inputUsername" tabindex="1" name="email" formControlName="email" value="" placeholder="Email" required>
+                </div>
+                <div class="alert alert-danger py-2" *ngIf="email.touched && email.invalid">
+                  <div *ngIf="email.errors?.['required']">
+                      Email is required
+                  </div>
+                </div>
+                <div class="bz-input-group pw-show-wrap ">
+                  <span class="bz-gp-pp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                      <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                      </svg>
+                  </span>
+                  <input class="form-control" id="inputPassword" tabindex="2" placeholder="Password" [type]="passwordVisibility? 'text': 'password'" name="password" formControlName="password" value="" (keydown)="checkCapsLock($event)"  (keyup)="checkCapsLock($event)" required>
+
+                  <span class="password-icon" (click)="togglePasswordVisibility()">
+                    <svg *ngIf="!passwordVisibility" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+                    </svg>
+                    <svg *ngIf="passwordVisibility" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                       <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                    </svg>
+                  </span>
+                  
+                </div>
+                <div *ngIf="isCapsLockOn" class="caps-lock-warning alert alert-danger py-2">
+                  Caps Lock is enabled!
+                </div>
+                <div class="alert alert-danger py-2" *ngIf="password.touched && password.invalid">
+                  <div *ngIf="password.errors?.['required']">
+                      Password is required
+                  </div>
+                  <div *ngIf="password.errors?.['minlength']">
+                    Password should be minimum ({{password.errors?.['minlength'].requiredLength}})
+                  </div>
+                </div>
+
+                <div class="bz-input-group bz-gp">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label bz-check" for="rememberMe">Keep me logged in</label>
+                  </div>
+                </div>
+        
+                <div class="row bz-btn-main">
+                  <div class="col-sm-6 bz-mb-1 bz-mb-sm-0">
+                    <button type="button" class="btn btn-primary bz-btn-2" *ngIf="!form.invalid" (click)="authCheck()">Log In</button>
+                  </div>
+                  
+                  <div class="col-sm-6 bz-sm-tr">
+                    <a class="bz_forgot_subheading" href="javascript:void(0)" (click)="goto()">Forgot Password?</a>
+                  </div>
+                </div>
+        
+                <footer style="text-align: center; margin-top: 2rem; font-size: 0.75rem; color: #97a4af; font-weight: 400;">Don't have an account? <a class="bz-fs-1 bz-fw-bd" style="font-size: 0.75rem;" href="#">Signup</a></footer>
+              </form>
+            </div>
+          </div>
+        
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!--<div class="bz-main-content" role="main">
+  <div class="bz-login-content_one">
+    <div class="container"> 
+        <div class="row">
+          <div class="col-6 bz_content_left text-center">
+            <div class="bz_logo_wrapper_one">
+                <a href="index.html"><img class="bz_logoimg" src="/assets/buzy-team-logo.png" alt=""></a>
+                <span class="bz_subheadding">Welcome to Buzyteam!</span>
+                <p>User Experience & Interface Design, Product Strategy
+                  Web Application SaaS Solutions</p>
+            </div>
+            <img class="img-fluid img" src="/assets/chat-left.png" alt="">
+        </div>
+          <div class="col-6 bz_content_right_one">
+            <div class="bz_login_main">
+              <form autocomplete="off">
+                <div class="text-center">
+                  <img src="/assets/logo-icon.png" alt="img"/>
+                  <h2>Log in</h2>
+                  <p>Welcome back! Please enter your details.</p>
+                </div> 
+                <div class="bz-input-group">
+                    <span class="bz-gp-pp">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/> </svg>
+                    </span>
+                    <input type="text" class="form-control" id="inputUsername" tabindex="1" placeholder="Username" required>
+                </div>
+                
+                <div class="bz-input-group">
+                  <span class="bz-gp-pp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                      <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                      </svg>
+                  </span>
+                  <input type="password" class="form-control" id="inputPassword" tabindex="2" placeholder="Password"  required>
+                </div>
+        
+                <div class="bz-input-group bz-gp">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label bz-check" for="rememberMe">Keep me logged in</label>
+                  </div>
+                </div>
+        
+                <div class="row bz-btn-main">
+                  <div class="col-sm-6 bz-mb-1 bz-mb-sm-0">
+                    <button type="submit" class="btn btn-primary bz-btn-2">Log In</button>
+                  </div>
+                  
+                  <div class="col-sm-6 bz-sm-tr">
+                    <a class="bz_forgot_subheading" href="recover.html">Forgot Password?</a>
+                  </div>
+                </div>
+        
+                <footer style="text-align: center; margin-top: 2rem; font-size: 0.75rem; color: #97a4af; font-weight: 400;">Don't have an account? <a class="bz-fs-1 bz-fw-bd" style="font-size: 0.75rem;" href="signup.html">Signup</a></footer>
+              </form>
+            </div>
+          </div>
+        
+        </div>
+    </div>
+  </div>
+</div>-->
+

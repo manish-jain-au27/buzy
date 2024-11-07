@@ -1,0 +1,473 @@
+<ion-menu  class="rightsidebar" side="end" contentId="main-content" >
+  <ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-title>Calendar List View</ion-title>
+        </ion-col>
+        <ion-col class="text-end">
+          <ion-menu-toggle>
+            <ion-button><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-menu-toggle>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+  </ion-header>
+  <ion-content >
+    <ion-row>
+      <ion-col>
+        <div id="edit-task"></div>
+        <ion-item lines="full">
+          <ion-label>
+            <span>Buzy Team web task</span>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="full" class="addproject_pr">
+          <ion-label>
+            <div class="add_project  me-sm-2" id="addproject-trigger">
+              <i class='bx bx-duplicate'></i>
+            </div>
+            <span class="addproject_list">
+              BuzyTeam - Website
+              <a class="pr">x</a>
+            </span>
+            <span class="addproject_list">
+              BuzyTeam - Website
+              <a class="pr">x</a>
+            </span>
+
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label>
+            <div class="d-flex justify-content-between">
+              <div class="addproject_namelist">
+                  <div id="adduser-trigger" class="addtask_user me-sm-2">
+                    <i class='bx bx-duplicate'></i>
+                  </div>
+                  <div id="taskuser" class="symbol-group symbol-hover">
+                    <div class="symbol symbol-25 symbol-light-success">
+                      <span class="symbol-label label-success d-inline"
+                        data-toggle="tooltip" title="" data-original-title="Manish Khanna"
+                        aria-describedby="tooltip80837">MA</span>
+                      <span class="d-inline me-sm-3"> - </span>
+
+                    </div>
+                    <div class="symbol symbol-25 symbol-light-primary">
+                      <span class="symbol-label label-info" data-toggle="tooltip" title=""
+                        data-original-title="Manish Khanna">MK<a class="pr">x</a></span>
+                    </div>
+                    <div class="symbol symbol-25 symbol-light-primary">
+                      <span class="symbol-label label-success" data-toggle="tooltip" title=""
+                        data-original-title="Shamsul Aarif">SA<a class="pr">x</a></span>
+                    </div>
+                    <div class="symbol symbol-25 symbol-light-primary">
+                      <span class="symbol-label label-dark" data-toggle="tooltip" title=""
+                        data-original-title="Ashutosh Kumar">AK<a class="pr">x</a></span>
+                    </div>
+                  </div>
+              </div>
+              <div>
+                <button type="button" class="btn btn-primary me-sm-1"><ion-icon name="play-outline"></ion-icon></button>
+                <button type="button" class="btn btn-danger me-sm-1"> <ion-icon name="stopwatch-outline"></ion-icon>
+                  Alloted:20h</button>
+                <button type="button" class="btn btn-info"> <ion-icon name="stopwatch-outline"></ion-icon> Spent :
+                  0:0:0</button>
+              </div>
+            </div>
+
+          </ion-label>
+        </ion-item>
+
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger"> 
+          <ion-icon name="ellipse" color="primary"></ion-icon>Active
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="danger"></ion-icon>All </a>
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="primary"></ion-icon>Active </a> 
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="success"></ion-icon>Completed</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="tertiary"></ion-icon> Deferred</a>
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="secondary"></ion-icon> Cancelled</a> 
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger2"> 
+          <ion-icon name="ellipse" color="danger"></ion-icon>Normal
+        </ion-button>
+
+        <ion-popover class="active-dropdown" trigger="auto-trigger2" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="danger"></ion-icon>Normal </a>
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="success"></ion-icon>Permanent</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="warning"></ion-icon>Recursive</a>
+                </ion-item>
+               
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger3"> 
+          <ion-icon name="ellipse" color="primary"></ion-icon>High
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger3" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="danger"></ion-icon>High </a>
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="success"></ion-icon>Low </a> 
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="tertiary"></ion-icon>Medium</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="#0"><ion-icon name="ellipse" color="secondary"></ion-icon> Normal</a>
+                </ion-item>
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger4"> 
+         Notify Me
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger4" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                 <ion-checkbox></ion-checkbox>Cheese
+                </ion-item>
+                <ion-item>
+                  <ion-checkbox></ion-checkbox>test One
+                 </ion-item>
+                 <ion-item>
+                  <ion-checkbox></ion-checkbox>Test Two
+                 </ion-item>
+                 <ion-item>
+                  <ion-checkbox></ion-checkbox>Test Three
+                 </ion-item>
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-calender"  id="auto-trigger5"> 
+          <ion-icon name="calendar-outline"></ion-icon> Apr 17
+         </ion-button>
+         <ion-popover class="active-calender-pop" trigger="auto-trigger5" size="auto">
+           <ng-template>
+             <ion-content class="ion-padding">
+              <ion-datetime></ion-datetime>
+             </ion-content>
+           </ng-template>
+         </ion-popover>
+
+         <ion-button class="active-calender"> 
+          <ion-icon name="attach-outline"></ion-icon> Attach files
+         </ion-button>
+        
+
+        
+
+       
+
+
+
+        <ion-item lines="full">
+          <ion-label>
+            <span><ion-icon name="add-circle-outline"></ion-icon> Add subtask</span>
+          </ion-label>
+        </ion-item>
+
+
+        <ion-item lines="full">
+          <ion-label>
+            <ion-textarea class="custom-textarea" placeholder="Type message..."></ion-textarea>
+          </ion-label>
+        </ion-item>
+
+        
+        
+
+        
+
+
+
+
+        <ion-popover class="bz_user_dropdown" trigger="addproject-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <div class="project_search">
+                <ion-searchbar></ion-searchbar>
+              </div>
+              <div class="list">   
+                <a class="item" href="#0">Agibookkeeping - Project</a>
+                <a class="item" href="#0">BCIC - Project</a>
+                <a class="item" href="#0">BCIC ADMIN - Project</a>
+                <a class="item" href="#0">Better Franchise - Project</a>
+                <a class="item" href="#0">Business2Sell - Project</a>
+                <a class="item" href="#0">CommercialProperty2Sell - Project</a>
+                <a class="item" href="#0">DentistHopeIsland - Project</a>
+                <a class="item" href="#0">Franchise2Sell - Project</a>
+                <a class="item" href="#0">LMR - Project</a>
+                <a class="item" href="#0">Mad2.in - Project</a>
+                <a class="item" href="#0">MillionDollarMansions - Project</a>
+                <a class="item" href="#0">MindTree - Project</a>
+                <a class="item" href="#0">Netvision - Project</a>
+                <a class="item" href="#0">PBN - Project</a>
+                <a class="item" href="#0">Property2Sell - Project</a>
+                <a class="item" href="#0">Removalist - Project</a>
+                <a class="item" href="#0">sellbusiness.co.nz - Project</a>
+                <a class="item" href="#0"> YellowfinRestaurant - Project</a>
+                <a class="item" href="#0"> Better Electrician - Project</a>
+                <a class="item" href="#0">Maintanance - Project</a>
+                <a class="item" href="#0">Personal - Project</a>
+                <a class="item" href="#0">Smart Sales - Project</a>
+                <a class="item" href="#0">Thielpartners - Project</a>
+                <a class="item" href="#0">Buzy Team - Project</a>
+                <a class="item" href="#0">FreshSkinCanvas - Project</a>
+                <a class="item" href="#0">BCIC New Suburbs - Project</a>
+                <a class="item" href="#0">Desktop APP - Project</a>
+                <a class="item" href="#0">Matsuzaka - Project</a>
+                <a class="item" href="#0">BBC_Comp - Project</a>
+                <a class="item" href="#0">BetterBondCleaning - Project</a>
+                <a class="item" href="#0">MartinIP - Project</a>
+                <a class="item" href="#0">Business2sell.Group - Project</a>
+                <a class="item" href="#0"> Bondcleaning-Website Work - Project</a>
+                <a class="item" href="#0"> SSB - Project</a>
+                <a class="item" href="#0"> Laravel CP2S - Project</a>
+                <a class="item" href="#0"> MartinIP Issues - Project</a>
+                <a class="item" href="#0"> New PBNs - Project</a>
+                <a class="item" href="#0"> Traps.com.au - Project</a>
+                <a class="item" href="#0"> Wildlife Acoustics - Project</a>
+                <a class="item" href="#0">Betterhub.com.au - Project</a>
+                <a class="item" href="#0">Bcic - Staff App - Project</a>
+                <a class="item" href="#0">officecentre - Project</a>
+                <a class="item" href="#0">BondCleaninginBrisbane - Project</a>
+                <a class="item" href="#0">FerretKingdom - Project</a>
+                <a class="item" href="#0">Prospect - Project</a>
+                <a class="item" href="#0">Levit8.com.au - Project</a>
+                <a class="item" href="#0">Thielwealth.com.au - Project</a>
+                <a class="item" href="#0">Tammountaindental - Project</a>
+                <a class="item" href="#0">Business2Sell Client - Project</a>
+                <a class="item" href="#0">WMT - ERROR LOGS - Project</a>
+                <a class="item" href="#0">Content writing - Department</a>
+                <a class="item" href="#0">Designing - Department</a>
+                <a class="item" href="#0">HTML CSS - Department</a>
+                <a class="item" href="#0">Maintanance - Department</a>
+                <a class="item" href="#0">PHP Development - Department</a>
+                <a class="item" href="#0">SEO - Department</a>
+                <a class="item" href="#0">Testing - Department</a>
+                <a class="item" href="#0">Management - Department</a>
+                <a class="item" href="#0">Operations - Department</a>
+                <a class="item" href="#0">Sales - Department</a>
+                <a class="item" href="#0">Video Editing - Department</a>
+                <a class="item" href="#0">Javascript Development - Department</a>
+                <a class="item" href="#0">Mobile Development - Department</a>
+                <a class="item" href="#0">Adwords - Department</a>
+                <a class="item" href="#0">Social Media Marketing - Department</a>
+                <a class="item" href="#0">Support - Calling - Department</a>
+                <a class="item" href="#0">Marketing - Department</a>
+                <a class="item" href="#0">Meetings - Department</a>
+                <a class="item" href="#0">intern dpt - Department</a>
+                <a class="item" href="#0">User Experience - Department</a>
+              </div>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-popover class="bz_user_dropdown" trigger="adduser-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <div class="project_search">
+                <ion-searchbar></ion-searchbar>
+              </div>
+
+              <div class="list">
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Himanshu Kapoor</h3>
+                    <p>h.kapoor@live.com</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Shamsul Aarif</h3>
+                    <p>aarif@business2sell.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h3>Advait Kumar</h3>
+                    <p>eddie@netvision.com.au</p>
+                  </ion-label>
+                </ion-item>
+              </div>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-item lines="full">
+        <ion-label>
+          <ion-textarea class="custom-textarea" placeholder="Task Note..."></ion-textarea>
+          <ion-button><ion-icon name="paper-plane-outline"></ion-icon></ion-button>
+        </ion-label>
+      </ion-item>
+    </ion-toolbar>
+  </ion-footer>
+
+
+
+</ion-menu>
+<div class="ion-page" id="main-content">
+  <ion-content class="ion-padding">
+    <ion-menu-toggle>
+      <ion-button>Click to open the menu</ion-button>
+    </ion-menu-toggle>
+  </ion-content>
+</div>

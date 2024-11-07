@@ -1,0 +1,836 @@
+<app-header></app-header>
+<app-tasksider></app-tasksider>
+  <div class="load_show" *ngIf="loadingImgResult">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <div class="task-play-top-cal" *ngIf="!loadingImgResult">
+  <span *ngIf="runnig_task" class="icon-play" (click)="delAllTimer(runnig_task_id, '')">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="ionicon s-ion-icon">
+      <rect x="106" y="106" width="300" height="300" rx="64" ry="64" fill="#3699FF"></rect>
+    </svg>
+  </span>
+  <span class="outputtimer">{{ outputTimer }}</span>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+      <rect x="0" y="0" width="24" height="24" />
+      <path d="M12,21 C7.581722,21 4,17.418278 4,13 C4,8.581722 7.581722,5 12,5 C16.418278,5 20,8.581722 20,13 C20,17.418278 16.418278,21 12,21 Z" fill="#ffffff" opacity="1" />
+      <path d="M13,5.06189375 C12.6724058,5.02104333 12.3386603,5 12,5 C11.6613397,5 11.3275942,5.02104333 11,5.06189375 L11,4 L10,4 C9.44771525,4 9,3.55228475 9,3 C9,2.44771525 9.44771525,2 10,2 L14,2 C14.5522847,2 15,2.44771525 15,3 C15,3.55228475 14.5522847,4 14,4 L13,4 L13,5.06189375 Z" fill="#ffffff" />
+      <path d="M16.7099142,6.53272645 L17.5355339,5.70710678 C17.9260582,5.31658249 18.5592232,5.31658249 18.9497475,5.70710678 C19.3402718,6.09763107 19.3402718,6.73079605 18.9497475,7.12132034 L18.1671361,7.90393167 C17.7407802,7.38854954 17.251061,6.92750259 16.7099142,6.53272645 Z" fill="#ffffff" />
+      <path d="M11.9630156,7.5 L12.0369844,7.5 C12.2982526,7.5 12.5154733,7.70115317 12.5355117,7.96165175 L12.9585886,13.4616518 C12.9797677,13.7369807 12.7737386,13.9773481 12.4984096,13.9985272 C12.4856504,13.9995087 12.4728582,14 12.4600614,14 L11.5399386,14 C11.2637963,14 11.0399386,13.7761424 11.0399386,13.5 C11.0399386,13.4872031 11.0404299,13.4744109 11.0414114,13.4616518 L11.4644883,7.96165175 C11.4845267,7.70115317 11.7017474,7.5 11.9630156,7.5 Z" fill="#6699f5" />
+    </g>
+  </svg>
+</div>
+<div class="task-play-hover" *ngIf="runnig_task">
+  {{ runnig_task }}
+</div>
+<div class="calendar" *ngIf="!loadingImgResult">
+  <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+</div>
+
+<div class="sidebar" [ngClass]="{'open': showSidebar}">
+  <div class="load_show" *ngIf="loadingImgResultdetail">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <div class="calendar-sidebar" *ngIf="!loadingImgResultdetail">
+    <!--{{ eventDetailsContent }}-->
+    <!--right side bar-->
+      <ion-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-title>Calendar List View</ion-title>
+            </ion-col>
+            <ion-col class="text-end">
+              <button class="calendar-close" (click)="closeSidebar()"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></button>
+            </ion-col>   
+          </ion-row>
+        </ion-grid>
+      </ion-header>
+    <ion-row>
+          <ion-col>
+            <div class="sidebar_top_header">
+            <div id="edit-task"></div>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="9">
+                  <ion-item lines="full">
+                    <ion-label>
+                      <span *ngIf="showSpan" (click)="toggleDisplay()">{{detailtasktitle}}</span>
+                      <ion-input *ngIf="!showSpan" placeholder="Task Name" class="custom" [(ngModel)]="detailtasktitle" name="detailtasktitle" (keyup)="updatetaskname($event)"></ion-input>
+                    </ion-label>
+                </ion-item>
+  
+                </ion-col>
+                <ion-col size="3">
+                  
+                  <div class="addproject_namelist">
+                    <div id="adduser-trigger" class="addtask_user me-sm-2" *ngIf="user_task_assign_permission == '2'">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                    </div>
+                    <div id="taskuser" class="symbol-group symbol-hover">
+                      <div class="symbol symbol-35 symbol-light-success">
+    
+                        <span class="symbol-label label-success d-inline"
+                          data-toggle="tooltip" title="{{detailtask.by_user_name}}" data-original-title=""
+                          aria-describedby="tooltip80837">{{detailtask.short_by_name}}</span>
+                        <span class="d-inline me-sm-3"> - </span>
+    
+                      </div>
+    
+                      <div class="symbol symbol-35 symbol-light-primary" *ngFor="let auser of detailtask?.user_assign_name_array?.slice(0, 2); let i = index;">
+                        <span class="symbol-label label-info" data-toggle="tooltip" title="{{auser.name}}"
+                          data-original-title="" *ngIf="user_task_assign_permission == '2'">{{auser.short_name}}<a class="pr" (click)="removeUser(auser.crid, auser.userid, auser.name)">x</a></span>
+                      </div>
+    
+    
+                       <!-- Apps -->
+                     <div class="dropdown" *ngIf="detailtask?.user_assign_name_array?.length>2">
+                      <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                        +2
+                      </button>
+    
+                      <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless bz_team_member_list" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                        <div class="card">
+                          <!-- Header -->
+                          <div class="card-header">
+                            <h4 class="card-title">Task Team Member</h4>
+                          </div>
+                          <!-- End Header -->
+    
+                          <!-- Body -->
+                          <div class="card-body-height">
+                            <div class="dropdown-item" href="javascript:void(0);">
+
+                              <div class="d-flex align-items-center justify-content-between bz_team_mem_list " *ngFor="let userr of detailtask.user_assign_name_array">
+                                <div class="bz_users__list">
+
+                                  <div class="d-inline flex-shrink-0" *ngIf="userr.image?.length">
+                                    <img class="symbol symbol-35 symbol-light-success" style="margin-left:0px;" src="{{userr.image}}" alt="{{userr.name}}" title="{{userr.name}}">
+                                  </div>
+
+                                  <div class="d-inline flex-shrink-0" *ngIf="!userr.image?.length" style="margin-left:0px;">
+                                    <span class="avatar-initials_name">{{userr.short_name}}</span>
+                                  </div>
+      
+                                  <div class=" d-inline avatar avatar-soft-dark" style="margin-left:0px;">
+                                    <span class="avatar-initials">{{userr.name}}</span>
+                                  </div>
+                                </div>
+
+                                <div class="btn btn-light-danger bz_task_users_b" (click)="removeUser(userr.crid, userr.userid, userr.name)" *ngIf="user_task_assign_permission == '2'">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                  </svg>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+                          <!-- End Body -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Apps -->
+                    </div>
+    
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <div class="d-flex justify-content-between">
+              <ion-item lines="full" class="addproject_pr">
+
+                  <div class="d-flex justify-content-start mt-2">
+                    <!--<select class="form-select me-2" (change)="onProjectChange($event)">
+                      <option value="">Projects</option>
+                      <option *ngFor="let pro of allProjects" [value]="pro.uid" [selected]="isProjectSelected(pro.uid)">
+                        {{ pro.name }}
+                      </option>
+                    </select>-->
+
+                    <!--<input type="text" class="form-control" [(ngModel)]="filterTerm" placeholder="Filter Projects">-->
+                    
+                    <!--<select class="form-select me-2" (change)="onProjectChange($event)">
+                      <option value="">Projects</option>
+                      <option *ngFor="let pro of flatData" [value]="pro.uid" [selected]="isProjectSelected(pro.uid)" [hidden]="!matchesFilter(pro.name)">
+                        {{ getIndentation(pro.level) }} {{ pro.name }}
+                      </option>
+                    </select>-->
+                    
+                    <select class="form-select me-2" (change)="onProjectChange($event)" *ngIf="type_name != 'Permanent'">
+                      <option value="">Projects</option>
+                      <option *ngFor="let pro of flatData" [value]="pro.uid" [selected]="isProjectSelected(pro.uid)" [hidden]="!matchesFilter(pro.name)">
+                        <span [innerHTML]="getIndentation(pro.level)"></span>{{ pro.name }}
+                      </option>
+                    </select>
+
+                    <!--<select class="form-select" (change)="onDepartmentChange($event)">
+                      <option value="">Department</option>
+                      <option *ngFor="let dpt of allDepartments" [value]="dpt.uid" [selected]="isDepartmentSelected(dpt.uid)">
+                        {{ dpt.name }}
+                      </option>
+                    </select>-->
+
+                    <select class="form-select" (change)="onDepartmentChange($event)">
+                      <option value="">Department</option>
+                      <ng-container *ngFor="let department of hierarchicalDepartments">
+                        <option [value]="department.id" [selected]="isDepartmentSelected(department.id)">
+                          {{ department.category_name }}
+                        </option>
+                        <ng-container *ngFor="let child of department.children">
+                          <option [value]="child.id" [style.paddingLeft.px]="20" [selected]="isDepartmentSelected(child.id)">
+                            &nbsp;&nbsp; {{ child.category_name }}
+                          </option>
+                        </ng-container>
+                      </ng-container>
+                    </select>
+
+                  </div>
+                  <!--
+                  <div class="add_project  me-sm-2" id="addproject-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                  </div>
+
+                  <span class="addproject_list" *ngFor="let apro of detailtask.project_assign_array">
+                    {{apro.name}} - Project
+                    <a class="pr" (click)="removeProject(apro.crid, apro.project_id, apro.name, 'project')">x</a>
+                  </span>
+
+                  <span class="addproject_list" *ngFor="let acat of detailtask.category_assign_array">
+                    {{acat.name}} - Department
+                    <a class="pr" (click)="removeProject(acat.crid, acat.category_id, acat.name, 'category')">x</a>
+                  </span> -->
+              </ion-item>
+      
+              <ion-item lines="full" class="bz-addteam">
+                <ion-label>
+                  <div class="d-flex justify-content-between">
+                  
+
+
+
+
+                    <div class="bz-right-btns">
+                      <div class="cc-rockmenu">
+        
+                              <!--<div class="rolling rolling_play" (click)="startTask(detailtaskId, '', detailtasktitle, detailtask,'start')" *ngIf="detailtaskId != taskId">-->
+                              <div class="rolling rolling_play" (click)="handleTaskClick(detailtaskId, detailtasktitle, detailtask)" *ngIf="detailtaskId != taskId">
+                                <figure class="rolling_icon rolling_iconplay">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                      <rect x="0" y="0" width="24" height="24"></rect>
+                                      <path d="M9.82866499,18.2771971 L16.5693679,12.3976203 C16.7774696,12.2161036 16.7990211,11.9002555 16.6175044,11.6921539 C16.6029128,11.6754252 16.5872233,11.6596867 16.5705402,11.6450431 L9.82983723,5.72838979 C9.62230202,5.54622572 9.30638833,5.56679309 9.12422426,5.7743283 C9.04415337,5.86555116 9,5.98278612 9,6.10416552 L9,17.9003957 C9,18.1765381 9.22385763,18.4003957 9.5,18.4003957 C9.62084305,18.4003957 9.73759731,18.3566309 9.82866499,18.2771971 Z" fill="#0093dd"></path>
+                                    </g>
+                                  </svg>
+                                </figure>
+                                <span>Play</span>
+                              </div>
+
+                              <div class="rolling rolling_play" (click)="delAllTimer(detailtaskId, '')" *ngIf="stop && detailtaskId === taskId">
+                                <figure class="rolling_icon rolling_iconplay">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16">
+                                    <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"></path>
+                                  </svg>
+                                </figure>
+                                <span>Pause</span>
+                              </div>
+        
+        
+                        <div class="rolling rolling_one" (click)="setOpen(true)">
+                          <figure class="rolling_icon rolling_iconone"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                          </svg></figure>
+                          <span id="talote">Alloted: {{detailtask.time}} h </span>
+                        </div>
+                        
+                        <div class="rolling">
+                          <figure class="rolling_icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                          </svg></figure>
+                          <span id="tspd">{{detailtask.spent}}</span>
+                        </div>
+                      
+                            </div>
+                        </div>
+
+
+                  <!--<div class="bz-btns">
+                      <button type="button" class="btn btn-primary me-sm-1">
+                        
+                        <ion-icon name="play" (click)="startTask(detailtaskId, '', detailtasktitle, detailtask,'start')" *ngIf="detailtaskId != taskId"></ion-icon>
+                        <ion-icon name="pause" (click)="delAllTimer(detailtaskId, '')" *ngIf="stop && detailtaskId === taskId"></ion-icon>
+                      </button>
+
+                      <button type="button" class="btn btn-danger me-sm-1" expand="block" (click)="setOpen(true)"> <ion-icon name="stopwatch-outline"></ion-icon>
+                        Alloted:{{detailtask.time}}h</button>
+                      <button type="button" class="btn btn-info"> <ion-icon name="stopwatch-outline"></ion-icon> Spent :
+                        {{detailtask.spent}}</button>
+                    </div>-->
+
+
+
+
+
+                  </div>
+
+                </ion-label>
+              </ion-item>
+            </div>
+    
+            <!--<ion-item lines="full">
+              <ion-label>
+                <span *ngIf="showSpan" (click)="toggleDisplay()">{{detailtasktitle}}</span>
+                <ion-input *ngIf="!showSpan" placeholder="Task Name" class="custom" [(ngModel)]="detailtasktitle" name="detailtasktitle" (keyup)="updatetaskname($event)"></ion-input>
+              </ion-label>
+            </ion-item>-->
+    
+            <!--<ion-item lines="full" class="addproject_pr">
+              <ion-label>
+                <div class="add_project  me-sm-2" id="addproject-trigger">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                </div>
+
+                <span class="addproject_list" *ngFor="let apro of detailtask.project_assign_array">
+                  {{apro.name}} - Project
+                  <a class="pr" (click)="removeProject(apro.crid, apro.project_id, apro.name, 'project')">x</a>
+                </span>
+
+                <span class="addproject_list" *ngFor="let acat of detailtask.category_assign_array">
+                  {{acat.name}} - Department
+                  <a class="pr" (click)="removeProject(acat.crid, acat.category_id, acat.name, 'category')">x</a>
+                </span>
+
+              </ion-label>
+            </ion-item>-->
+
+    
+            <!--<ion-item lines="full" class="bz-addteam">
+              <ion-label>
+                <div class="d-flex justify-content-between">
+                  <div class="addproject_namelist">
+                      <div id="adduser-trigger" class="addtask_user me-sm-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                      </div>
+                      <div id="taskuser" class="symbol-group symbol-hover">
+                        <div class="symbol symbol-25 symbol-light-success">
+
+                          <span class="symbol-label label-success d-inline"
+                            data-toggle="tooltip" title="{{detailtask.by_user_name}}" data-original-title=""
+                            aria-describedby="tooltip80837">{{detailtask.short_by_name}}</span>
+                          <span class="d-inline me-sm-3"> - </span>
+
+                        </div>
+
+                        <div class="symbol symbol-25 symbol-light-primary" *ngFor="let auser of detailtask.user_assign_name_array">
+                          <span class="symbol-label label-info" data-toggle="tooltip" title="{{auser.name}}"
+                            data-original-title="">{{auser.short_name}}<a class="pr" (click)="removeUser(auser.crid, auser.userid, auser.name)">x</a></span>
+                        </div>
+                        
+                        
+                      </div>
+                  </div>
+                  <div class="bz-btns">
+                    <button type="button" class="btn btn-primary me-sm-1">
+                      
+                      <ion-icon name="play" (click)="startTask(detailtaskId, '', detailtasktitle, detailtask,'start')" *ngIf="detailtaskId != taskId"></ion-icon>
+                      <ion-icon name="pause" (click)="delAllTimer(detailtaskId, '')" *ngIf="stop && detailtaskId === taskId"></ion-icon>
+                    </button>
+
+                    <button type="button" class="btn btn-danger me-sm-1" expand="block" (click)="setOpen(true)"> <ion-icon name="stopwatch-outline"></ion-icon>
+                      Alloted:{{detailtask.time}}h</button>
+                    <button type="button" class="btn btn-info"> <ion-icon name="stopwatch-outline"></ion-icon> Spent :
+                      {{detailtask.spent}}</button>
+                  </div>
+                </div>
+
+              </ion-label>
+            </ion-item>-->
+    
+    
+    
+            <ion-item class="dropdown-background">
+        <ion-button class="active-dropdown-btn" id="auto-trigger"> 
+          <ion-icon name="ellipse" color="{{task_status_color}}"></ion-icon>{{task_status}}
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','status','Active')"><ion-icon name="ellipse" color="primary"></ion-icon>Active </a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('2','status','Completed')"><ion-icon name="ellipse" color="success"></ion-icon>Completed</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('3','status','Deferred')"><ion-icon name="ellipse" color="tertiary"></ion-icon> Deferred</a>
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('4','status','Cancelled')"><ion-icon name="ellipse" color="secondary"></ion-icon> Cancelled</a> 
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger2"> 
+          <ion-icon name="ellipse" color="{{type_name_class}}"></ion-icon>{{type_name}}
+        </ion-button>
+
+        <ion-popover class="active-dropdown" trigger="auto-trigger2" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','type','Normal')"><ion-icon name="ellipse" color="danger"></ion-icon>Normal </a>
+                </ion-item>
+                <ion-item *ngIf="user_create_permanent_task == '1'">
+                  <a href="javascript:void(0);" (click)="updateStatus('2','type','Permanent')"><ion-icon name="ellipse" color="success"></ion-icon>Permanent</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="recusiveOpen(true)"><ion-icon name="ellipse" color="warning"></ion-icon>Recursive</a>
+                </ion-item>
+               
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger3"> 
+          <ion-icon name="ellipse" color="{{priority_class}}"></ion-icon>{{priority}}
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger3" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','priority','High')"><ion-icon name="ellipse" color="danger"></ion-icon>High </a>
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('3','priority','Medium')"><ion-icon name="ellipse" color="tertiary"></ion-icon>Medium</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('2','priority','Low')"><ion-icon name="ellipse" color="success"></ion-icon>Low </a> 
+                </ion-item>
+                
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('4','priority','Normal')"><ion-icon name="ellipse" color="secondary"></ion-icon> Normal</a>
+                </ion-item>
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger4"> 
+         Notify Me
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger4" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                 <ion-checkbox [formControl]="startedControl" (ionChange)="notifyMestarted($event)"></ion-checkbox>Started
+                </ion-item>
+                <ion-item>
+                 <ion-checkbox [formControl]="completedControl" (ionChange)="notifyCompleted($event)"></ion-checkbox>Completed
+                </ion-item>
+                 
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <!--<ion-button class="active-calender"  id="auto-trigger5"> 
+          <ion-icon name="calendar-outline"></ion-icon> {{detailtask.daterange}}
+        </ion-button>
+         <ion-popover class="active-calender-pop" trigger="auto-trigger5" size="auto">
+           <ng-template>
+             <ion-content class="ion-padding">
+              <ion-datetime></ion-datetime>
+             </ion-content>
+           </ng-template>
+         </ion-popover>-->
+         <div class="bz-range-calender" *ngIf="type_name != 'Permanent'">
+         <input type="text" class="active-calender-new" ngxDaterangepickerMd [(ngModel)]="selectedDateRange" startKey="start"
+    endKey="end" placeholder="Choose date" [showDropdowns]="true"
+       [timePicker]="true"
+       [timePickerIncrement]="15"
+       [timePicker24Hour]="false"
+       [locale]="{ format: 'MM/DD/YYYY hh:mm A' }" (change)="dateRangeSelected($event)"/>
+       </div>
+         
+         <!--<ngx-daterangepicker-material
+            [(ngModel)]="selectedDateRange"
+            [showDropdowns]="true"
+            [showWeekNumbers]="true"
+            [startDate]="startDate"
+            [endDate]="endDate"
+            (selected)="dateRangeSelected($event)"
+          ></ngx-daterangepicker-material>-->
+
+         <ion-button class="active-calender"> 
+          <div class="box">
+            <input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" (change)="handleFileInput($event)" multiple />
+            <label for="file-1"><ion-icon name="attach-outline"></ion-icon><span>Attach file&hellip;</span></label>
+          </div>
+         </ion-button>
+
+         <!--<ion-button class="active-dropdown-btn" id="auto-trigger4_editr" (click)="openTaskSidebar()"> 
+         Edit Task
+        </ion-button>-->
+        <ion-button class="active-dropdown-btn" id="auto-trigger4_editr" (click)="recusiveOpen(true)"> 
+         Edit Recursive
+        </ion-button>
+
+         </ion-item>
+
+          <!--<ion-item lines="full">
+            <ion-label>
+              <span><ion-icon name="add-circle-outline"></ion-icon> Add subtask</span>
+            </ion-label>
+          </ion-item>-->
+
+          <!--task docdrag drop area-->
+          <div class="editor-container" 
+             (dragenter)="onDragEnter($event)" 
+             (dragleave)="onDragLeave($event)" 
+             (dragover)="onDragOver($event)" 
+             (drop)="onDrop($event)">
+          <!-- CKEditor remains always visible -->
+          <ckeditor [editor]="customEditor" [data]="editorData" (keyup)="onKeyUp($event)"></ckeditor>
+          
+          <!-- Drop zone, visibility controlled by drag events -->
+          <div *ngIf="isDropZoneVisible" class="drop-zone">
+            Drag and drop a document here
+          </div>
+        </div>
+          <!--end -->
+</div>
+          <!--<ckeditor [editor]="customEditor" [data]="editorData" (keyup)="onKeyUp($event)"></ckeditor>-->
+    
+            <div class="sidebar-notes">
+              <!--<div class="bz-editor">
+                <ion-item lines="full">
+                  <ckeditor [editor]="customEditor" [data]="editorData" (keyup)="onKeyUp($event)"></ckeditor>
+              
+                </ion-item> 
+            </div>-->
+            
+            <div class="notes-sep"> 
+              <span>{{detailtask.tfiles}} Files</span> 
+            </div>
+    
+            <ion-item *ngFor="let tfile of detailtask.attchment_Arr">
+              <ion-avatar (click)="downloadFile(tfile.downlodurl)">
+                <img alt="{{tfile.name}}" src="{{tfile.link}}" />
+              </ion-avatar>
+              <ion-label>
+                <h3>{{tfile.name}}</h3>
+              </ion-label>
+              <ion-label>
+                <h3>{{tfile.username}}</h3>
+              </ion-label>
+            </ion-item>
+    
+            <div class="notes-sep"> 
+              <span>{{detailtask.tnotes}} Notes</span> 
+            </div>
+    
+            <ion-item *ngFor="let note of detailtask.task_note_arr">
+              <ion-avatar *ngIf="note.image; else noAvatarNote">
+                <img alt="{{note.name}}" src="{{note.image}}" />
+              </ion-avatar>
+              <ng-template #noAvatarNote>
+                <span class="symbol-note d-inline"  data-toggle="tooltip" title="{{note.name}}" data-original-title="" aria-describedby="tooltip80837">{{note.short_name}}</span>
+              </ng-template>
+              <ion-label>
+                <h3>{{note.name}}</h3>
+                <p>{{note.notes}}</p>
+              </ion-label>
+            </ion-item>
+            
+          </div>
+    
+            <ion-popover class="bz_user_dropdown" trigger="addproject-trigger" triggerAction="click">
+              <ng-template>
+                <ion-content class="ion-padding">
+                  <div class="project_search">
+                    <ion-searchbar (ionInput)="onSearch($event)"></ion-searchbar>
+                  </div>
+                  <div class="list">   
+                    <a class="item" href="javascript:void(0);" *ngFor="let pro of allProjects" (click)="assignProject(pro.uid,pro.name,pro.type)">{{pro.name}} - {{pro.type}}</a>
+                  </div>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+    
+            <ion-popover class="bz_user_dropdown" trigger="adduser-trigger" triggerAction="click">
+                <ng-template>
+                  <ion-content class="ion-padding">
+                    <div class="project_search">
+                      <ion-searchbar (ionInput)="onSearchDseluser($event)"></ion-searchbar>
+                    </div>
+
+                    <div class="list">
+                      <ion-item *ngFor="let usr of allUsers" (click)="assignUser(usr.uid,usr.name)">
+
+                        <ion-avatar slot="start" *ngIf="usr.image; else noAvatar">
+                          <img alt="Silhouette of a person's head" src="{{usr.image}}" />
+                        </ion-avatar>
+                        <ng-template #noAvatar>
+                        <span class="symbol-label label-success d-inline"
+                              data-toggle="tooltip" title="{{usr.name}}" data-original-title=""
+                              aria-describedby="tooltip80837">{{usr.short_name}}</span>
+                        </ng-template>
+                        <ion-label>
+                          <h3>{{usr.name}}</h3>
+                          <p>{{usr.email}}</p>
+                        </ion-label>
+                      </ion-item>
+
+                      
+                    </div>
+                  </ion-content>
+                </ng-template>
+              </ion-popover>
+          </ion-col>
+    </ion-row>
+
+
+    <ion-item class="calendar-footer" lines="full">
+      <ion-label>
+        <ion-textarea class="custom-textarea" placeholder="Task Note..." [(ngModel)]="taskNote"></ion-textarea>
+        <ion-button (click)="savenotsValue()"><ion-icon name="paper-plane-outline"></ion-icon></ion-button>
+      </ion-label>
+    </ion-item>
+
+  </div>
+
+
+  <!--popup alloted-->
+
+  <ion-modal [isOpen]="isModalOpen" class="allotedpopup">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Task Estimated Time</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="setOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding alloted-popup">
+        <form>
+          <ion-label>Estimated Time in Hour</ion-label>
+          <ion-input placeholder="Custom input" class="custom" [(ngModel)]="taskTimealloted" [ngModelOptions]="{ standalone: true }"></ion-input>
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="setOpen(false)">Cancel</ion-button>
+            <ion-button color="primary" (click)="saveTimealloted(detailtaskId)">Save</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+
+
+<!--Recursive popup-->
+  <ion-modal [isOpen]="isRecursiveOpen" class="recursive-popup">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Recursive</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="recusiveOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding recursive-pop">
+        <h4>Welcome to Recurring Tasks!</h4>
+        <h3 class="error-val" *ngIf="errorvalidation != ''">{{ errorvalidation }}</h3>
+        <form>
+          <ion-row>
+            
+            <ion-col id="every_days" *ngIf="frequencyOption === 'day' || frequencyOption === 'weekly'">
+              <ion-list>
+                  <ion-label>Every</ion-label>
+                  <ion-input placeholder="Custom input" class="custom" [(ngModel)]="repeat" name="repeat"></ion-input>
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="recursive_month_div"  *ngIf="frequencyOption === 'monthly'">
+              <ion-list>
+                <ion-label>Every</ion-label>
+                <select class="form-select form-select-solid role" [(ngModel)]="recursive_days_number" name="recursive_days_number" id="recursive_days_number">
+                  <option *ngFor="let day of monthDays" [value]="day">{{ getOrdinal(day) }}</option>
+                </select>
+
+                
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="recursive_year_div" *ngIf="frequencyOption === 'year'">
+              <ion-list>
+                <ion-label>Every</ion-label>
+                <div class="date-picker-wrapper">
+                  <ion-input type="date" id="recursive_year_date" [(ngModel)]="recursive_year_date" name="recursive_year_date"></ion-input>
+                </div>
+              </ion-list>
+            </ion-col>
+
+            <ion-col>
+              <ion-list>
+                <ion-label>Frequency</ion-label>
+                <select class="form-select form-select-solid role" placeholder="Monthly" [(ngModel)]="frequencyOption" name="frequencyOption" id="frequancy" (change)="onChangeFrequencyOption()">
+                    <option value="day">Day</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="year">Year</option>
+                </select>
+              </ion-list>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row id="recursive_week_day" *ngIf="frequencyOption === 'weekly'">
+            <ion-col>
+              <ion-list>
+                <ion-label>On</ion-label>
+                <div class="checkbox-container">
+                <div *ngFor="let weekday of weekdays" class="checkbox-inline">
+                  
+                    <input type="checkbox" class="week-checkbox" name="recursive_week_name[]" id="recursive_week_name_{{ weekday }}" [value]="weekday" [checked]="avaibilitydata.includes(weekday)" (change)="toggleSelection($event, weekday)">
+                    <span></span>{{ weekday }}
+                  
+                </div>
+              </div>
+              </ion-list>
+            </ion-col>
+          </ion-row>   
+
+          <ion-row id="spday">
+            <ion-col>
+              <ion-list>
+                <ion-label>End</ion-label>
+                <select class="form-select form-control" [(ngModel)]="recursive_end_type" id="recursive_end_type" name="recursive_end_type" (change)="endrecursivedate();" [disabled]="isRecursiveEndTypeDisabled">
+                  <option value="">Select End</option>
+                  <option value="1">After</option>
+                  <option value="2">On Date</option>
+                </select>
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="end_after" *ngIf="recursive_end_type === '1' || frequencyOption === 'monthly'">
+              <ion-list>
+                <ion-label>After</ion-label>
+                <ion-input placeholder="After times" class="custom" [(ngModel)]="recursive_after" id="recursive_after" name="recursive_after"></ion-input>
+              </ion-list>
+            </ion-col>
+
+            <ion-col id="end_on_date" *ngIf="recursive_end_type === '2'">
+              <ion-list>
+                <ion-label>On date</ion-label>
+                <div class="date-picker-wrapper">
+                <ion-input id="recursive_ondate" type="date" [(ngModel)]="recursive_ondate" name="recursive_ondate"></ion-input>
+                </div>
+              </ion-list>
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row style="display: none;">
+            <ion-col>
+              <ion-list>
+                <ion-label>Satrt Date</ion-label>
+                <div class="date-picker-wrapper">
+                  <ion-input type="date" [(ngModel)]="dateN" name="dateN"></ion-input>
+                    
+                </div>
+              </ion-list>
+            </ion-col>
+
+            <ion-col>
+              <ion-list>
+                <ion-label>End Date</ion-label>
+                <div class="date-picker-wrapper">
+                  <ion-input type="date" [(ngModel)]="dateT" name="dateT"></ion-input>
+
+                </div>
+              </ion-list>
+             </ion-col>
+
+          </ion-row>
+          <ion-row>
+          </ion-row>
+          <ion-row>
+          </ion-row>
+          
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="recusiveOpen(false)">Cancel</ion-button>
+            <ion-button color="primary" (click)="saverecursivetask(detailtaskId)">Save</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+<!-- for permanent task model -->
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isProjectModalOpen" class="remind-popup" (ionModalDidDismiss)="modalDismissed()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title style="margin-left: 15px;">Project Selection</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="setProjectOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding alloted-popup">
+        <form>
+          <ion-label>Select Project for Permanent Task</ion-label>
+          <!--<select class="form-select me-2" (change)="onProjectPlayChange($event)">
+            <option value="">Select Project</option>
+            <option *ngFor="let pro of flatselprojectData" [value]="pro.uid">
+              <span [innerHTML]="getIndentation(pro.level)"></span> {{ pro.name }}
+            </option>
+          </select>-->
+          <div class="sb-dropdown-container">
+              <button class="sb-dropdown-btn" (click)="toggleDropdown()" id="dropdownBtn">
+                <span id="buttonText">{{ selectedProjectPer || 'Select Project' }}</span>
+                <span class="dropdown-arrow" *ngIf="!selectedProjectPer">▼</span>
+                <span class="clear-selection" *ngIf="selectedProjectPer" (click)="clearSelection($event)" id="clearSelection">×</span>
+              </button>
+              <div class="sb-dropdown-content" *ngIf="dropdownVisible" id="dropdown">
+                <input type="text" placeholder="Search..." name="searchTextPer" [(ngModel)]="searchTextPer" (input)="filterProjects()" id="searchBox">
+                <ul id="projectList">
+                  <li *ngFor="let project of filteredProjects">
+                    <span (click)="selectProject(project.name,project.uid)">{{ project.name }}</span>
+                    <ul *ngIf="project.subProjects.length > 0">
+                      <li *ngFor="let subProject of project.subProjects" (click)="selectProject(subProject.name, subProject.uid)">{{ subProject.name }}</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+          </div>
+          <p></p>
+          <p></p>
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="setProjectOpen(false)">Cancel</ion-button>
+            <ion-button color="primary" (click)="setProjectPlay()">Play</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>
+<!-- end for permanent task model -->
+</div>

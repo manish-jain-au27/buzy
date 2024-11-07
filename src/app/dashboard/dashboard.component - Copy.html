@@ -1,0 +1,910 @@
+<!--<nav class="navbar navbar-expand-lg navbar-light bz-top-header">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><img src="assets/logo-icon.png" alt=""></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="javascript:void(0);" (click)="goto('dashboard')"><span class="icon-dashboard_icon"></span> Dsahboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0);" (click)="goto('calendar')"><span class="icon-calender_icon"></span> Calender</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0);" (click)="goto('task')"><span class="icon-task_icon"></span> Task</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0);" (click)="goto('chat')"><span class="icon-chat_icon"></span> Chat</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center">
+
+        <div class="bz-topplay-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop">
+            <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+          </svg>
+          <span>{{ outputTimer }}</span>
+        </div>
+        <div class="dropdown d-inline-block">
+          <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="icon-notification_icon"></span>
+            <span class="badge bg-danger rounded-pill">3</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown" >
+            <div class="p-3">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h6 class="m-0" key="t-notifications"> Notifications </h6>
+                </div>
+                <div class="col-auto">
+                  <a href="#!" class="small" key="t-view-all"> View All</a>
+                </div>
+              </div>
+            </div>
+            <div class="bz-simplebar-main" style="max-height: 230px;">
+              <div class="bz-simplebar-wrapper">
+                <div class="bz-simplebar-height-auto-observer-wrapper">
+                  <div class="bz-simplebar-height-auto-observer"></div>
+                </div>
+                <div class="bz-simplebar-mask">  
+                    <div class="bz-simplebar-content">
+                        <a href="javascript: void(0);" class="text-reset bz-notification-item">
+                          <div class="d-flex"> 
+                            <div class="flex-grow-1">
+                              <h6 class="bz-notification-heading" key="t-your-order">Your order is placed</h6>
+                              <div class="font-size-12 text-muted">
+                                <p class="bz-notification-subheading" key="t-grammer">If several languages coalesce the
+                                  grammar</p>
+                                  <div class="d-flex justify-content-between">  
+                                    <p class="bz-notification-time">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch" viewBox="0 0 16 16">
+                                        <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z"/>
+                                        <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z"/>
+                                      </svg> <span key="t-min-ago">3 min
+                                        ago</span></p>
+                                    <p class="bz-notification-close">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                      </svg>
+                                    </p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <a href="javascript: void(0);" class="text-reset bz-notification-item">
+                          <div class="d-flex"> 
+                            <div class="flex-grow-1">
+                              <h6 class="bz-notification-heading" key="t-your-order">Your order is placed</h6>
+                              <div class="font-size-12 text-muted">
+                                <p class="bz-notification-subheading" key="t-grammer">If several languages coalesce the
+                                  grammar</p>
+                                  <div class="d-flex justify-content-between">  
+                                    <p class="bz-notification-time">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch" viewBox="0 0 16 16">
+                                        <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z"/>
+                                        <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z"/>
+                                      </svg> <span key="t-min-ago">3 min
+                                        ago</span></p>
+                                    <p class="bz-notification-close">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                      </svg>
+                                    </p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <a href="javascript: void(0);" class="text-reset bz-notification-item">
+                          <div class="d-flex"> 
+                            <div class="flex-grow-1">
+                              <h6 class="bz-notification-heading" key="t-your-order">Your order is placed</h6>
+                              <div class="font-size-12 text-muted">
+                                <p class="bz-notification-subheading" key="t-grammer">If several languages coalesce the
+                                  grammar</p>
+                                  <div class="d-flex justify-content-between">  
+                                    <p class="bz-notification-time">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch" viewBox="0 0 16 16">
+                                        <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z"/>
+                                        <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z"/>
+                                      </svg> <span key="t-min-ago">3 min
+                                        ago</span></p>
+                                    <p class="bz-notification-close">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                      </svg>
+                                    </p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+
+                        <a href="javascript: void(0);" class="text-reset bz-notification-item">
+                          <div class="d-flex"> 
+                            <div class="flex-grow-1">
+                              <h6 class="bz-notification-heading" key="t-your-order">Your order is placed</h6>
+                              <div class="font-size-12 text-muted">
+                                <p class="bz-notification-subheading" key="t-grammer">If several languages coalesce the
+                                  grammar</p>
+                                
+                                <div class="d-flex justify-content-between">  
+                                    <p class="bz-notification-time">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch" viewBox="0 0 16 16">
+                                        <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z"/>
+                                        <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z"/>
+                                      </svg> <span key="t-min-ago">3 min
+                                        ago</span></p>
+                                    <p class="bz-notification-close">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                      </svg>
+                                    </p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                        <a href="javascript: void(0);" class="text-reset bz-notification-item">
+                          <div class="d-flex"> 
+                            <div class="flex-grow-1">
+                              <h6 class="bz-notification-heading" key="t-your-order">Your order is placed</h6>
+                              <div class="font-size-12 text-muted">
+                                <p class="bz-notification-subheading" key="t-grammer">If several languages coalesce the
+                                  grammar</p>
+                                  <div class="d-flex justify-content-between">  
+                                    <p class="bz-notification-time">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch" viewBox="0 0 16 16">
+                                        <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z"/>
+                                        <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z"/>
+                                      </svg> <span key="t-min-ago">3 min
+                                        ago</span></p>
+                                    <p class="bz-notification-close">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                      </svg>
+                                    </p>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                    </div>
+                </div>
+                
+              </div>
+            </div>
+            <div class="p-2 border-top d-grid">
+              <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                </svg> <span key="t-view-more">View
+                  More..</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="flex-shrink-0 dropdown">
+          <a href="javascript:void(0)" class="d-block link-dark text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="48" height="48" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item" href="#">Check Updates</a></li>
+            <li><a class="dropdown-item" href="#">Refresh</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="javascript:void(0);" (click)="logout()">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>-->
+<app-header></app-header>
+
+  <div class="bz-content-body" id="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 pt-3">
+            <div class="d-flex justify-content-between">
+              <h2>Tasks</h2>
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item"><span>{{ outputTimer }}</span></li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><span class="icon-list_icon"></span></button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><span class="icon-kanban_icon"></span></button>
+                </li> 
+              </ul>
+            </div>
+        </div>
+
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0"> 
+            <table class="table table-striped table-hover">
+              <thead>
+            <tr>
+              <th>Name</th>
+              <th>Priority</th>
+              <th>Alloted</th>
+              <th>Spent </th>
+              <th>Assignee </th>
+              <th>Time </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <div class="load_show" *ngIf="loadingImgResult">
+              <span class="load_show_text">
+                <div>
+                  <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                </div>
+                <span>Fetching your projects and tasks ...</span>
+  
+                
+              </span>
+            </div>
+            <tr *ngFor="let taskDetail of tasks">
+              <td>{{taskDetail?.task_name | titlecase}}</td>
+              <td *ngIf="taskDetail.priority_name === 'High_danger'"><span class="icon-high_icon"></span> High</td>
+              <td *ngIf="taskDetail.priority_name === 'Low_success'"><span class="icon-low_icon"></span> Low</td>
+              <td *ngIf="taskDetail.priority_name === 'Medium_info'"><span class="icon-medium_icon"></span> Medium</td>
+              <td *ngIf="taskDetail.priority_name === 'Normal_'"><span class="icon-low_icon"></span> Normal</td>
+              <td *ngIf="taskDetail.priority_name === 'Priority_'"><span class="icon-warning_icon"></span> ASAP</td>
+              <td>{{taskDetail.time}} H </td>
+              <td>{{taskDetail.spent}}</td>
+              <td>
+                <!-- Avatar Group -->
+                <div class="avatar-group avatar-group-sm">
+                  <span *ngFor="let user of taskDetail.assign_user.slice(0, 2); let i = index;">
+                    <span class="avatar" *ngIf="user.image?.length">
+                      <img class="avatar-img" src="{{user.image}}" alt="{{user.name}}">
+                    </span>
+                    
+                    <span *ngIf="!user.image?.length" class="avatar avatar-soft-dark">
+                      <span class="avatar-initials">{{user.short_name}}</span>
+                    </span>
+                  </span>
+                  
+
+                   <!-- Apps -->
+                  <div class="dropdown" *ngIf="taskDetail.assign_user.length>2">
+                    <button type="button" class="cell-img-more" id="navbarAppsDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-dropdown-animation>
+                      + 2
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless" aria-labelledby="navbarAppsDropdown" style="width: 18rem;">
+                      <div class="card">
+                        <!-- Header -->
+                        <div class="card-header">
+                          <h4 class="card-title">Assign User {{taskDetail.assign_user.length}}</h4>
+                        </div>
+                        <!-- End Header -->
+
+                        <!-- Body -->
+                        <div class="card-body card-body-height">
+                          <a class="dropdown-item" href="#" *ngFor="let userr of taskDetail.assign_user">
+                            <div class="d-flex align-items-center">
+
+                              <div class="flex-shrink-0" *ngIf="userr.image?.length">
+                                <img class="avatar avatar-xs avatar-4x3" src="{{userr.image}}" alt="{{userr.name}}">
+                              </div>
+
+                              <div class="avatar avatar-soft-dark" *ngIf="!userr.image?.length">
+                                <span class="avatar-initials">{{userr.short_name}}</span>
+                              </div>
+
+                              <div class="flex-grow-1 text-truncate ms-2">
+                                <h5 class="mb-0">{{userr.name}} <!--<span class="badge_time">8:57 AM</span>--></h5> 
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <!-- End Body -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Apps -->
+
+                </div>
+                <!-- End Avatar Group -->
+              </td>
+              <td>
+                <div class="bz-topplay-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16" (click)="startTask(taskDetail.task_id_uid, '', taskDetail.task_name, taskDetail,'start')" *ngIf="taskDetail.task_id_uid != taskId">
+                    <path
+                      d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                  </svg>
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16" (click)="delAllTimer(taskId, '')" *ngIf="stop && taskDetail.task_id_uid === taskId">
+                    <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                  </svg>
+                  
+                  <!--<span *ngIf="taskDetail.task_id_uid != taskId">{{taskDetail.spent}}</span>-->
+                  <span *ngIf="taskDetail.task_id_uid != taskId">00:00:00</span>
+                  <span *ngIf="taskDetail.task_id_uid == taskId">{{ outputTimer }}</span>
+                  
+                </div>
+              </td>
+              <td>
+                   <!-- Dropdown -->
+                  <div class="dropdown">
+                    <button type="button" class="btn btn-ghost-secondary btn-icon btn-sm card-dropdown-btn rounded-circle" id="kanbanProjectsGridDropdown3" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span class="icon-dots_icon"></span>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
+                          <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+                          <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                        </svg> Add Notes
+                      </a>                      
+                    </div>
+                  </div>
+                  <!-- End Dropdown -->
+              </td>
+
+            </tr>
+
+            
+
+
+
+          </tbody>
+        
+          </table>
+          </div>
+          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+
+            <!--<app-kanban></app-kanban>-->
+            <!-- kanban view code -->
+            <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="overdue-title"> Overdue</ion-card-header>
+                      <div class="kanban-box" 
+                          cdkDropList
+                          #ovList="cdkDropList"
+                          id="overdue"
+                          [cdkDropListData]="getTaskList('overdue')"
+                          [cdkDropListConnectedTo]="[cuList,copList,upList]"
+                          class="example-list"
+                          (cdkDropListDropped)="drop($event)">
+                          <ion-card *ngFor="let task of getTaskList('overdue');" cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)">
+                            <ion-card-content>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-title text-truncate">{{ task.title }}</span>
+                                
+                                <!--<ion-icon name="create-outline"></ion-icon>-->
+                                
+                                  <!--<ion-icon name="create-outline" (click)="toggleMenu()"></ion-icon>-->
+                                  <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                  </ion-menu-toggle>
+                                
+
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-tags">{{ task.description }}</span>
+                                <!--<ion-icon name="play"></ion-icon>
+                                <ion-icon name="pause"></ion-icon>-->
+
+                                <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                                <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+
+                            </div>
+                            </ion-card-content>
+                          </ion-card>
+
+                          
+                      </div>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="current-title"> Current</ion-card-header>
+                        <div class="kanban-box" 
+                          cdkDropList
+                          #cuList="cdkDropList"
+                          id="current"
+                          [cdkDropListData]="getTaskList('current')"
+                          class="example-list"
+                          [cdkDropListConnectedTo]="[ovList,upList,copList]"
+                          (cdkDropListDropped)="drop($event)">
+                          <ion-card *ngFor="let task of getTaskList('current');" cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)">
+                            <ion-card-content>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-title text-truncate">{{ task.title }}</span>
+                                <!--<ion-icon name="create-outline"></ion-icon>-->
+                                <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                </ion-menu-toggle>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <span class="task-tags">{{ task.description }}</span>
+
+                                
+
+                                <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                                <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+
+                            </div>
+                            </ion-card-content>
+                          </ion-card>
+
+                          
+                        </div>
+                    </div>
+
+                  </ion-col>
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="upcoming-title">Upcoming</ion-card-header>
+                      <div class="kanban-box"
+                          cdkDropList
+                          #upList="cdkDropList"
+                          [cdkDropListData]="getTaskList('upcoming')"
+                          id="upcoming"
+                          class="example-list"
+                          [cdkDropListConnectedTo]="[copList,cuList,ovList]"
+                          (cdkDropListDropped)="drop($event)">
+                        <ion-card *ngFor="let task of getTaskList('upcoming');" cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)">
+                          <ion-card-content>
+                            <div class="d-flex justify-content-between">
+                              <span class="task-title text-truncate">{{ task.title }}</span>
+                              <!--<ion-icon name="create-outline"></ion-icon>-->
+                              <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                  <ion-icon name="create-outline"></ion-icon>
+                              </ion-menu-toggle>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                              <span class="task-tags">{{ task.description }}</span>
+                              <!--<ion-icon name="play"></ion-icon>-->
+
+                              <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                              <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+                          </div>
+                          </ion-card-content>
+                        </ion-card>
+
+                        
+                      </div>
+                    </div>
+                  </ion-col>
+
+                  <ion-col>
+                    <div class="kanban-view">
+                      <ion-card-header class="completed-title"> Completed</ion-card-header>
+                      <div class="kanban-box"
+                          cdkDropList
+                          #copList="cdkDropList"
+                          [cdkDropListData]="getTaskList('completed')"
+                          id="completed"
+                          class="example-list"
+                          [cdkDropListConnectedTo]="[upList,cuList,ovList]"
+                          (cdkDropListDropped)="drop($event)">
+                      <ion-card *ngFor="let task of getTaskList('completed');" cdkDrag [cdkDragData]="task"
+                  (cdkDragDropped)="onTaskDropped($event)">
+                        <ion-card-content>
+                          <div class="d-flex justify-content-between">
+                             <span class="task-title text-truncate">{{ task.title }}</span>
+                             <!--<ion-icon name="create-outline"></ion-icon>-->
+                              <ion-menu-toggle (click)="getTaskDetails(task.uid, task.title)">
+                                <ion-icon name="create-outline"></ion-icon>
+                              </ion-menu-toggle>
+                          </div>
+                          <div class="d-flex justify-content-between">
+                            <span class="task-tags">{{ task.description }}</span>
+                            <!--<ion-icon name="play"></ion-icon>-->
+                            <ion-icon name="play" (click)="startTask(task.uid, '', task.title, task,'start')" *ngIf="task.uid != taskId"></ion-icon>
+                            <ion-icon name="pause" (click)="delAllTimer(taskId, '')" *ngIf="stop && task.uid === taskId"></ion-icon>
+                         </div>
+                        </ion-card-content>
+                      </ion-card>
+                      
+                      </div>
+
+                    </div>
+                  </ion-col>
+                </ion-row>
+            </ion-grid>
+            <!-- kanban view code -->
+          </div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalCenterTitle">Working on Hrms Dashboard Page Design.</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card mb-3" >
+          <div class="row g-0">
+            <div class="col-md-12">
+              <div class="card-body">
+                <div class="bz-name-tag">AS</div>
+                <div class="bz-content-box">
+                  <h5 class="card-title">Ashutosh</h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural.</p>
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="mt-3">
+          <div class="mb-3">
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Task Note...">
+          </div>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- for side bar -->
+<ion-menu  class="rightsidebar" side="end" contentId="main-content" >
+  <ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-title>Task Detail View</ion-title>
+        </ion-col>
+        <ion-col class="text-end">
+          <ion-menu-toggle>
+            <ion-button><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-menu-toggle>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+  </ion-header>
+  <ion-content >
+    <ion-row>
+      <ion-col>
+        <div id="edit-task"></div>
+        <ion-item lines="full">
+          <ion-label>
+            <span>{{detailtasktitle}}</span>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="full" class="addproject_pr">
+          <ion-label>
+            <div class="add_project  me-sm-2" id="addproject-trigger">
+              <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+            </div>
+
+            <span class="addproject_list" *ngFor="let apro of detailtask.project_assign_array">
+              {{apro.name}} - Project
+              <a class="pr" (click)="removeProject(apro.crid, apro.name)">x</a>
+            </span>
+
+            <span class="addproject_list" *ngFor="let acat of detailtask.category_assign_array">
+              {{acat.name}} - Department
+              <a class="pr" (click)="removeProject(acat.crid, acat.name)">x</a>
+            </span>
+
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label>
+            <div class="d-flex justify-content-between">
+              <div class="addproject_namelist">
+                  <div id="adduser-trigger" class="addtask_user me-sm-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24M296 216v160M376 296H216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                  </div>
+                  <div id="taskuser" class="symbol-group symbol-hover">
+                    <div class="symbol symbol-25 symbol-light-success">
+
+                      <span class="symbol-label label-success d-inline"
+                        data-toggle="tooltip" title="{{detailtask.by_user_name}}" data-original-title=""
+                        aria-describedby="tooltip80837">{{detailtask.short_by_name}}</span>
+                      <span class="d-inline me-sm-3"> - </span>
+
+                    </div>
+
+                    <div class="symbol symbol-25 symbol-light-primary" *ngFor="let auser of detailtask.user_assign_name_array">
+                      <span class="symbol-label label-info" data-toggle="tooltip" title="{{auser.name}}"
+                        data-original-title="">{{auser.short_name}}<a class="pr" (click)="removeUser(auser.crid, auser.name)">x</a></span>
+                    </div>
+                    
+                    
+                  </div>
+              </div>
+              <div>
+                <button type="button" class="btn btn-primary me-sm-1">
+                  
+                  <ion-icon name="play" (click)="startTask(detailtaskId, '', detailtasktitle, detailtask,'start')" *ngIf="detailtaskId != taskId"></ion-icon>
+                  <ion-icon name="pause" (click)="delAllTimer(detailtaskId, '')" *ngIf="stop && detailtaskId === taskId"></ion-icon>
+                </button>
+
+                <button type="button" class="btn btn-danger me-sm-1" expand="block" (click)="setOpen(true)"> <ion-icon name="stopwatch-outline"></ion-icon>
+                  Alloted:{{detailtask.time}}h</button>
+                <button type="button" class="btn btn-info"> <ion-icon name="stopwatch-outline"></ion-icon> Spent :
+                  {{detailtask.spent}}</button>
+              </div>
+            </div>
+
+          </ion-label>
+        </ion-item>
+
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger"> 
+          <ion-icon name="ellipse" color="{{task_status_color}}"></ion-icon>{{task_status}}
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','status','Active')"><ion-icon name="ellipse" color="primary"></ion-icon>Active </a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('2','status','Completed')"><ion-icon name="ellipse" color="success"></ion-icon>Completed</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('3','status','Deferred')"><ion-icon name="ellipse" color="tertiary"></ion-icon> Deferred</a>
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('4','status','Cancelled')"><ion-icon name="ellipse" color="secondary"></ion-icon> Cancelled</a> 
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger2"> 
+          <ion-icon name="ellipse" color="{{type_name_class}}"></ion-icon>{{type_name}}
+        </ion-button>
+
+        <ion-popover class="active-dropdown" trigger="auto-trigger2" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','type','Normal')"><ion-icon name="ellipse" color="danger"></ion-icon>Normal </a>
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('2','type','Permanent')"><ion-icon name="ellipse" color="success"></ion-icon>Permanent</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);"><ion-icon name="ellipse" color="warning"></ion-icon>Recursive</a>
+                </ion-item>
+               
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger3"> 
+          <ion-icon name="ellipse" color="{{priority_class}}"></ion-icon>{{priority}}
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger3" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('1','priority','High')"><ion-icon name="ellipse" color="danger"></ion-icon>High </a>
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('2','priority','Low')"><ion-icon name="ellipse" color="success"></ion-icon>Low </a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('3','priority','Medium')"><ion-icon name="ellipse" color="tertiary"></ion-icon>Medium</a> 
+                </ion-item>
+                <ion-item>
+                  <a href="javascript:void(0);" (click)="updateStatus('4','priority','Normal')"><ion-icon name="ellipse" color="secondary"></ion-icon> Normal</a>
+                </ion-item>
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-dropdown-btn" id="auto-trigger4"> 
+         Notify Me
+        </ion-button>
+        <ion-popover class="active-dropdown" trigger="auto-trigger4" size="auto">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list>
+                <ion-item>
+                 <ion-checkbox [formControl]="startedControl" (ionChange)="notifyMestarted($event)"></ion-checkbox>Started
+                </ion-item>
+                <ion-item>
+                 <ion-checkbox [formControl]="completedControl" (ionChange)="notifyCompleted($event)"></ion-checkbox>Completed
+                </ion-item>
+                 
+                
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-button class="active-calender"  id="auto-trigger5"> 
+          <ion-icon name="calendar-outline"></ion-icon> {{detailtask.daterange}}
+        </ion-button>
+         <ion-popover class="active-calender-pop" trigger="auto-trigger5" size="auto">
+           <ng-template>
+             <ion-content class="ion-padding">
+              <ion-datetime></ion-datetime>
+             </ion-content>
+           </ng-template>
+         </ion-popover>
+
+         <ion-button class="active-calender"> 
+          <div class="box">
+            <input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" multiple />
+            <label for="file-1"><ion-icon name="attach-outline"></ion-icon><span>Attach file&hellip;</span></label>
+          </div>
+         </ion-button>
+
+        <!--<ion-item lines="full">
+          <ion-label>
+            <span><ion-icon name="add-circle-outline"></ion-icon> Add subtask</span>
+          </ion-label>
+        </ion-item>-->
+
+
+        <div class="sidebar-notes">
+        <ion-item lines="full">
+          <ion-label>
+            <ion-textarea class="custom-textarea" placeholder="Type message..." [formControl]="descriptionControl" (keyup)="onKeyUp($event)"></ion-textarea>
+          </ion-label>
+        </ion-item>
+        
+        <div class="notes-sep"> 
+          <span>{{detailtask.tfiles}} Files</span> 
+        </div>
+
+        <ion-item *ngFor="let tfile of detailtask.attchment_Arr">
+          <ion-avatar>
+            <img alt="{{tfile.name}}" src="{{tfile.link}}" />
+          </ion-avatar>
+          <ion-label>
+            <h3>{{tfile.username}}</h3>
+          </ion-label>
+        </ion-item>
+
+        <div class="notes-sep"> 
+          <span>{{detailtask.tnotes}} Notes</span> 
+        </div>
+
+        <ion-item *ngFor="let note of detailtask.task_note_arr">
+          <ion-avatar>
+            <img alt="Silhouette of a person's head" src="{{note.image}}" />
+          </ion-avatar>
+          <ion-label>
+            <h3>{{note.name}}</h3>
+            <p>{{note.notes}}</p>
+          </ion-label>
+        </ion-item>
+        
+        
+      </div>
+
+
+
+
+        <ion-popover class="bz_user_dropdown" trigger="addproject-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <div class="project_search">
+                <ion-searchbar (ionInput)="onSearch($event)"></ion-searchbar>
+              </div>
+              <div class="list">   
+                <a class="item" href="javascript:void(0);" *ngFor="let pro of allProjects" (click)="assignProject(pro.uid,pro.name,pro.type)">{{pro.name}} - {{pro.type}}</a>
+              </div>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <ion-popover class="bz_user_dropdown" trigger="adduser-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <div class="project_search">
+                <ion-searchbar (ionInput)="onSearchuser($event)"></ion-searchbar>
+              </div>
+
+              <div class="list">
+                <ion-item *ngFor="let usr of allUsers" (click)="assignUser(usr.uid,usr.name)">
+
+                  <ion-avatar slot="start" *ngIf="usr.image; else noAvatar">
+                    <img alt="Silhouette of a person's head" src="{{usr.image}}" />
+                  </ion-avatar>
+                  <ng-template #noAvatar>
+                  <span class="symbol-label label-success d-inline"
+                        data-toggle="tooltip" title="{{usr.name}}" data-original-title=""
+                        aria-describedby="tooltip80837">{{usr.short_name}}</span>
+                  </ng-template>
+                  <ion-label>
+                    <h3>{{usr.name}}</h3>
+                    <p>{{usr.email}}</p>
+                  </ion-label>
+                </ion-item>
+
+                
+              </div>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-item lines="full">
+        <ion-label>
+          <ion-textarea class="custom-textarea" placeholder="Task Note..." [(ngModel)]="taskNote"></ion-textarea>
+          <ion-button (click)="savenotsValue()"><ion-icon name="paper-plane-outline"></ion-icon></ion-button>
+        </ion-label>
+      </ion-item>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
+<!-- end for sidebar -->
+
+<!--popup alloted-->
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isModalOpen" class="allotedpopup">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Task Estimated Time</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="alloted-close" (click)="setOpen(false)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding alloted-popup">
+        <form>
+          <ion-label>Estimated Time in Hour</ion-label>
+          <ion-input placeholder="Custom input" class="custom"></ion-input>
+          <div class="alloted-btn-group">
+            <ion-button color="danger" (click)="setOpen(false)">Cancel</ion-button>
+            <ion-button color="primary">Save</ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+      
+    </ng-template>
+  </ion-modal>
+</ion-content>

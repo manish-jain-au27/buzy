@@ -1,0 +1,997 @@
+<app-header></app-header>
+<app-tasksider></app-tasksider>
+<ion-card>
+  <ion-card-content>
+    <ion-row>
+    <!--Chats Left panel Start Here-->
+      <ion-col size="3" class="bz_chat_aside">  
+        
+        <ion-card-header>
+          <div class="d-flex align-items-center">
+            <div class="symbol-circle" *ngIf="logedinpic">
+              <img alt="Pic" src="{{logedinpic}}">
+            </div>
+            <span *ngIf="!logedinpic" class="symbol-label d-inline" title="{{logedinname}}">{{getShortName(logedinname)}}</span>
+
+            <div class="d-flex flex-column">
+              <a href="#" class="bz-text-dark">{{logedinname}}</a>
+              <span class="bz-text-muted">{{logedinemail}}</span>
+            </div>
+          </div>
+          <!--<button (click)="captureScreen()">Capture Screenshot</button>-->
+          <ion-item>
+            <ion-label>
+              <ion-searchbar (ionInput)="onSearchuser($event)"></ion-searchbar>
+            </ion-label>
+          </ion-item>
+        </ion-card-header>
+        
+
+   
+
+    <!--Chats Left panel list Start Here-->
+        <ion-item class="bz-aside_main">
+          <ion-label>
+            <ion-segment (ionChange)="segmentChanged($event)" value="Chat">
+              <ion-segment-button value="Chat">
+                <ion-label class="chat_aside_icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M60.44 389.17c0 .07 0 .2-.08.38.03-.12.05-.25.08-.38zM439.9 405.6a26.77 26.77 0 01-9.59-2l-56.78-20.13-.42-.17a9.88 9.88 0 00-3.91-.76 10.32 10.32 0 00-3.62.66c-1.38.52-13.81 5.19-26.85 8.77-7.07 1.94-31.68 8.27-51.43 8.27-50.48 0-97.68-19.4-132.89-54.63A183.38 183.38 0 01100.3 215.1a175.9 175.9 0 014.06-37.58c8.79-40.62 32.07-77.57 65.55-104A194.76 194.76 0 01290.3 32c52.21 0 100.86 20 137 56.18 34.16 34.27 52.88 79.33 52.73 126.87a177.86 177.86 0 01-30.3 99.15l-.19.28-.74 1c-.17.23-.34.45-.5.68l-.15.27a21.63 21.63 0 00-1.08 2.09l15.74 55.94a26.42 26.42 0 011.12 7.11 24 24 0 01-24.03 24.03z"/><path d="M299.87 425.39a15.74 15.74 0 00-10.29-8.1c-5.78-1.53-12.52-1.27-17.67-1.65a201.78 201.78 0 01-128.82-58.75A199.21 199.21 0 0186.4 244.16C85 234.42 85 232 85 232a16 16 0 00-28-10.58s-7.88 8.58-11.6 17.19a162.09 162.09 0 0011 150.06C59 393 59 395 58.42 399.5c-2.73 14.11-7.51 39-10 51.91a24 24 0 008 22.92l.46.39A24.34 24.34 0 0072 480a23.42 23.42 0 009-1.79l53.51-20.65a8.05 8.05 0 015.72 0c21.07 7.84 43 12 63.78 12a176 176 0 0074.91-16.66c5.46-2.56 14-5.34 19-11.12a15 15 0 001.95-16.39z"/></svg>
+                  Chat
+                </ion-label>
+              </ion-segment-button>
+              <!--<ion-segment-button value="Call">
+                <ion-label class="chat_aside_icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M391 480c-19.52 0-46.94-7.06-88-30-49.93-28-88.55-53.85-138.21-103.38C116.91 298.77 93.61 267.79 61 208.45c-36.84-67-30.56-102.12-23.54-117.13C45.82 73.38 58.16 62.65 74.11 52a176.3 176.3 0 0128.64-15.2c1-.43 1.93-.84 2.76-1.21 4.95-2.23 12.45-5.6 21.95-2 6.34 2.38 12 7.25 20.86 16 18.17 17.92 43 57.83 52.16 77.43 6.15 13.21 10.22 21.93 10.23 31.71 0 11.45-5.76 20.28-12.75 29.81-1.31 1.79-2.61 3.5-3.87 5.16-7.61 10-9.28 12.89-8.18 18.05 2.23 10.37 18.86 41.24 46.19 68.51s57.31 42.85 67.72 45.07c5.38 1.15 8.33-.59 18.65-8.47 1.48-1.13 3-2.3 4.59-3.47 10.66-7.93 19.08-13.54 30.26-13.54h.06c9.73 0 18.06 4.22 31.86 11.18 18 9.08 59.11 33.59 77.14 51.78 8.77 8.84 13.66 14.48 16.05 20.81 3.6 9.53.21 17-2 22-.37.83-.78 1.74-1.21 2.75a176.49 176.49 0 01-15.29 28.58c-10.63 15.9-21.4 28.21-39.38 36.58A67.42 67.42 0 01391 480z"/></svg>
+                  Call
+                </ion-label>
+              </ion-segment-button>-->
+              <ion-segment-button value="Contact">
+                <ion-label class="chat_aside_icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M428 224H288a48 48 0 01-48-48V36a4 4 0 00-4-4h-92a64 64 0 00-64 64v320a64 64 0 0064 64h224a64 64 0 0064-64V228a4 4 0 00-4-4zm-92 160H176a16 16 0 010-32h160a16 16 0 010 32zm0-80H176a16 16 0 010-32h160a16 16 0 010 32z"/><path d="M419.22 188.59L275.41 44.78a2 2 0 00-3.41 1.41V176a16 16 0 0016 16h129.81a2 2 0 001.41-3.41z"/></svg>
+                  Contact
+                </ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="Notification">
+                <ion-label class="chat_aside_icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M440.08 341.31c-1.66-2-3.29-4-4.89-5.93-22-26.61-35.31-42.67-35.31-118 0-39-9.33-71-27.72-95-13.56-17.73-31.89-31.18-56.05-41.12a3 3 0 01-.82-.67C306.6 51.49 282.82 32 256 32s-50.59 19.49-59.28 48.56a3.13 3.13 0 01-.81.65c-56.38 23.21-83.78 67.74-83.78 136.14 0 75.36-13.29 91.42-35.31 118-1.6 1.93-3.23 3.89-4.89 5.93a35.16 35.16 0 00-4.65 37.62c6.17 13 19.32 21.07 34.33 21.07H410.5c14.94 0 28-8.06 34.19-21a35.17 35.17 0 00-4.61-37.66zM256 480a80.06 80.06 0 0070.44-42.13 4 4 0 00-3.54-5.87H189.12a4 4 0 00-3.55 5.87A80.06 80.06 0 00256 480z"/></svg>
+                  Notification
+                </ion-label>
+              </ion-segment-button>
+            </ion-segment>
+
+
+          
+            <ion-list class="bz-chat-list"  *ngIf="segment === 'Chat'" >
+              <ion-item class="bz-chat-bx" *ngFor="let chatuser of chatUsers" [class.active]="chatUserScreenAfterSelection === chatuser.uid">
+                <ion-label (click)="selectForChat(chatuser)">
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <div class="d-flex align-items-center">
+                      <div class="symbol-circle" *ngIf="chatuser.image">
+                          <img alt="Pic" [src]="chatuser.image">
+                      </div>
+                      <span *ngIf="!chatuser.image" class="symbol-label d-inline" title="{{ chatuser.name }}">{{ chatuser.short_name }}</span>
+                      <div class="d-flex flex-column">
+                        <a href="javascript:void(0);" class="bz-text-dark">{{ chatuser.name }}</a>
+
+                        <span class="bz-text-muted" *ngIf="chatuser.isUserTyping">{{chatuser.name | twoCharactersName:'name'}} is typing ...</span>
+                        <span class="bz-text-muted" *ngIf="!chatuser.isUserTyping">{{ chatuser.latestChat.chat_message | truncate:10 }}</span>
+                        
+
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-end">
+                      <span class="bz-text-time" *ngIf="chatuser.latestChat">{{ chatuser.latestChat | chatTime}} </span>
+                      <span class="label-success" *ngIf="chatuser.unreadCount">{{chatuser.unreadCount}}</span>
+                    </div>
+                  </div>
+                </ion-label>
+              </ion-item> 
+          </ion-list>
+
+            <!--<ion-list class="bz-chat-list"  *ngIf="segment === 'Call'" >
+
+              <ion-item class="bz-chat-bx">
+                <ion-label>
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <div class="d-flex align-items-center">
+                      <div class="symbol-circle">
+                        <img alt="Pic" src="assets/users/300_12.jpg">
+                      </div>
+                      <div class="d-flex flex-column">
+                        <a href="#" class="bz-text-dark">Matt Pears</a>
+                        <span class="bz-text-muted"><img src="assets/call_icon.svg" alt=""/> Today at 10:30 AM</span>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-end">
+                      <span class="bz-chat-ca"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M451 374c-15.88-16-54.34-39.35-73-48.76-24.3-12.24-26.3-13.24-45.4.95-12.74 9.47-21.21 17.93-36.12 14.75s-47.31-21.11-75.68-49.39-47.34-61.62-50.53-76.48 5.41-23.23 14.79-36c13.22-18 12.22-21 .92-45.3-8.81-18.9-32.84-57-48.9-72.8C119.9 44 119.9 47 108.83 51.6A160.15 160.15 0 0083 65.37C67 76 58.12 84.83 51.91 98.1s-9 44.38 23.07 102.64 54.57 88.05 101.14 134.49S258.5 406.64 310.85 436c64.76 36.27 89.6 29.2 102.91 23s22.18-15 32.83-31a159.09 159.09 0 0013.8-25.8C465 391.17 468 391.17 451 374z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg></span>
+                    </div>
+                  </div>
+                </ion-label>
+              </ion-item>
+
+              <ion-item class="bz-chat-bx">
+                <ion-label>
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <div class="d-flex align-items-center">
+                      <div class="symbol-circle">
+                        <img alt="Pic" src="assets/users/300_11.jpg">
+                      </div>
+                      <div class="d-flex flex-column">
+                        <a href="#" class="bz-text-dark">Charlie Stone</a>
+                        <span class="bz-text-muted"><img src="assets/call_icon.svg" alt=""/> Today at 10:30 AM</span>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-end">
+                      <span class="bz-chat-ca"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M451 374c-15.88-16-54.34-39.35-73-48.76-24.3-12.24-26.3-13.24-45.4.95-12.74 9.47-21.21 17.93-36.12 14.75s-47.31-21.11-75.68-49.39-47.34-61.62-50.53-76.48 5.41-23.23 14.79-36c13.22-18 12.22-21 .92-45.3-8.81-18.9-32.84-57-48.9-72.8C119.9 44 119.9 47 108.83 51.6A160.15 160.15 0 0083 65.37C67 76 58.12 84.83 51.91 98.1s-9 44.38 23.07 102.64 54.57 88.05 101.14 134.49S258.5 406.64 310.85 436c64.76 36.27 89.6 29.2 102.91 23s22.18-15 32.83-31a159.09 159.09 0 0013.8-25.8C465 391.17 468 391.17 451 374z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg></span>
+                    </div>
+                  </div>
+                </ion-label>
+              </ion-item>
+
+            </ion-list>-->
+
+            <ion-list class="bz-chat-list" *ngIf="segment === 'Contact'">
+              <ng-container *ngFor="let group of groupContactsByInitialLetter() | keyvalue">
+                <ion-item-divider>
+                  <ion-label>{{ group.key }}</ion-label>
+                </ion-item-divider>
+
+                <ion-item class="bz-chat-bx" *ngFor="let contact of group.value">
+                  <ion-label (click)="selectForChat(contact)">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                      <div class="d-flex align-items-center">
+                        <div class="symbol-circle" *ngIf="contact.image">
+                          <img alt="Pic" [src]="contact.image">
+                        </div>
+                        <span *ngIf="!contact.image" class="symbol-label d-inline" title="{{ contact.name }}">{{ contact.short_name }}</span>
+
+                        <div class="d-flex flex-column">
+                          <a href="javascript:void(0);" class="bz-text-dark">{{ contact.name }}</a>
+                          <span class="bz-text-muted">{{ contact.email }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </ion-label>
+                </ion-item>
+              </ng-container>
+            </ion-list>
+
+          
+          
+            <div class="bz-chat-list" *ngIf="segment === 'Notification'">
+
+              <ion-item class="bz-chat-bx" *ngFor="let notification of notifications">
+                <ion-label>
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <div class="d-flex align-items-center">
+
+                      <div class="symbol-circle" *ngIf="notification.image">
+                          <img alt="Pic" [src]="notification.image">
+                      </div>
+                      <span *ngIf="!notification.image" class="symbol-label d-inline symbol-circle" title="{{ notification.name }}">{{ notification.short_name }}</span>
+                      
+                      <ng-container>
+                           {{notification.innerhtml}}
+                      </ng-container>
+
+                      <div class="d-flex flex-column">
+                        <a href="javascript:void(0);" class="bz-text-dark">{{notification.fromname}} reacted to your message:</a>
+                        <span class="bz-noti-message">{{notification.chat_message}}</span>
+                        <span class="bz-noti-time">{{ notification.latestChat | chatTime}} {{notification.fromname}}</span>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </ion-label>
+              </ion-item>
+              
+            </div>
+
+          </ion-label>
+        </ion-item>
+    <!--Chats Left panel list Start Here-->
+
+      </ion-col>     
+      <ion-col size="9" class="bz_chat_content"> 
+        <ion-header>
+          <ion-toolbar>
+            <ion-item>
+              <ion-label>
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <div class="d-flex align-items-center" *ngIf="chatUserScreenAfterSelectionData">
+                    <a href="javascript:void(0)" expand="block">
+                    <div class="symbol-circle" *ngIf="chatUserScreenAfterSelectionData.image">
+                        <img alt="Pic" [src]="chatUserScreenAfterSelectionData.image">
+                    </div>
+                    <span *ngIf="!chatUserScreenAfterSelectionData.image" class="symbol-label d-inline symbol-circle" title="{{ chatUserScreenAfterSelectionData.name }}">{{ chatUserScreenAfterSelectionData.short_name }}</span>
+                    </a>
+                    <div class="d-flex flex-column">
+                      <a href="javascript:void(0)" *ngIf="participants" (click)="participantsOpen(true)">{{chatUserScreenAfterSelectionData.name | titlecase}}</a>
+                      <a href="javascript:void(0)" class="bz-text-dark" *ngIf="!participants">{{chatUserScreenAfterSelectionData.name | titlecase}}</a>
+                      <span class="bz-text-muted" *ngFor="let department of chatUserScreenAfterSelectionData.departments">{{department.category_name}}</span>
+
+                      <div class="participants" *ngIf="participants && participants.length" (click)="participantsOpen(true)">
+                        <span>{{participants.length}} participants</span>
+                      </div>
+
+                    </div>
+
+                    
+
+                  </div>
+                  <div class="d-flex align-items-center" *ngIf="!chatUserScreenAfterSelectionData"></div>
+                  <div class="d-flex flex-column align-items-end">
+
+                    <!--<div class="drag_file" [hidden]="hideFileDragAndDrop">
+                      <file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" customstyle="myteam-drop-zone"
+                      (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                      </file-drop>
+                    </div>
+
+                    <div class="upload_progress_bar" *ngIf="displayProgressBar">
+                        {{progress.percentage}}%  {{uploadedFileCount}}/{{totalFileToUploadCount}}
+                    </div>-->
+
+
+                    <ul class="bz_chat_icon_list" >
+
+                      <li>
+                        <a href="javascript:void(0);" (click)=toggleDisplayDivIf() ><svg  xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg></a> 
+                      </li>
+                      <!--<li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M432 112V96a48.14 48.14 0 00-48-48H64a48.14 48.14 0 00-48 48v256a48.14 48.14 0 0048 48h16" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><rect x="96" y="128" width="400" height="336" rx="45.99" ry="45.99" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><ellipse cx="372.92" cy="219.64" rx="30.77" ry="30.55" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M342.15 372.17L255 285.78a30.93 30.93 0 00-42.18-1.21L96 387.64M265.23 464l118.59-117.73a31 31 0 0141.46-1.87L496 402.91" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+                      </li>-->
+                      <li>
+                        <svg id="click-trigger1" xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M376 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M288 304c-87 0-175.3 48-191.64 138.6-2 10.92 4.21 21.4 15.65 21.4H464c11.44 0 17.62-10.48 15.65-21.4C463.3 352 375 304 288 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M88 176v112M144 232H32"/></svg>
+                      </li>
+                      <!--<li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M374.79 308.78L457.5 367a16 16 0 0022.5-14.62V159.62A16 16 0 00457.5 145l-82.71 58.22A16 16 0 00368 216.3v79.4a16 16 0 006.79 13.08z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M268 384H84a52.15 52.15 0 01-52-52V180a52.15 52.15 0 0152-52h184.48A51.68 51.68 0 01320 179.52V332a52.15 52.15 0 01-52 52z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
+                      </li>
+                      <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M451 374c-15.88-16-54.34-39.35-73-48.76-24.3-12.24-26.3-13.24-45.4.95-12.74 9.47-21.21 17.93-36.12 14.75s-47.31-21.11-75.68-49.39-47.34-61.62-50.53-76.48 5.41-23.23 14.79-36c13.22-18 12.22-21 .92-45.3-8.81-18.9-32.84-57-48.9-72.8C119.9 44 119.9 47 108.83 51.6A160.15 160.15 0 0083 65.37C67 76 58.12 84.83 51.91 98.1s-9 44.38 23.07 102.64 54.57 88.05 101.14 134.49S258.5 406.64 310.85 436c64.76 36.27 89.6 29.2 102.91 23s22.18-15 32.83-31a159.09 159.09 0 0013.8-25.8C465 391.17 468 391.17 451 374z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
+                      </li>-->
+                    </ul>
+
+
+                  </div>
+
+                    
+
+                </div>
+                <div class="chat-searbar" *ngIf="!isShowDivIf"> 
+                  <ion-searchbar search-icon="search-circle" placeholder="Find messages in current conversation" [(ngModel)]="searchText" name="searchText" (keyup)="onKeyup($event)"></ion-searchbar>
+                  <ul>
+                    <li>0/0</li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg></li>
+                    <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg></li>
+                    <li><a href="javascript:void(0);" (click)=toggleDisplayDivIf()>Cancel</a></li>
+                  </ul>
+                </div>
+              </ion-label>
+            </ion-item>
+
+         
+
+
+
+
+
+            <ion-popover class="add-group-main" trigger="click-trigger1" triggerAction="click">
+              <ng-template>
+                <ion-content class="add-group-d">
+                  <h3>Add to Group</h3>
+                  <ion-searchbar color="primary" placeholder="Primary" (ionInput)="onSearchparticipate($event)"></ion-searchbar>
+                  <ion-list class="add-group-list">
+
+                    <ion-item class="bz-chat-bx" *ngFor="let participant of allUsers">
+                      <ion-label>
+                        <div class="d-flex align-items-center justify-content-between mb-1">
+                          <div class="d-flex align-items-center">
+
+                            <div class="symbol-circle" *ngIf="participant.image">
+                              <img alt="Pic" [src]="participant.image">
+                              <!--<span class="online-badge"></span>-->
+                            </div>
+                            <span *ngIf="!participant.image" class="symbol-label d-inline" title="{{ participant.name }}">{{ participant.short_name }}</span>
+
+                            
+
+                            <div class="d-flex flex-column">
+                              <a href="javascript:void(0);" class="bz-text-dark">{{ participant.name }}</a>
+                            </div>
+                          </div>
+                          <div class="d-flex flex-column align-items-end">
+
+                            <ion-checkbox (ionChange)="toggleSelection(participant)" aria-label="fdgf"></ion-checkbox>
+                          </div>
+                        </div>
+                      </ion-label>
+                    </ion-item>
+      
+                  </ion-list>
+                  <ion-button (click)="addGroup()">Done</ion-button>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+
+
+          
+          </ion-toolbar>
+        </ion-header>
+        <ion-content [fullscreen]="true" class="ion-padding" #chatList (ionScroll)="onIonScroll($event)" [scrollEvents]="true">
+          <ng-container *ngIf="chatData.length > 0">
+            <ng-container *ngFor="let chatTextString of chatData">
+  
+              <ng-container *ngIf="chatTextString.dateSeparator">
+                <!--<li class="date-separator {{chatTextString | chatTime: 'date-separator'}}"> {{chatTextString | chatTime: 'date-separator'}} </li>-->
+                <ion-item>
+                    <ion-label class="date-separator {{chatTextString | chatTime: 'date-separator'}}">
+                      {{chatTextString | chatTime: 'date-separator'}}
+                    </ion-label>
+                </ion-item>
+              </ng-container>
+  
+              <ng-container *ngIf="!chatTextString.dateSeparator">
+
+                <ion-item *ngIf="chatTextString.sender_id === logedinuid; else otherItem">
+                    <ion-label>
+                    <div class="d-flex flex-column align-items-end" id="{{chatTextString.id}}">
+                      <div class="d-flex align-items-center dekstop_chat_main bz_right_chat">
+                        <div>
+                          <span class="text-muted font-size-sm">{{ chatTextString | chatTime: 'onlyTime'}}</span>
+                          <a href="javascript:void(0)" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">You</a>
+                        </div>
+
+                        <div class="symbol-35" *ngIf="logedinpic">
+                          <img alt="Pic" src="{{logedinpic}}">
+                        </div>
+                        <span *ngIf="!logedinpic" class="symbol-label-35 d-inline" title="{{logedinname}}">{{getShortName(logedinname)}}</span>
+
+                      </div>
+
+                    <div class="d-flex mt-2">
+                      <div class="bg-light-primary mt-0" *ngIf="chatTextString.chat_type == 'text'">{{chatTextString.chat_message}}
+                      </div>
+                      <span id="popover-button{{chatTextString.id}}"><ion-icon name="ellipsis-vertical-outline" style="font-size: 10px; width: 10px; height: 10px;"></ion-icon></span>
+                    </div>
+
+                      <ng-container *ngIf="chatTextString.chat_type == 'attachment' && chatTextString.isImage">
+                            <a href="javascript:void(0);" (click)="downloadFile(chatTextString.attachment_thumb_url)"><img [ngStyle]="chatTextString.imgStyle" class="img-frame attachment" [src]="chatTextString.attachment_thumb_url" (click)="downloadFile(chatTextString.attachment_thumb_url)"></a>
+                      </ng-container>
+                      <ng-container *ngIf="chatTextString.chat_type == 'attachment' && !chatTextString.isImage" >
+                           <a href="javascript:void(0);" (click)="downloadFile(chatTextString.attachment_thumb_url)"> <img src="assets/doc.png"></a>
+                      </ng-container>
+                      <div class="react_emoji_main react_emoji_right">
+                        <ng-container *ngFor="let reaction of chatTextString.chat_reactions">
+                          <span class="react_emoji"> {{reaction.innerhtml}} </span>
+                        </ng-container>
+                      </div>
+                        
+                        <ion-popover trigger="popover-button{{chatTextString.id}}" [dismissOnSelect]="true">
+                          <ng-template>
+                            <ion-content>
+                              <ion-list>
+                              
+                                <ion-item *ngIf="chatTextString.chat_type=='text'" (click)="editCommunication(chatTextString)" [button]="true">Edit</ion-item>
+                                <ion-item (click)="openRemoveMessageModal(chatTextString)" [button]="true">Remove</ion-item>
+                              </ion-list>
+                            </ion-content>
+                          </ng-template>
+                        </ion-popover>
+
+                    </div>
+                  </ion-label>
+                </ion-item>
+                <ng-template #otherItem>
+                <ion-item>
+                  <ion-label>
+                      <div class="d-flex flex-column align-items-start">
+                        <div class="d-flex align-items-center dekstop_chat_main">
+
+                          <div class="symbol-35" *ngIf="chatTextString.sender.image">
+                            <img alt="Pic" [src]="chatTextString.sender.image">
+                          </div>
+                          
+                          <span *ngIf="!chatTextString.sender.image" class="symbol-label-35 d-inline symbol-35" title="{{ chatUserScreenAfterSelectionData.name }}">{{ chatTextString.sender.short_name }}</span>
+
+                          <div>
+                            <a href="javascript:void(0)" class="font-size-h6">{{ chatTextString.sender.name | twoCharactersName: 'firstname'}}</a>,
+                            <span class="text-muted font-size-sm">{{ chatTextString | chatTime: 'onlyTime'}} <a (click)="toggleEmojiBox(chatTextString.id,chatTextString.uid)" class="bz_chat_smaile reactemoji" id="popover-emoji"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M14.829 14.828a4.055 4.055 0 0 1-1.272.858 4.002 4.002 0 0 1-4.875-1.45l-1.658 1.119a6.063 6.063 0 0 0 1.621 1.62 5.963 5.963 0 0 0 2.148.903 6.042 6.042 0 0 0 2.415 0 5.972 5.972 0 0 0 2.148-.903c.313-.212.612-.458.886-.731.272-.271.52-.571.734-.889l-1.658-1.119a4.017 4.017 0 0 1-.489.592z"></path><circle cx="8.5" cy="10.5" r="1.5"></circle><circle cx="15.493" cy="10.493" r="1.493"></circle></svg></a>
+
+                              
+                            </span>
+
+                          </div>
+                        </div>
+                        <div class="bg-light-success" *ngIf="chatTextString.chat_type == 'text'">{{chatTextString.chat_message}}</div>
+                        <ng-container *ngIf="chatTextString.chat_type == 'attachment' && chatTextString.isImage">
+                            <a href="javascript:void(0);" (click)="downloadFile(chatTextString.attachment_thumb_url)" style="margin-top: 25px;"><img [ngStyle]="chatTextString.imgStyle" class="img-frame attachment" [src]="chatTextString.attachment_thumb_url"></a>
+                      </ng-container>
+                      <ng-container *ngIf="chatTextString.chat_type == 'attachment' && !chatTextString.isImage" >
+                           <a href="javascript:void(0);" (click)="downloadFile(chatTextString.attachment_thumb_url)"> <img src="assets/doc.png"></a>
+                      </ng-container>
+
+                      <div class="react_emoji_main">
+                        <ng-container *ngFor="let reaction of chatTextString.chat_reactions">
+                          <span class="react_emoji" (click)="removeEmoji(reaction.communication_id,reaction.chat_message_id,reaction.user_id,reaction.reaction_type,reaction.innerhtml)"> {{reaction.innerhtml}} </span>
+                        </ng-container>
+                      </div>
+
+                      </div>
+
+                    </ion-label>
+                </ion-item>
+                </ng-template>
+              </ng-container>            
+            </ng-container>
+
+            
+
+          </ng-container>
+        </ion-content>   
+
+    <ion-footer>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="9">
+            <ion-list class="bz_chat_search">
+
+              
+
+              <a href="javascript:void(0)" class="bz_chat_smaile"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M14.829 14.828a4.055 4.055 0 0 1-1.272.858 4.002 4.002 0 0 1-4.875-1.45l-1.658 1.119a6.063 6.063 0 0 0 1.621 1.62 5.963 5.963 0 0 0 2.148.903 6.042 6.042 0 0 0 2.415 0 5.972 5.972 0 0 0 2.148-.903c.313-.212.612-.458.886-.731.272-.271.52-.571.734-.889l-1.658-1.119a4.017 4.017 0 0 1-.489.592z"></path><circle cx="8.5" cy="10.5" r="1.5"></circle><circle cx="15.493" cy="10.493" r="1.493"></circle></svg></a>
+
+              <!--<ion-searchbar search-icon="none" class="custom" placeholder="Type A Message" (keyup)="removeCharacterForEditChat($event)"
+        (focus)="sendTypingEvent(1)" [(ngModel)]="messageInput" name="messageInput"></ion-searchbar>-->
+
+              <div *ngIf="chatUserScreenAfterSelectionData?.type=='user' && chatUserScreenAfterSelectionData?.isTyping" class="typing-msg">
+                {{chatUserScreenAfterSelectionData?.firstname | twoCharactersName:'firstname'}} is typing ...
+              </div>
+              <div *ngIf="chatUserScreenAfterSelectionData?.type!='user' && chatUserScreenAfterSelectionData?.typingUsers?.length" class="typing-msg">
+                {{chatUserScreenAfterSelectionData?.typingUsers | typingMessage }}
+              </div>
+
+              <ion-searchbar
+                #message
+                search-icon="none"
+                id="messageIn"
+                class="custom"
+                placeholder="Type A Message"
+                [disabled]="!chatUserScreenAfterSelection"
+                [(ngModel)]="chatText"
+                (keyup.enter)="prepareSendText()" 
+                (keyup)="removeCharacterForEditChat($event)"
+                (focus)="sendTypingEvent(1)"
+              ></ion-searchbar>
+
+              <!--<button (click)="sendMessage()">Send</button>-->
+
+
+              <!--<a href="javascript:void(0)" class="bz_chat_edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.413.585L4 13.585V18h4.413L19.045 7.401zm-3-3 1.587 1.585-1.59 1.584-1.586-1.585 1.589-1.584zM6 16v-1.585l7.04-7.018 1.586 1.586L7.587 16H6zm-2 4h16v2H4z"></path></svg></a>-->
+            </ion-list>
+          </ion-col>
+          <ion-col size="3">
+              <ion-list class="bz_file_icon">
+
+                <div class="box">
+                  
+                  <!-- for test to s3 bucket -->
+                  <!--
+                  <button (click)="displayDecryptimg()">Show Image</button>
+                  <div id="imageContainer"></div>
+                  <input type="file" id="file-s3" (change)="onFileSelected($event)">
+                  <label for="file-s3"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="48" y="80" width="416" height="352" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="336" cy="176" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M304 335.79l-90.66-90.49a32 32 0 00-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0143.11-2L464 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg></label>-->
+                  <!-- end s3 -->
+                  <!-- before se use handleFileInput($event) -->
+                  <input type="file" name="file-1[]" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" (change)="onFileSelected($event)" multiple />
+                  <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="48" y="80" width="416" height="352" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="336" cy="176" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M304 335.79l-90.66-90.49a32 32 0 00-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0143.11-2L464 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg></label>
+                </div>
+
+              </ion-list>
+
+              <ion-list class="bz_file_icon">
+                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M192 448h128M384 208v32c0 70.4-57.6 128-128 128h0c-70.4 0-128-57.6-128-128v-32M256 368v80"/><path d="M256 64a63.68 63.68 0 00-64 64v111c0 35.2 29 65 64 65s64-29 64-65V128c0-36-28-64-64-64z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg></a>
+              </ion-list>
+
+              <ion-list class="bz_file_icon">
+                <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg></a>
+              </ion-list>
+              <ion-list class="bz_file_icon" >
+                <a href="javascript:void(0)" id="popover-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></a>
+              </ion-list>
+
+              <!--<ion-list class="bz_file_icon" >
+                <a href="javascript:void(0)" id="popover-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></a>
+                <ion-popover trigger="popover-button" [dismissOnSelect]="true">
+                  <ng-template>
+                    <ion-content>
+                        <a href="javascript:void(0)" expand="block" (click)="recusiveOpen(true)"><ion-item  [button]="true" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                          <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5"/>
+                          <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z"/>
+                        </svg> Contact</ion-item></a>
+                        <ion-item [button]="true" [detail]="false"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                          <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                          <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg> Location</ion-item>
+                        <ion-item [button]="true" [detail]="false"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-week" viewBox="0 0 16 16">
+                          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+                          <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+                        </svg> Schedule a Call</ion-item>
+                        <ion-item [button]="true" [detail]="false"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pie-chart" viewBox="0 0 16 16">
+                          <path d="M7.5 1.018a7 7 0 0 0-4.79 11.566L7.5 7.793zm1 0V7.5h6.482A7 7 0 0 0 8.5 1.018M14.982 8.5H8.207l-4.79 4.79A7 7 0 0 0 14.982 8.5M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8"/>
+                        </svg> Create Poll</ion-item>
+                    </ion-content>
+                  </ng-template>
+                </ion-popover>
+              </ion-list>-->
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>  
+    </ion-footer>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
+
+
+
+<!--Recursive popup-->
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isRecursiveOpen" class="recursive-popup">
+    <ng-template>
+      <ion-content class="add-group-d">
+        <h3>Add to Group</h3>
+        <ion-searchbar color="primary" placeholder="Primary"></ion-searchbar>
+        <ion-list class="add-group-list">
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_12.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Matt Pears</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_11.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Charlie Stone</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_12.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Matt Pears</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_11.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Charlie Stone</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_12.jpg">
+                    <span class="away-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Matt Pears</a>
+
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_11.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Charlie Stone</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_12.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Matt Pears</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_11.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Charlie Stone</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_12.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Matt Pears</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_11.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Charlie Stone</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_12.jpg">
+                    <span class="away-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Matt Pears</a>
+
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+          <ion-item class="bz-chat-bx">
+            <ion-label>
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center">
+                  <div class="symbol-circle">
+                    <img alt="Pic" src="assets/users/300_11.jpg">
+                    <span class="online-badge"></span>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <a href="#" class="bz-text-dark">Charlie Stone</a>
+                  </div>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                  <ion-radio value="friends"></ion-radio>
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+
+
+
+
+        </ion-list>
+        <ion-button>Done</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isParticipantsOpen" class="Participants-popup">
+    <ng-template>
+      <ion-content class="add-group-d">
+
+        <ion-header class="participants-header">
+          <ion-row>
+            <ion-button (click)="participantsOpen(false)" class="bz_pop_close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg></ion-button>
+            <ion-col>
+              <div class="participants-profile">
+                <img alt="group image" *ngIf="chatUserScreenAfterSelectionData.image" [src]="chatUserScreenAfterSelectionData.image" />
+                <img alt="group image" *ngIf="!chatUserScreenAfterSelectionData.image" src="assets/avatar.svg" />
+
+                <span id="popover-button1"><svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4 21a1 1 0 0 0 .24 0l4-1a1 1 0 0 0 .47-.26L21 7.41a2 2 0 0 0 0-2.82L19.42 3a2 2 0 0 0-2.83 0L4.3 15.29a1.06 1.06 0 0 0-.27.47l-1 4A1 1 0 0 0 3.76 21 1 1 0 0 0 4 21zM18 4.41 19.59 6 18 7.59 16.42 6zM5.91 16.51 15 7.41 16.59 9l-9.1 9.1-2.11.52z"></path></svg></span>
+              </div>
+          </ion-col>
+          </ion-row> 
+        </ion-header>
+        <input type="file" name="file-av" id="file-av" class="inputfile" (change)="handleFileAvtar($event)"  />
+        <ion-popover trigger="popover-button1" [dismissOnSelect]="true">
+          <ng-template>
+            <ion-content>
+              <ion-list>
+              
+                <label for="file-av" class="editavt">Edit Avatar</label>
+                <ion-item [button]="true" (click)="viewAvtarFile(chatUserScreenAfterSelectionData.image)" *ngIf="chatUserScreenAfterSelectionData.image">View Avatar</ion-item>
+                <ion-item [button]="true" *ngIf="chatUserScreenAfterSelectionData.image" (click)="removeAvtar(chatUserScreenAfterSelectionData.image)">Remove Avatar</ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+        
+        <ion-list class="bz-task-edit">
+          <div class="bz-task-details">
+            {{chatUserScreenAfterSelectionData.name | titlecase}}
+            <span (click)=toggleTaskdisplayDivIf(true) ><svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4 21a1 1 0 0 0 .24 0l4-1a1 1 0 0 0 .47-.26L21 7.41a2 2 0 0 0 0-2.82L19.42 3a2 2 0 0 0-2.83 0L4.3 15.29a1.06 1.06 0 0 0-.27.47l-1 4A1 1 0 0 0 3.76 21 1 1 0 0 0 4 21zM18 4.41 19.59 6 18 7.59 16.42 6zM5.91 16.51 15 7.41 16.59 9l-9.1 9.1-2.11.52z"></path></svg></span>
+          </div>
+
+          <div class="task-edit-box" *ngIf="!isTaskDivIf">
+            <ion-item>
+              <ion-input placeholder="Task Name" [(ngModel)]="group_name" name="group_name"></ion-input>
+            </ion-item>
+            <img alt="group image" *ngIf="chatUserScreenAfterSelectionData.image" [src]="chatUserScreenAfterSelectionData.image" />
+            <img alt="group image" *ngIf="!chatUserScreenAfterSelectionData.image" src="assets/avatar.svg" />
+            <span (click)=toggleTaskdisplayDivIf(false)  class="bz-task-check"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg></span>
+          </div>
+
+
+
+          <span class="bz-task-subheading">Created by {{chatUserScreenAfterSelectionData.created_by | titlecase}}</span>
+        </ion-list>
+
+        
+        <ion-list class="add-group-list">  
+          
+          <div class="participants-list" [ngClass]="{'limitTextHeight': isReadMore}" >
+            
+            <ion-list [inset]="true">
+              <span>{{participants.length}} PARTICIPANTS</span>
+              <ion-item [button]="true" expand="block" (click)="addparticipantsOpen(true)">
+                <ion-avatar slot="start" class="bz-icon-plus">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+                </ion-avatar>
+                <ion-label> Add Partticipants </ion-label>
+              </ion-item>
+
+
+            <ion-item [button]="true" *ngFor="let participant of participants">
+              <ion-avatar slot="start">
+                
+                <img alt="Pic" *ngIf="participant.imageUrl" src="{{participant.imageUrl}}">
+                
+                <img alt="Pic" *ngIf="!participant.imageUrl" src="assets/avatar.svg">
+                <!--<span *ngIf="!participant.imageUrl" class="symbol-label-35 d-inline" title="{{participant.firstname}}">{{getShortName(participant.firstname)}}</span>-->
+
+                <!--<span class="active"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2z"></path></svg></span>-->
+              </ion-avatar>
+              <ion-label> {{participant.firstname}} </ion-label>
+              <ion-button class="p-remove-btn" (click)="removeParticipant(participant.uid)">Remove</ion-button>
+            </ion-item>
+
+            
+            </ion-list>
+
+          </div>
+          <button class="show-more-btn"  type="button" (click)="showText()" *ngIf="participants.length>4">
+            {{ isReadMore ? 'Show More': 'Show Less' }}
+          </button>
+        </ion-list>
+       
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+
+
+<!--Addparticipants popup-->
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isAddparticipantsOpen" class="add-group-main addparticipants-pop">
+    <ng-template>
+      <ion-content class="add-group-d">
+        <h3>Add to Group</h3>
+        <ion-button (click)="addparticipantsOpen(false)" class="bz_pop_close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg></ion-button>
+        <ion-searchbar color="primary" placeholder="Primary" (ionInput)="onSearchparticipate($event)"></ion-searchbar>
+            <ion-list class="add-group-list">
+
+              <ion-item class="bz-chat-bx" *ngFor="let participant of allUsers">
+                <ion-label>
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <div class="d-flex align-items-center">
+
+                      <div class="symbol-circle" *ngIf="participant.image">
+                        <img alt="Pic" [src]="participant.image">
+                        <!--<span class="online-badge"></span>-->
+                      </div>
+                      <span *ngIf="!participant.image" class="symbol-label d-inline" title="{{ participant.name }}">{{ participant.short_name }}</span>
+
+                      
+
+                      <div class="d-flex flex-column">
+                        <a href="javascript:void(0);" class="bz-text-dark">{{ participant.name }}</a>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-end">
+
+                      <ion-checkbox (ionChange)="toggleSelection(participant)" aria-label="fdgf"></ion-checkbox>
+                    </div>
+                  </div>
+                </ion-label>
+              </ion-item>
+
+            </ion-list>
+        <ion-button (click)="addToGroup()">Done</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+
+<ion-content class="ion-padding">
+  <ion-modal [isOpen]="isemoChatopen" class="Participants-popup">
+    <ng-template>
+      <ion-content class="add-group-d">
+        <ion-header class="participants-header">
+          <ion-row>
+            <ion-button (click)="closeEmojiBox()" class="bz_pop_close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg></ion-button>
+           
+          </ion-row> 
+        </ion-header>
+        <ion-list class="bz-task-edit">
+            <div *ngIf="showEmojiBox" class="emoji-box">
+                <!--<ngx-emoj (click)="selectEmoji($event)"></ngx-emoj>-->
+                  <span *ngFor="let emoji of emojis" (click)="selectEmoji(emoji.name,emoji.icon)">{{ emoji.icon }}</span>
+            </div>
+        </ion-list>                  
+       
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<!--<div class="emoji-popmain">
+  <ion-popover class="emoji-pop" trigger="top-center" side="top" alignment="center">
+    <ng-template>
+      <ion-content >
+        
+        <swiper-container #swiper navigation="true" class="emoji_slider">
+          <swiper-slide>
+            <ul class="emoji-list-icon">
+              <li><ion-icon name="happy-outline"></ion-icon></li>
+              <li><ion-icon name="happy-outline"></ion-icon></li>
+              <li><ion-icon name="happy-outline"></ion-icon></li>
+              <li><ion-icon name="happy-outline"></ion-icon></li>
+              <li><ion-icon name="happy-outline"></ion-icon></li>
+              <li><ion-icon name="happy-outline"></ion-icon></li>
+              
+            </ul>
+          </swiper-slide>
+          <swiper-slide>
+            <ul class="emoji-list-icon">
+            <li><ion-icon name="logo-chrome"></ion-icon></li>
+            <li><ion-icon name="logo-chrome"></ion-icon></li>
+            <li><ion-icon name="logo-chrome"></ion-icon></li>
+            <li><ion-icon name="logo-chrome"></ion-icon></li>
+            <li><ion-icon name="logo-chrome"></ion-icon></li>
+            <li><ion-icon name="logo-chrome"></ion-icon></li>
+          </ul>
+        </swiper-slide>
+          <swiper-slide>
+            <ul class="emoji-list-icon">
+            <li><ion-icon name="tennisball"></ion-icon></li>
+            <li><ion-icon name="tennisball"></ion-icon></li>
+            <li><ion-icon name="tennisball"></ion-icon></li>
+            <li><ion-icon name="tennisball"></ion-icon></li>
+            <li><ion-icon name="tennisball"></ion-icon></li>
+            <li><ion-icon name="tennisball"></ion-icon></li>
+          </ul>
+        </swiper-slide>
+          
+        </swiper-container>                    
+        
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+</div>-->
+
+  
